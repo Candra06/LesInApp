@@ -10,6 +10,20 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
+  String nama = '', username = '', token = '', id = '';
+  void getInfo() async {
+    var tmpNama = await Config.getNama();
+    var tmpToken = await Config.getToken();
+    var tmpUsername = await Config.getUsername();
+    var tmpID = await Config.getID();
+    setState(() {
+      nama = tmpNama;
+      username = tmpUsername;
+      token = tmpToken;
+      id = tmpID;
+    });
+  }
+
   Widget item(index) {
     return Card(
       child: Container(
@@ -51,6 +65,12 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   @override
+  void initState() {
+    getInfo();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
@@ -85,7 +105,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
                             new Text(
-                              "Halo, Kak Febi".toUpperCase(),
+                              "Halo, $nama".toUpperCase(),
                               style: new TextStyle(
                                 fontFamily: 'AirbnbBold',
                                 fontSize: 16,
@@ -164,7 +184,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                           CrossAxisAlignment.start,
                                       children: <Widget>[
                                         Container(
-                                          child: Text('Febi Karina',
+                                          child: Text('$nama',
                                               style: TextStyle(
                                                   fontFamily: 'AirbnbMedium',
                                                   color: Config.textWhite,
@@ -172,7 +192,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                   fontWeight: FontWeight.bold)),
                                         ),
                                         Container(
-                                          child: Text('Febi',
+                                          child: Text('$username',
                                               style: TextStyle(
                                                   fontFamily: 'AirbnbMedium',
                                                   color: Config.textWhite,

@@ -22,7 +22,7 @@ class Config {
   static final HexColor closed = new HexColor('#B3B3B3');
   static final HexColor open = new HexColor('#00C45C');
 
-  static final String ipServer = 'http://1e9f7cacf40f.ngrok.io/';
+  static final String ipServer = 'http://be0f42715ae8.ngrok.io/';
   static final String ipServerAPI = ipServer + 'api/';
   static final String ipAssets = '';
 
@@ -45,7 +45,7 @@ class Config {
                     // crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      SpinKitHourGlass(color: Config.primary, size: 50.0),
+                      SpinKitCubeGrid(color: Config.primary, size: 50.0),
                       SizedBox(height: 30.0),
                       Text(
                         "Memuat Data",
@@ -90,9 +90,9 @@ class Config {
     );
   }
 
-  static formattanggal(tgl) {
+  static formattanggal(String tgl) {
     try {
-      DateTime dt = DateTime.parse(tgl);
+      DateTime dt = DateTime.parse(tgl.toString());
       var bln = [
         '',
         'Januari',
@@ -136,6 +136,18 @@ class Config {
     return id;
   }
 
+   static getIDAkun() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String idAkun = preferences.getString('idAkun');
+    return idAkun;
+  }
+
+   static getGender() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String gender = preferences.getString('gender');
+    return gender;
+  }
+
   static getEmail() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String email = preferences.getString('email');
@@ -148,16 +160,28 @@ class Config {
     return alamat;
   }
 
-  static getKecamatan() async {
+  static getUsername() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String kecamatan = preferences.getString('kecamatan');
-    return kecamatan;
+    String username = preferences.getString('username');
+    return username;
   }
 
   static getTelepon() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String telepon = preferences.getString('telepon');
     return telepon;
+  }
+
+   static getTanggalLahir() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String tglLahir = preferences.getString('tglLahir');
+    return tglLahir;
+  }
+
+   static getRole() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String role = preferences.getString('role');
+    return role;
   }
 
   
