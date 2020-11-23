@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lesin_app/helper/config.dart';
+import 'package:lesin_app/helper/fade_animation.dart';
 import 'package:lesin_app/helper/routes.dart';
+import 'package:lesin_app/helper/size.dart';
 
 class NegoTarif extends StatefulWidget {
   @override
@@ -108,64 +110,147 @@ class _NegoTarifState extends State<NegoTarif> {
                   ],
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 8),
-                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        child: TextFormField(
-                            style: TextStyle(color: Colors.black54),
-                            obscureText: false,
-                            keyboardType: TextInputType.emailAddress,
-                            // controller: txEmail,
-                            decoration: InputDecoration(
-                              alignLabelWithHint: true,
-                              fillColor: Colors.black54,
-                              hintText: "Jumlah Pertemuan",
-                              hintStyle: TextStyle(
-                                  // color: Config.textWhite,
-                                  fontStyle: FontStyle.italic,
-                                  fontSize: 16),
-                              border: InputBorder.none,
-                            )),
-                      )
-                    ],
-                  ),
-                ),
-                Container(
-                  child: Stack(children: [
-                    Positioned(
-                      bottom: 10,
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        margin: EdgeInsets.fromLTRB(0, 16, 0, 8),
-                        child: RaisedButton(
-                          padding: EdgeInsets.only(top: 13, bottom: 13),
-                          color: Config.primary,
-                          onPressed: () {
-                            // Navigator.pushNamed(context, Routes.HOMEPAGE,
-                            //     arguments: 0.toString());
-                            Navigator.pushNamed(context, Routes.ABSENSI,
-                                arguments: 0.toString());
-                          },
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5)),
-                          child: Text(
-                            'Selanjutnya',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'AirbnbBold',
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold),
+                    constraints: BoxConstraints(minHeight: 200, maxHeight: 445),
+                    margin: EdgeInsets.only(top: 8),
+                    padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                            constraints:
+                                BoxConstraints(minHeight: 100, maxHeight: 380),
+                            margin: EdgeInsets.fromLTRB(4, 8, 4, 8),
+                            child: ListView.separated(
+                                separatorBuilder: (context, int i) {
+                                  return Container(
+                                    color: Config.textWhite,
+                                    width: displayWidth(context),
+                                    height: 1,
+                                  );
+                                },
+                                itemCount: 3,
+                                itemBuilder: (context, int i) {
+                                  if ((i % 2) == 0) {
+                                    return Container(
+                                      margin: EdgeInsets.only(left: 40, top: 4),
+                                      padding: EdgeInsets.all(8),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                        color: Config.secondary,
+                                      ),
+                                      alignment: Alignment.centerRight,
+                                      child: Text(
+                                        'Lorem Ipsum dolor sit amet Lorem Lorem Lorem Ipsum dolor',
+                                        style: TextStyle(
+                                            color: Config.textWhite,
+                                            fontFamily: 'Airbnb'),
+                                      ),
+                                    );
+                                  } else {
+                                    return Container(
+                                      margin:
+                                          EdgeInsets.only(right: 40, top: 4),
+                                      padding: EdgeInsets.all(8),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                        color: Colors.black12,
+                                      ),
+                                      alignment: Alignment.centerRight,
+                                      child: Text(
+                                        'Lorem Ipsum dolor sit amet Lorem Lorem Lorem Ipsum dolor',
+                                        style: TextStyle(
+                                            color: Config.textBlack,
+                                            fontFamily: 'Airbnb'),
+                                      ),
+                                    );
+                                  }
+                                })),
+                        Container(
+                          // constraints: BoxConstraints(minWidth: 100, maxWidth: 200),
+                          child: Row(
+                            children: <Widget>[
+                              Container(
+                                  padding: EdgeInsets.fromLTRB(10, 0, 8, 0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.withOpacity(0.2),
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  child: Column(
+                                    children: <Widget>[
+                                      Container(
+                                        constraints: BoxConstraints(
+                                            minWidth: 200, maxWidth: 300),
+                                        child: TextFormField(
+                                            style: TextStyle(
+                                                color: Colors.black54),
+                                            obscureText: false,
+                                            keyboardType:
+                                                TextInputType.emailAddress,
+                                            // controller: txEmail,
+                                            decoration: InputDecoration(
+                                              suffixIcon: IconButton(
+                                                onPressed: () {
+                                                  print('dipencet');
+                                                },
+                                                icon: Icon(
+                                                  Icons.send,
+                                                  color: Colors.black54,
+                                                ),
+                                              ),
+                                              alignLabelWithHint: true,
+                                              fillColor: Colors.black54,
+                                              hintText: "Ketik Pesan",
+                                              hintStyle: TextStyle(
+                                                  // color: Config.textWhite,
+                                                  fontStyle: FontStyle.italic,
+                                                  fontSize: 16),
+                                              border: InputBorder.none,
+                                            )),
+                                      ),
+                                    ],
+                                  )),
+                            ],
+                          ),
+                        ),
+                      ],
+                    )),
+                FadeAnimation(
+                  0.2,
+                  Container(
+                    height: 100,
+                    child: Stack(children: <Widget>[
+                      Positioned(
+                        bottom: 10,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          margin: EdgeInsets.fromLTRB(0, 16, 0, 8),
+                          child: RaisedButton(
+                            padding: EdgeInsets.only(top: 13, bottom: 13),
+                            color: Config.primary,
+                            onPressed: () {
+                              // Navigator.pushNamed(context, Routes.HOMEPAGE,
+                              //     arguments: 0.toString());
+                              Navigator.pushNamed(context, Routes.ABSENSI,
+                                  arguments: 0.toString());
+                            },
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5)),
+                            child: Text(
+                              'Selanjutnya',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'AirbnbBold',
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ]),
+                    ]),
+                  ),
                 ),
               ],
             )),

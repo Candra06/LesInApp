@@ -227,25 +227,31 @@ class _DashboardPageState extends State<DashboardPage> {
                           ),
                         ),
                         Expanded(
-                          child: Card(
-                            elevation: 3,
-                            child: Container(
-                              padding: EdgeInsets.all(8),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Container(
-                                      width: 30,
-                                      child: Image.asset(
-                                          'assets/icons/credit-card.png')),
-                                  Container(
-                                    margin: EdgeInsets.only(top: 8),
-                                    child: Text('Pembayaran',
-                                        style: TextStyle(
-                                            color: Colors.black45,
-                                            fontFamily: 'AirbnbMedium')),
-                                  ),
-                                ],
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, Routes.LIST_PEMBAYARAN);
+                            },
+                            child: Card(
+                              elevation: 3,
+                              child: Container(
+                                padding: EdgeInsets.all(8),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Container(
+                                        width: 30,
+                                        child: Image.asset(
+                                            'assets/icons/credit-card.png')),
+                                    Container(
+                                      margin: EdgeInsets.only(top: 8),
+                                      child: Text('Pembayaran',
+                                          style: TextStyle(
+                                              color: Colors.black45,
+                                              fontFamily: 'AirbnbMedium')),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -304,7 +310,7 @@ class _DashboardPageState extends State<DashboardPage> {
             FadeAnimation(
               1.7,
               Container(
-                constraints: BoxConstraints(minHeight: 300, maxHeight: 600),
+                constraints: BoxConstraints(minHeight: 200, maxHeight: 300),
                 margin: EdgeInsets.fromLTRB(16, 8, 16, 8),
                 child: ListView.separated(
                     separatorBuilder: (context, int i) {
