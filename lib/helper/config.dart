@@ -22,7 +22,7 @@ class Config {
   static final HexColor closed = new HexColor('#B3B3B3');
   static final HexColor open = new HexColor('#00C45C');
 
-  static final String ipServer = 'http://be0f42715ae8.ngrok.io/';
+  static final String ipServer = 'http://2632a81ded77.ngrok.io/';
   static final String ipServerAPI = ipServer + 'api/';
   static final String ipAssets = '';
 
@@ -74,7 +74,7 @@ class Config {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          SpinKitHourGlass(color: Config.primary, size: 50.0),
+          SpinKitCubeGrid(color: Config.primary, size: 50.0),
           new Padding(
             padding: EdgeInsets.symmetric(horizontal: 10.0),
             child: Padding(
@@ -110,7 +110,6 @@ class Config {
       ];
       var newDt = DateFormat.EEEE().format(dt);
       var bulan = tgl.toString().split('-');
-      print(newDt + ', ' + bln[int.parse(bulan[1])] + ' ' + bulan[0]);
       String tanggal = newDt + ', ' + bln[int.parse(bulan[1])] + ' ' + bulan[0];
       return tanggal;
     } catch (e) {
@@ -136,13 +135,13 @@ class Config {
     return id;
   }
 
-   static getIDAkun() async {
+  static getIDAkun() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String idAkun = preferences.getString('idAkun');
     return idAkun;
   }
 
-   static getGender() async {
+  static getGender() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String gender = preferences.getString('gender');
     return gender;
@@ -172,17 +171,27 @@ class Config {
     return telepon;
   }
 
-   static getTanggalLahir() async {
+  static getTanggalLahir() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String tglLahir = preferences.getString('tglLahir');
     return tglLahir;
   }
 
-   static getRole() async {
+  static getRole() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String role = preferences.getString('role');
     return role;
   }
 
-  
+  static getLatitude() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String latitude = preferences.getString('latitude');
+    return latitude;
+  }
+
+  static getLongitude() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String longitude = preferences.getString('longitude');
+    return longitude;
+  }
 }

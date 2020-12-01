@@ -7,7 +7,6 @@ import 'package:lesin_app/helper/hexColor.dart';
 import 'package:lesin_app/helper/routes.dart';
 import 'package:lesin_app/helper/size.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -391,7 +390,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   color: Config.textBlack,
                                 ),
                                 hint: Text(
-                                  'Pilih Hari',
+                                  'Pilih Gender',
                                   style: TextStyle(color: Config.textGrey),
                                 ),
                                 items: gender,

@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:lesin_app/helper/config.dart';
 import 'package:lesin_app/siswa/home/dashboard.dart';
-import 'package:lesin_app/siswa/home/jadwal.dart';
+import 'package:lesin_app/siswa/home/kelas.dart';
 import 'package:lesin_app/siswa/home/profile.dart';
 
 class Home extends StatefulWidget {
@@ -81,7 +81,7 @@ class _HomeState extends State<Home> {
                     style: TextStyle(fontFamily: 'AirbnbMedium'),
                   )),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.calendar_today), title: new Text('Jadwal', style: TextStyle(fontFamily: 'AirbnbMedium'),)),
+                  icon: Icon(Icons.calendar_today), title: new Text('Kelas', style: TextStyle(fontFamily: 'AirbnbMedium'),)),
               BottomNavigationBarItem(
                   icon: Icon(
                     Icons.person,

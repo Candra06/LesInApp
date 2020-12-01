@@ -3,24 +3,29 @@ import 'package:lesin_app/helper/config.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class ListPembayaran extends StatefulWidget {
+class LogPembayaran extends StatefulWidget {
+  final String idKelas;
+  LogPembayaran({this.idKelas});
   @override
-  _ListPembayaranState createState() => _ListPembayaranState();
+  _LogPembayaranState createState() => _LogPembayaranState();
 }
 
-class _ListPembayaranState extends State<ListPembayaran> {
+class _LogPembayaranState extends State<LogPembayaran> {
   List pembayaran = new List();
   bool load = true;
   String nama = '';
+  String keterangan = '';
+
   void getList() async {
+    String id = widget.idKelas;
     setState(() {
       load = true;
     });
     nama = await Config.getNama();
     String token = await Config.getToken();
-    http.Response req = await http.get(Config.ipServerAPI + 'listPembayaran',
+    http.Response req = await http.get(Config.ipServerAPI + 'logPembayaran/$id',
         headers: {'Authorization': 'Bearer $token'});
-
+    
     if (req.statusCode == 200) {
       var data = json.decode(req.body);
       setState(() {
@@ -68,7 +73,6 @@ class _ListPembayaranState extends State<ListPembayaran> {
                               children: <Widget>[
                                 Text(
                                   pembayaran[i]['keterangan'],
-                                  // dataPenyakit[index]["nama_penyakit"],
                                   style: TextStyle(
                                       fontSize: 14,
                                       fontFamily: 'AirbnbMedium',
@@ -156,7 +160,7 @@ class _ListPembayaranState extends State<ListPembayaran> {
                   ])),
         ),
         title: Text(
-          'Pembayaran',
+          'Riwayat Pembayaran',
           style: TextStyle(fontFamily: 'AirbnbMedium'),
         ),
       ),

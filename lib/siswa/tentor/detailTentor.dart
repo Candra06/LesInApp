@@ -4,15 +4,178 @@ import 'package:lesin_app/helper/hexColor.dart';
 import 'package:lesin_app/helper/routes.dart';
 import 'package:lesin_app/helper/size.dart';
 import 'package:timeline_tile/timeline_tile.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class DetailTentor extends StatefulWidget {
-  final String idTentor;
-  DetailTentor({this.idTentor});
+  final Map<String, dynamic> param;
+  DetailTentor({this.param});
   @override
   _DetailTentorState createState() => _DetailTentorState();
 }
 
 class _DetailTentorState extends State<DetailTentor> {
+  String idTentor = '', idMapel = '';
+  List pendidikan = new List();
+  List prestasi = new List();
+  bool load = true;
+  String token = '',
+      nama = '',
+      username = '',
+      rating = '',
+      alamat = '',
+      telepon = '',
+      hobi = '',
+      email = '',
+      motto = '';
+  void getDetail() async {
+    setState(() {
+      load = true;
+    });
+    token = await Config.getToken();
+    http.Response res = await http.get(
+        Config.ipServerAPI + 'getInfo/' + idTentor,
+        headers: {'Authorization': 'Bearer $token'});
+
+    if (res.statusCode == 200) {
+      var data = json.decode(res.body);
+      setState(() {
+        nama = data['data']['nama'];
+        email = data['data']['email'];
+        username = data['data']['username'];
+        hobi = data['data']['hobi'];
+        alamat = data['data']['alamat'];
+        telepon = data['data']['telepon'];
+        motto = data['data']['motto'];
+        rating = data['data']['rating'];
+      });
+    } else {}
+  }
+
+  void getPendidikan() async {
+    setState(() {
+      load = true;
+    });
+    token = await Config.getToken();
+    http.Response res = await http.get(
+        Config.ipServerAPI + 'riwayatPendidikan/' + idTentor,
+        headers: {'Authorization': 'Bearer $token'});
+
+    if (res.statusCode == 200) {
+      var data = json.decode(res.body);
+      setState(() {
+        pendidikan = data['data'];
+      });
+    } else {}
+  }
+
+  void getPrestasi() async {
+    setState(() {
+      load = true;
+    });
+    token = await Config.getToken();
+    http.Response res = await http.get(
+        Config.ipServerAPI + 'getPrestasi/' + idTentor,
+        headers: {'Authorization': 'Bearer $token'});
+
+    if (res.statusCode == 200) {
+      var data = json.decode(res.body);
+      setState(() {
+        prestasi = data['data'];
+      });
+    } else {}
+  }
+
+  Widget itemPrestasi(a) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 16),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Column(
+            children: [
+              SizedBox(height: 5),
+              Container(
+                height: displayWidth(context) * 0.025,
+                width: displayWidth(context) * 0.025,
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: [
+                        HexColor('0e5ed3'),
+                        HexColor('097cd7'),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.all(
+                        Radius.circular(displayWidth(context) * 0.025))),
+              ),
+            ],
+          ),
+          SizedBox(width: 10),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                prestasi[a]['penghargaan'],
+                style: TextStyle(fontFamily: 'Airbnb'),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget itemPendidikan(i) {
+    return TimelineTile(
+      alignment: TimelineAlign.start,
+      isFirst: i == 0 ? true : false,
+      isLast: i == pendidikan.length - 1 ? true : false,
+      beforeLineStyle: LineStyle(color: Config.primary, thickness: 2),
+      indicatorStyle: IndicatorStyle(
+        width: 15,
+        height: 15,
+        color: Config.primary,
+        padding: EdgeInsets.only(right: 8),
+      ),
+      endChild: Container(
+        padding: EdgeInsets.only(top: 10),
+        constraints: const BoxConstraints(
+          minHeight: 50,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              pendidikan[i]['nama_sekolah'],
+              style:
+                  TextStyle(fontFamily: 'AirbnbMedium', color: Config.textGrey),
+            ),
+            Text(
+              pendidikan[i]['status_pendidikan'],
+              style:
+                  TextStyle(fontFamily: 'AirbnbMedium', color: Config.primary),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    getDetail();
+    getPendidikan();
+    getPrestasi();
+    idTentor = widget.param['idTentor'];
+    idMapel = widget.param['idMapel'];
+    print(widget.param);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,8 +215,8 @@ class _DetailTentorState extends State<DetailTentor> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Container(
-                            width: 80.0,
-                            height: 80.0,
+                            width: 70.0,
+                            height: 70.0,
                             decoration: new BoxDecoration(
                               shape: BoxShape.circle,
                               image: new DecorationImage(
@@ -65,17 +228,14 @@ class _DetailTentorState extends State<DetailTentor> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 8, bottom: 8),
-                    height: 50,
-                  ),
-                  Container(
                     padding: EdgeInsets.all(8),
+                    constraints: BoxConstraints(minWidth: 80, maxWidth: 130),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Container(
-                          child: Text('Febi Karina',
+                          child: Text(nama == '' ? 'Memuat' : '$nama',
                               style: TextStyle(
                                   fontFamily: 'AirbnbMedium',
                                   color: Config.textBlack,
@@ -83,15 +243,15 @@ class _DetailTentorState extends State<DetailTentor> {
                                   fontWeight: FontWeight.bold)),
                         ),
                         Container(
-                          child: Text('Febi',
+                          child: Text(username == '' ? 'Memuat' : username,
                               style: TextStyle(
                                 fontFamily: 'AirbnbMedium',
                                 color: Config.textGrey,
-                                fontSize: 16,
+                                fontSize: 14,
                               )),
                         ),
                         Container(
-                          child: Text('08983368286',
+                          child: Text(telepon == '' ? 'Memuat' : '$telepon',
                               style: TextStyle(
                                 fontFamily: 'AirbnbMedium',
                                 color: Config.textGrey,
@@ -105,7 +265,7 @@ class _DetailTentorState extends State<DetailTentor> {
                     constraints: BoxConstraints(minWidth: 70, maxWidth: 110),
                     alignment: Alignment.centerRight,
                     child: Text(
-                      'Rating : 5/5',
+                      rating == '' ? '' : 'Rating : $rating/5',
                       style: TextStyle(
                           color: Config.primary, fontFamily: 'Airbnb'),
                     ),
@@ -136,7 +296,7 @@ class _DetailTentorState extends State<DetailTentor> {
                           fontFamily: 'AirbnbMedium', color: Config.textGrey),
                     ),
                     Text(
-                      'Jl. Mastrip No.21 Poncogati Jember',
+                      alamat == '' ? 'Memuat' : alamat,
                       style: TextStyle(
                           fontFamily: 'Airbnb', color: Config.textGrey),
                     ),
@@ -156,7 +316,7 @@ class _DetailTentorState extends State<DetailTentor> {
                           fontFamily: 'AirbnbMedium', color: Config.textGrey),
                     ),
                     Text(
-                      'Musik, Tari',
+                      hobi == '' ? 'Memuat' : hobi,
                       style: TextStyle(
                           fontFamily: 'Airbnb', color: Config.textGrey),
                     ),
@@ -177,7 +337,7 @@ class _DetailTentorState extends State<DetailTentor> {
                           fontFamily: 'AirbnbMedium', color: Config.textGrey),
                     ),
                     Text(
-                      'If you want the power hold the technology',
+                      motto == '' ? 'Memuat' : motto,
                       style: TextStyle(
                           fontFamily: 'Airbnb', color: Config.textGrey),
                     ),
@@ -199,148 +359,9 @@ class _DetailTentorState extends State<DetailTentor> {
                 margin: EdgeInsets.only(top: 8),
                 child: Column(
                   children: [
-                    TimelineTile(
-                      alignment: TimelineAlign.start,
-                      isFirst: true,
-                      beforeLineStyle:
-                          LineStyle(color: Config.primary, thickness: 2),
-                      indicatorStyle: IndicatorStyle(
-                        width: 15,
-                        height: 15,
-                        color: Config.primary,
-                        padding: EdgeInsets.only(right: 8),
-                      ),
-                      endChild: Container(
-                        padding: EdgeInsets.only(top: 10),
-                        constraints: const BoxConstraints(
-                          minHeight: 50,
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'SD Negeri Dabasah 4',
-                              style: TextStyle(
-                                  fontFamily: 'AirbnbMedium',
-                                  color: Config.textGrey),
-                            ),
-                            Text(
-                              'Lulus',
-                              style: TextStyle(
-                                  fontFamily: 'AirbnbMedium',
-                                  color: Config.primary),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    TimelineTile(
-                      alignment: TimelineAlign.start,
-                      beforeLineStyle:
-                          LineStyle(color: Config.primary, thickness: 2),
-                      indicatorStyle: IndicatorStyle(
-                        width: 15,
-                        height: 15,
-                        color: Config.primary,
-                        padding: EdgeInsets.only(right: 8),
-                      ),
-                      endChild: Container(
-                        padding: EdgeInsets.only(top: 10),
-                        constraints: const BoxConstraints(
-                          minHeight: 50,
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'SD Negeri Dabasah 4',
-                              style: TextStyle(
-                                  fontFamily: 'AirbnbMedium',
-                                  color: Config.textGrey),
-                            ),
-                            Text(
-                              'Lulus',
-                              style: TextStyle(
-                                  fontFamily: 'AirbnbMedium',
-                                  color: Config.primary),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    TimelineTile(
-                      alignment: TimelineAlign.start,
-                      beforeLineStyle:
-                          LineStyle(color: Config.primary, thickness: 2),
-                      indicatorStyle: IndicatorStyle(
-                        width: 15,
-                        height: 15,
-                        color: Config.primary,
-                        padding: EdgeInsets.only(right: 8),
-                      ),
-                      endChild: Container(
-                        padding: EdgeInsets.only(top: 10),
-                        constraints: const BoxConstraints(
-                          minHeight: 50,
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'SD Negeri Dabasah 4',
-                              style: TextStyle(
-                                  fontFamily: 'AirbnbMedium',
-                                  color: Config.textGrey),
-                            ),
-                            Text(
-                              'Lulus',
-                              style: TextStyle(
-                                  fontFamily: 'AirbnbMedium',
-                                  color: Config.primary),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    TimelineTile(
-                      alignment: TimelineAlign.start,
-                      beforeLineStyle:
-                          LineStyle(color: Config.primary, thickness: 2),
-                      isLast: true,
-                      indicatorStyle: IndicatorStyle(
-                        width: 15,
-                        height: 15,
-                        color: Config.primary,
-                        padding: EdgeInsets.only(right: 8),
-                      ),
-                      endChild: Container(
-                        padding: EdgeInsets.only(top: 10),
-                        constraints: const BoxConstraints(
-                          minHeight: 50,
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'SD Negeri Dabasah 4',
-                              style: TextStyle(
-                                  fontFamily: 'AirbnbMedium',
-                                  color: Config.textGrey),
-                            ),
-                            Text(
-                              'Lulus',
-                              style: TextStyle(
-                                  fontFamily: 'AirbnbMedium',
-                                  color: Config.primary),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                    for (var i = 0; i < pendidikan.length; i++) ...{
+                      itemPendidikan(i)
+                    }
                   ],
                 ),
               ),
@@ -355,84 +376,7 @@ class _DetailTentorState extends State<DetailTentor> {
                       fontSize: 18),
                 ),
               ),
-              Container(
-                margin: EdgeInsets.only(bottom: 16),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      children: [
-                        SizedBox(height: 5),
-                        Container(
-                          height: displayWidth(context) * 0.025,
-                          width: displayWidth(context) * 0.025,
-                          decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                                colors: [
-                                  HexColor('0e5ed3'),
-                                  HexColor('097cd7'),
-                                ],
-                              ),
-                              borderRadius: BorderRadius.all(Radius.circular(
-                                  displayWidth(context) * 0.025))),
-                        ),
-                      ],
-                    ),
-                    SizedBox(width: 10),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Juara 1 Lomba Fisika Tingkat Provinsi',
-                          style: TextStyle(fontFamily: 'Airbnb'),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(bottom: 16),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      children: [
-                        SizedBox(height: 5),
-                        Container(
-                          height: displayWidth(context) * 0.025,
-                          width: displayWidth(context) * 0.025,
-                          decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                                colors: [
-                                  HexColor('0e5ed3'),
-                                  HexColor('097cd7'),
-                                ],
-                              ),
-                              borderRadius: BorderRadius.all(Radius.circular(
-                                  displayWidth(context) * 0.025))),
-                        ),
-                      ],
-                    ),
-                    SizedBox(width: 10),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Juara 1 Lomba Fisika Tingkat Provinsi',
-                          style: TextStyle(fontFamily: 'Airbnb'),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+              for (var i = 0; i < prestasi.length; i++) ...{itemPrestasi(i)},
               Container(
                 width: MediaQuery.of(context).size.width,
                 margin: EdgeInsets.fromLTRB(0, 4, 0, 8),
@@ -440,16 +384,13 @@ class _DetailTentorState extends State<DetailTentor> {
                   padding: EdgeInsets.only(top: 13, bottom: 13),
                   color: Config.primary,
                   onPressed: () {
-                    Navigator.pushNamed(context, Routes.PILIH_JADWAL);
-                    // if (txEmail.text.isEmpty) {
-                    //   Config.alert(0, "Email tidak valid!");
-                    // } else if (txpassword.text.isEmpty) {
-                    //   Config.alert(0, "Password tidak valid!");
-                    // } else {
-                    // login();
-                    // }
-                    // Navigator.pushNamed(context, Routes.HOME,
-                    //     arguments: 0.toString());
+                    var param = {
+                      'mapel': idMapel,
+                      'tentor': idTentor,
+                    };
+                    Navigator.pushNamed(context, Routes.PILIH_JADWAL,
+                        arguments: param);
+                    
                   },
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5)),

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:lesin_app/helper/config.dart';
 import 'package:lesin_app/helper/routes.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class ListTentor extends StatefulWidget {
   final String idDataMengajar;
@@ -10,11 +13,75 @@ class ListTentor extends StatefulWidget {
 }
 
 class _ListTentorState extends State<ListTentor> {
+  String token = '';
+  bool load = true;
+  List tentor = new List();
+
+  Future<double> countDistance(String lat, long) async {
+    Geolocator geolocator = new Geolocator();
+    String latit = await Config.getLatitude();
+    String longi = await Config.getLongitude();
+    double la = double.parse(latit);
+    double lo = double.parse(longi);
+    Future<double> distance = geolocator.distanceBetween(
+        la, lo, double.parse(lat), double.parse(long));
+    double jarak = await distance / double.parse('1000');
+    return jarak;
+  }
+
+  Future getData() async {
+    setState(() {
+      load = true;
+    });
+    List tempList = new List();
+    String idMapel = widget.idDataMengajar;
+    String latit = await Config.getLatitude();
+    String longi = await Config.getLongitude();
+    print(latit);
+    print(longi);
+    print(idMapel);
+    token = await Config.getToken();
+    http.Response res = await http.get(
+        Config.ipServerAPI + 'getTentor/$idMapel',
+        headers: {'Authorization': 'Bearer $token'});
+    if (res.statusCode == 200) {
+      var data = json.decode(res.body);
+      print(data['data'].length);
+      int len = data['data'].length;
+      for (var i = 0; i < len; i++) {
+        double tmpdis = await countDistance(
+            data['data'][i]['lattitude'].toString(),
+            data['data'][i]['longitude'].toString());
+        if (tmpdis <= 10.000) {
+          tempList.add(data['data'][i]);
+        }
+      }
+      setState(() {
+        tentor = tempList;
+        load = false;
+      });
+    } else {
+      Config.alert(2, "Terjadi Kesalahan. Silahkan Coba Lagi");
+      setState(() {
+        load = false;
+      });
+    }
+  }
+
   Widget item(index) {
+    String rating = tentor[index]['rating'];
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, Routes.DETAIL_TENTOR,
-            arguments: 0.toString());
+        var param = {
+          'idMapel' : widget.idDataMengajar,
+          'idTentor' : tentor[index]['id_tentor'].toString()
+        };
+        Navigator.pushNamed(
+          context,
+          Routes.DETAIL_TENTOR,
+          arguments: param,
+        );
+        // print(tentor[index]['id_tentor'].toString());
       },
       child: Card(
         child: Container(
@@ -37,20 +104,20 @@ class _ListTentorState extends State<ListTentor> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          'Febri Karina',
+                          tentor[index]['nama'],
                           // dataPenyakit[index]["nama_penyakit"],
                           style: TextStyle(
                               fontSize: 16, fontFamily: 'AirbnbMedium'),
                         ),
                         Container(
                             child: Text(
-                          '@febri',
+                          tentor[index]['telepon'],
                           style: TextStyle(
                               fontFamily: 'Airbnb', color: Config.textGrey),
                         )),
                         Container(
                             child: Text(
-                          'Rating 5/5',
+                          'Rating $rating/5',
                           style: TextStyle(
                               fontFamily: 'Airbnb', color: Config.primary),
                         )),
@@ -60,6 +127,12 @@ class _ListTentorState extends State<ListTentor> {
             )),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
   }
 
   @override
@@ -89,9 +162,24 @@ class _ListTentorState extends State<ListTentor> {
       body: Container(
         margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
         child: ListView.builder(
-          itemCount: 5,
+          itemCount: tentor.length == 0 || tentor == null || tentor == []
+              ? 0
+              : tentor.length,
           itemBuilder: (BuildContext context, int i) {
-            return item(i);
+            if (load) {
+              return Config.loading(context);
+            } else if (tentor.length == 0) {
+              return Center(
+                child: Container(
+                  child: Text(
+                    'Data tentor kosong',
+                    style: TextStyle(fontFamily: 'AirbnbMedium', fontSize: 18),
+                  ),
+                ),
+              );
+            } else {
+              return item(i);
+            }
           },
         ),
       ),

@@ -10,7 +10,7 @@ class SideProfile extends StatefulWidget {
 }
 
 class _SideProfileState extends State<SideProfile> {
-  String nama, email, username, telepon, tglLahir, gender, alamat;
+  String nama='', email='', username='', telepon='', tglLahir ='', gender='', alamat;
   void getInfo() async {
     var tmpNama = await Config.getNama();
     var tmpEmail = await Config.getEmail();
@@ -290,8 +290,9 @@ class _SideProfileState extends State<SideProfile> {
                     // Navigator.pushNamed(context, Routes.EDIT_PROFIL, arguments: id.toString());
                   },
                   child: new Container(
+                    
                     width: MediaQuery.of(context).size.width,
-                    height: 30,
+                    height: 40,
                     child: new Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
@@ -306,8 +307,10 @@ class _SideProfileState extends State<SideProfile> {
                           ))),
                           new Flexible(
                               child: Container(
+                                alignment: Alignment.centerRight,
                                   child: Text(
                             '$alamat',
+                            textAlign: TextAlign.right,
                             style: TextStyle(
                                 fontSize: 14,
                                 fontFamily: 'AirbnbBold',
@@ -331,15 +334,8 @@ class _SideProfileState extends State<SideProfile> {
                         padding: EdgeInsets.only(top: 13, bottom: 13),
                         color: Config.primary,
                         onPressed: () {
-                          // if (txEmail.text.isEmpty) {
-                          //   Config.alert(0, "Email tidak valid!");
-                          // } else if (txpassword.text.isEmpty) {
-                          //   Config.alert(0, "Password tidak valid!");
-                          // } else {
-                          // login();
-                          // }
-                          // Navigator.pushNamed(context, Routes.HOME,
-                          //     arguments: 0.toString());
+                          
+                          Navigator.pushNamed(context, Routes.EDIT_PROFIL);
                         },
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5)),

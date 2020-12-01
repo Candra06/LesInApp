@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:lesin_app/helper/config.dart';
 import 'package:lesin_app/helper/routes.dart';
 import 'package:lesin_app/helper/size.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class BookingKelasPage extends StatefulWidget {
   @override
@@ -9,6 +11,7 @@ class BookingKelasPage extends StatefulWidget {
 }
 
 class _BookingKelasPageState extends State<BookingKelasPage> {
+  String token = '';
   List<DropdownMenuItem<String>> jenjang;
   List<DropdownMenuItem<String>> kelas;
   List<DropdownMenuItem<String>> mapel;
@@ -56,6 +59,67 @@ class _BookingKelasPageState extends State<BookingKelasPage> {
       kelas = getDropDownMenuItemsKelas();
       getKelas = kelas[0].value;
     });
+  }
+
+  void getDataKelas() async {
+    Config.loading(context);
+    token = await Config.getToken();
+    String kls = getKelas.toString();
+    String mpl = getMapel.toString();
+    http.Response res = await http.get(Config.ipServerAPI + 'mapelBy/$kls/$mpl',
+        headers: {'Authorization': 'Bearer $token'});
+    if (res.statusCode == 200) {
+      var data = jsonDecode(res.body);
+      Navigator.pop(context);
+      if (data['data'] == null || data['data'] == '') {
+        showAlertDialog(context, '2');
+      } else {
+        Navigator.pushNamed(context, Routes.LIST_TENTOR,
+            arguments: data['data']['id'].toString());
+      }
+    } else {
+      Navigator.pop(context);
+      showAlertDialog(context, '3');
+    }
+  }
+
+  showAlertDialog(BuildContext context, String paaram) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () {
+        if (paaram == '1') {
+          Navigator.pushNamed(context, Routes.HOME, arguments: 0.toString());
+        } else {
+          Navigator.pop(context);
+        }
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(paaram == '1'
+          ? 'Berhasil'
+          : paaram == '2'
+              ? 'Gagal'
+              : 'Error'),
+      content: Text(paaram == '1'
+          ? 'Login Berhasil'
+          : paaram == '2'
+              ? 'Mapel tidak ditemukan'
+              : 'Server Error'),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   List<DropdownMenuItem<String>> getDropDownMenuItemsJenjang() {
@@ -235,10 +299,17 @@ class _BookingKelasPageState extends State<BookingKelasPage> {
                     padding: EdgeInsets.only(top: 13, bottom: 13),
                     color: Config.primary,
                     onPressed: () {
-                      // Navigator.pushNamed(context, Routes.HOMEPAGE,
+                      if (getJenjang == '' || getJenjang == 'Pilih Jenjang') {
+                        Config.alert(0, 'Mohon memilih jenjang pendidikan');
+                      } else if (getKelas == '' || getKelas == 'Pilih Kelas') {
+                        Config.alert(0, 'Mohon memilih kelas');
+                      } else if (getMapel == '' || getMapel == 'Pilih Mapel') {
+                        Config.alert(0, 'Mohon memilih mata pelajaran');
+                      } else {
+                        getDataKelas();
+                      }
+                      // Navigator.pushNamed(context, Routes.LIST_TENTOR,
                       //     arguments: 0.toString());
-                      Navigator.pushNamed(context, Routes.LIST_TENTOR,
-                          arguments: 0.toString());
                     },
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5)),

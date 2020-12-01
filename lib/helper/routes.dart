@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lesin_app/auth/editProfil.dart';
 import 'package:lesin_app/auth/login.dart';
 import 'package:lesin_app/auth/register.dart';
 import 'package:lesin_app/auth/splash.dart';
@@ -7,8 +8,9 @@ import 'package:lesin_app/siswa/kelas/absensi.dart';
 import 'package:lesin_app/siswa/kelas/bookingKelas.dart';
 import 'package:lesin_app/siswa/kelas/detailKelas.dart';
 import 'package:lesin_app/siswa/kelas/jadwalKelas.dart';
-import 'package:lesin_app/siswa/kelas/negoTarif.dart';
+import 'package:lesin_app/siswa/kelas/chat.dart';
 import 'package:lesin_app/siswa/pembayaran/listPembayaran.dart';
+import 'package:lesin_app/siswa/pembayaran/logPembayaran.dart';
 import 'package:lesin_app/siswa/tentor/listTentor.dart';
 import 'package:lesin_app/siswa/tentor/detailTentor.dart';
 import 'package:page_transition/page_transition.dart';
@@ -29,6 +31,8 @@ class Routes {
   static const String PILIH_JADWAL = '/pilih_jadwal';
   static const String NEGO_TARIF = '/nego_tarif';
   static const String LIST_PEMBAYARAN = '/list_pembayaran';
+  static const String LOG_PEMBAYARAN = '/log_pembayaran';
+  static const String EDIT_PROFIL = '/edit_profil';
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case SPLASH:
@@ -39,9 +43,15 @@ class Routes {
       case REGISTER:
         return PageTransition(
             child: RegisterPage(), type: PageTransitionType.rightToLeft);
+      case EDIT_PROFIL:
+        return PageTransition(
+            child: EditProfil(), type: PageTransitionType.rightToLeft);
       case LIST_PEMBAYARAN:
         return PageTransition(
             child: ListPembayaran(), type: PageTransitionType.rightToLeft);
+      case LOG_PEMBAYARAN:
+        return PageTransition(
+            child: LogPembayaran(idKelas: settings.arguments,), type: PageTransitionType.rightToLeft);
       case HOME:
         return PageTransition(
             child: Home(
@@ -72,18 +82,18 @@ class Routes {
       case DETAIL_TENTOR:
         return PageTransition(
             child: DetailTentor(
-              idTentor: settings.arguments,
+             param: settings.arguments,
             ),
             type: PageTransitionType.rightToLeft);
       case PILIH_JADWAL:
         return PageTransition(
             child: JadwalKelas(
-              idKelas: settings.arguments,
+              param: settings.arguments,
             ),
             type: PageTransitionType.rightToLeft);
       case NEGO_TARIF:
         return PageTransition(
-            child: NegoTarif(), type: PageTransitionType.rightToLeft);
+            child: NegoTarif(param: settings.arguments,), type: PageTransitionType.rightToLeft);
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(

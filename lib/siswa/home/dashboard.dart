@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:lesin_app/helper/config.dart';
 import 'package:lesin_app/helper/fade_animation.dart';
 import 'package:lesin_app/helper/routes.dart';
 import 'package:lesin_app/helper/size.dart';
+import 'package:location/location.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class DashboardPage extends StatefulWidget {
   @override
@@ -24,49 +31,137 @@ class _DashboardPageState extends State<DashboardPage> {
     });
   }
 
-  Widget item(index) {
-    return Card(
-      child: Container(
-          margin: EdgeInsets.all(8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Container(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+  List jadwal = new List();
+  bool load = true;
+
+  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+
+  getUserLocation() async {
+    await Permission.location.request();
+    var status = await Permission.location.status;
+    var latitude, longitude;
+    if (status.isGranted) {
+      Location location = new Location();
+      LocationData myLocation;
+      String error;
+      try {
+        myLocation = await location.getLocation();
+        _currentLatLong = myLocation.latitude.toString() +
+            ', ' +
+            myLocation.longitude.toString();
+      } on PlatformException catch (e) {
+        if (e.code == 'PERMISSION_DENIED') {
+          error = 'please grant permission';
+          print(error);
+        }
+        if (e.code == 'PERMISSION_DENIED_NEVER_ASK') {
+          error = 'permission denied- please enable it from app settings';
+          print(error);
+        }
+        myLocation = null;
+      }
+      setState(() {
+        var lokasi = _currentLatLong.split(",");
+        latitude = double.parse(lokasi[0]);
+        longitude = double.parse(lokasi[1]);
+      });
+    } else {
+      print('kosong');
+    }
+    myLat = latitude.toString();
+    myLong = longitude.toString();
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    await pref.setString('latitude', myLat);
+    await pref.setString('longitude', myLong);
+  }
+
+  void getJadwal() async {
+    String tokenn = await Config.getToken();
+    setState(() {
+      load = true;
+    });
+    http.Response res = await http.get(Config.ipServerAPI + 'listJadwal',
+        headers: {'Authorization': 'Bearer $tokenn'});
+    
+    if (res.statusCode == 200) {
+      var data = json.decode(res.body);
+      setState(() {
+        jadwal = data['data'];
+        load = false;
+      });
+    } else {
+      setState(() {
+        Config.alert(0, 'Gagal memuat data');
+        load = false;
+      });
+    }
+  }
+
+  String _currentLatLong;
+  var location = new Location();
+  String myLat, myLong;
+
+  Widget item() {
+    if (load) {
+      return Config.newloader('Memuat data');
+    } else if (jadwal.length == 0) {
+      return Center(
+        child: Container(
+          child: Text(
+            'Tidak ada jadwal hari ini',
+            style: TextStyle(fontFamily: 'AirbnbBold'),
+          ),
+        ),
+      );
+    } else {
+      return ListView.builder(itemBuilder: (BuildContext context, int i) {
+        return Card(
+          child: Container(
+              margin: EdgeInsets.all(8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(
-                    'Tes',
-                    // dataPenyakit[index]["nama_penyakit"],
-                    style: TextStyle(fontSize: 16, fontFamily: 'AirbnbMedium'),
-                  ),
                   Container(
-                      margin: EdgeInsets.only(top: 4),
-                      child: Text(
-                        'tes',
+                      child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        'Tes',
+                        // dataPenyakit[index]["nama_penyakit"],
+                        style:
+                            TextStyle(fontSize: 16, fontFamily: 'AirbnbMedium'),
+                      ),
+                      Container(
+                          margin: EdgeInsets.only(top: 4),
+                          child: Text(
+                            'tes',
+                            style: TextStyle(
+                                fontFamily: 'Airbnb', color: Config.primary),
+                          )),
+                    ],
+                  )),
+                  Container(
+                      child: Row(
+                    children: <Widget>[
+                      Text(
+                        '3/5',
                         style: TextStyle(
-                            fontFamily: 'Airbnb', color: Config.primary),
-                      )),
+                            fontFamily: 'AirbnbMedium', color: Config.primary),
+                      )
+                    ],
+                  ))
                 ],
               )),
-              Container(
-                  child: Row(
-                children: <Widget>[
-                  Text(
-                    '3/5',
-                    style: TextStyle(
-                        fontFamily: 'AirbnbMedium', color: Config.primary),
-                  )
-                ],
-              ))
-            ],
-          )),
-    );
+        );
+      });
+    }
   }
 
   @override
   void initState() {
     getInfo();
+    getUserLocation();
+    getJadwal();
     super.initState();
   }
 
@@ -330,21 +425,9 @@ class _DashboardPageState extends State<DashboardPage> {
             FadeAnimation(
               1.7,
               Container(
-                constraints: BoxConstraints(minHeight: 200, maxHeight: 300),
-                margin: EdgeInsets.fromLTRB(16, 8, 16, 8),
-                child: ListView.separated(
-                    separatorBuilder: (context, int i) {
-                      return Container(
-                        color: Config.textWhite,
-                        width: displayWidth(context),
-                        height: 1,
-                      );
-                    },
-                    itemCount: 3,
-                    itemBuilder: (context, int i) {
-                      return item(1);
-                    }),
-              ),
+                  constraints: BoxConstraints(minHeight: 200, maxHeight: 300),
+                  margin: EdgeInsets.fromLTRB(16, 8, 16, 8),
+                  child: item()),
             )
           ],
         ),

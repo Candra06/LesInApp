@@ -4,8 +4,8 @@ import 'package:lesin_app/helper/routes.dart';
 import 'package:lesin_app/helper/size.dart';
 
 class JadwalKelas extends StatefulWidget {
-  final String idKelas;
-  JadwalKelas({this.idKelas});
+  final Map<String, dynamic> param;
+  JadwalKelas({this.param});
   @override
   _JadwalKelasState createState() => _JadwalKelasState();
 }
@@ -13,6 +13,7 @@ class JadwalKelas extends StatefulWidget {
 class _JadwalKelasState extends State<JadwalKelas> {
   List<DropdownMenuItem<String>> hari;
   String getHari = "";
+  TextEditingController txtJumlah = new TextEditingController();
   List listHari = [
     'Pilih Hari',
     'Senin',
@@ -43,7 +44,7 @@ class _JadwalKelasState extends State<JadwalKelas> {
   void initState() {
     hari = getDropDownMenuItemsHari();
     getHari = hari[0].value;
-
+    print(widget.param);
     super.initState();
   }
 
@@ -76,76 +77,6 @@ class _JadwalKelasState extends State<JadwalKelas> {
             margin: EdgeInsets.fromLTRB(16, 8, 16, 0),
             child: Column(
               children: <Widget>[
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.all(8),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                              width: 80.0,
-                              height: 80.0,
-                              decoration: new BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: new DecorationImage(
-                                    fit: BoxFit.fill,
-                                    image: AssetImage(
-                                        'assets/icons/graduate.png')),
-                              ))
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 8, bottom: 8),
-                      height: 50,
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(8),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            child: Text('Febi Karina',
-                                style: TextStyle(
-                                    fontFamily: 'AirbnbMedium',
-                                    color: Config.textBlack,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold)),
-                          ),
-                          Container(
-                            child: Text('Febi',
-                                style: TextStyle(
-                                  fontFamily: 'AirbnbMedium',
-                                  color: Config.textGrey,
-                                  fontSize: 16,
-                                )),
-                          ),
-                          Container(
-                            child: Text('08983368286',
-                                style: TextStyle(
-                                  fontFamily: 'AirbnbMedium',
-                                  color: Config.textGrey,
-                                  fontSize: 14,
-                                )),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      constraints: BoxConstraints(minWidth: 70, maxWidth: 110),
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        'Rating : 5/5',
-                        style: TextStyle(
-                            color: Config.primary, fontFamily: 'Airbnb'),
-                      ),
-                    )
-                  ],
-                ),
                 Container(
                   alignment: Alignment.centerLeft,
                   margin: EdgeInsets.only(top: 8),
@@ -168,7 +99,7 @@ class _JadwalKelasState extends State<JadwalKelas> {
                             style: TextStyle(color: Colors.black54),
                             obscureText: false,
                             keyboardType: TextInputType.emailAddress,
-                            // controller: txEmail,
+                            controller: txtJumlah,
                             decoration: InputDecoration(
                               alignLabelWithHint: true,
                               fillColor: Colors.black54,
@@ -220,12 +151,20 @@ class _JadwalKelasState extends State<JadwalKelas> {
                     padding: EdgeInsets.only(top: 13, bottom: 13),
                     color: Config.primary,
                     onPressed: () {
-                      // Navigator.pushNamed(context, Routes.HOMEPAGE,
-                      //     arguments: 0.toString());
-                      Navigator.pushNamed(
-                        context,
-                        Routes.NEGO_TARIF,
-                      );
+                      if (txtJumlah.text.isEmpty) {
+                        Config.alert(0, "Harap mengisi jumlah pertemuan");
+                      } else if (getHari == '' || getHari == 'Pilih Hari') {
+                        Config.alert(0, "Harap mengisi jumlah pertemuan");
+                      } else {
+                        var parameter = {
+                          'mapel': widget.param['mapel'],
+                          'tentor': widget.param['tentor'],
+                          'hari': getHari.toString(),
+                          'pertemuan': txtJumlah.text,
+                        };
+                        Navigator.pushNamed(context, Routes.NEGO_TARIF,
+                            arguments: parameter);
+                      }
                     },
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5)),

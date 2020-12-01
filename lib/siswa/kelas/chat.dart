@@ -3,13 +3,22 @@ import 'package:lesin_app/helper/config.dart';
 import 'package:lesin_app/helper/fade_animation.dart';
 import 'package:lesin_app/helper/routes.dart';
 import 'package:lesin_app/helper/size.dart';
+import 'package:lesin_app/siswa/kelas/dialogConfirm.dart';
 
 class NegoTarif extends StatefulWidget {
+  final Map<String, dynamic> param;
+  NegoTarif({this.param});
   @override
   _NegoTarifState createState() => _NegoTarifState();
 }
 
 class _NegoTarifState extends State<NegoTarif> {
+  @override
+  void initState() {
+    print(widget.param);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -231,10 +240,8 @@ class _NegoTarifState extends State<NegoTarif> {
                             padding: EdgeInsets.only(top: 13, bottom: 13),
                             color: Config.primary,
                             onPressed: () {
-                              // Navigator.pushNamed(context, Routes.HOMEPAGE,
-                              //     arguments: 0.toString());
-                              Navigator.pushNamed(context, Routes.ABSENSI,
-                                  arguments: 0.toString());
+                              showDialog(context: context, builder: (BuildContext context) => DialogConfirm(widget.param));
+                             
                             },
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5)),

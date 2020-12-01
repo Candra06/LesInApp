@@ -28,12 +28,13 @@ class _LoginPageState extends State<LoginPage> {
   void login() async {
     Config.loading(context);
     var body = new Map<String, dynamic>();
-    body['email'] = txEmail.text;
+    body['username'] = txEmail.text;
     body['password'] = txpassword.text;
 
     // request login
     http.Response res =
         await http.post(Config.ipServerAPI + 'login', body: body);
+    
     if (res.statusCode == 200) {
       var respon = json.decode(res.body);
       var token = respon['data']['token'];
@@ -67,8 +68,7 @@ class _LoginPageState extends State<LoginPage> {
         await pref.setString('tglLahir', tglLahir);
         await pref.setString('role', role);
         await pref.setString('alamat', alamat);
-        var tmpNama = await Config.getNama();
-        print(tmpNama);
+        
         Navigator.pop(context);
         showAlertDialog(context, '1');
       } else {
