@@ -22,7 +22,7 @@ class Config {
   static final HexColor closed = new HexColor('#B3B3B3');
   static final HexColor open = new HexColor('#00C45C');
 
-  static final String ipServer = 'http://2632a81ded77.ngrok.io/';
+  static final String ipServer = 'http://85a3f36b617f.ngrok.io/';
   static final String ipServerAPI = ipServer + 'api/';
   static final String ipAssets = '';
 

@@ -11,12 +11,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class DashboardPage extends StatefulWidget {
+class DashboardTentorPage extends StatefulWidget {
   @override
-  _DashboardPageState createState() => _DashboardPageState();
+  _DashboardTentorPageState createState() => _DashboardTentorPageState();
 }
 
-class _DashboardPageState extends State<DashboardPage> {
+class _DashboardTentorPageState extends State<DashboardTentorPage> {
   String nama = '', username = '', token = '', id = '';
   void getInfo() async {
     var tmpNama = await Config.getNama();
@@ -82,7 +82,6 @@ class _DashboardPageState extends State<DashboardPage> {
     });
     http.Response res = await http.get(Config.ipServerAPI + 'listJadwal',
         headers: {'Authorization': 'Bearer $tokenn'});
-    
     if (res.statusCode == 200) {
       var data = json.decode(res.body);
       setState(() {
@@ -358,10 +357,10 @@ class _DashboardPageState extends State<DashboardPage> {
                                     Container(
                                         width: 30,
                                         child: Image.asset(
-                                            'assets/icons/credit-card.png')),
+                                            'assets/icons/wallet.png')),
                                     Container(
                                       margin: EdgeInsets.only(top: 8),
-                                      child: Text('Pembayaran',
+                                      child: Text('Dompet',
                                           style: TextStyle(
                                               color: Colors.black45,
                                               fontFamily: 'AirbnbMedium')),

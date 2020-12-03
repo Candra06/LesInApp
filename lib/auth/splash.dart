@@ -4,6 +4,7 @@ import 'package:lesin_app/helper/config.dart';
 import 'package:lesin_app/helper/fade_animation.dart';
 import 'package:lesin_app/helper/size.dart';
 import 'package:lesin_app/siswa/home/home.dart';
+import 'package:lesin_app/tentor/home/home.dart';
 import 'package:page_transition/page_transition.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -29,13 +30,19 @@ class _SplashScreenState extends State<SplashScreen>
       Navigator.of(context).pushReplacement(
           PageTransition(child: LoginPage(), type: PageTransitionType.fade));
       String token = await Config.getToken();
+      String role = await Config.getRole();
         if (token == '' || token == null) {
           Navigator.of(context).pushReplacement(PageTransition(
               child: LoginPage(), type: PageTransitionType.fade));
         }
         else {
-          Navigator.of(context).pushReplacement(
+          if (role == 'siswa') {
+            Navigator.of(context).pushReplacement(
               PageTransition(child: Home(indexPage: 0.toString(),), type: PageTransitionType.fade));
+          } else {
+            Navigator.of(context).pushReplacement(
+              PageTransition(child: HomeTentor(indexPage: 0.toString(),), type: PageTransitionType.fade));
+          }
         }
     });
   }

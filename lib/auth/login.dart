@@ -19,6 +19,7 @@ class _LoginPageState extends State<LoginPage> {
   bool _isHidden = true;
   TextEditingController txEmail = new TextEditingController();
   TextEditingController txpassword = new TextEditingController();
+  String _role = '';
   void _toggleVisibility() {
     setState(() {
       _isHidden = !_isHidden;
@@ -34,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
     // request login
     http.Response res =
         await http.post(Config.ipServerAPI + 'login', body: body);
-    
+
     if (res.statusCode == 200) {
       var respon = json.decode(res.body);
       var token = respon['data']['token'];
@@ -68,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
         await pref.setString('tglLahir', tglLahir);
         await pref.setString('role', role);
         await pref.setString('alamat', alamat);
-        
+        _role = role;
         Navigator.pop(context);
         showAlertDialog(context, '1');
       } else {
@@ -87,7 +88,12 @@ class _LoginPageState extends State<LoginPage> {
       child: Text("OK"),
       onPressed: () {
         if (paaram == '1') {
-          Navigator.pushNamed(context, Routes.HOME, arguments: 0.toString());
+          if (_role == 'siswa') {
+            Navigator.pushNamed(context, Routes.HOME, arguments: 0.toString());
+          } else {
+            Navigator.pushNamed(context, Routes.HOME_TENTOR, arguments: 0.toString());
+          }
+          
         } else {
           Navigator.pop(context);
         }

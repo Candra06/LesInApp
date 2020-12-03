@@ -4,12 +4,12 @@ import 'package:lesin_app/helper/fade_animation.dart';
 import 'package:lesin_app/helper/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SideProfile extends StatefulWidget {
+class SideProfileTentor extends StatefulWidget {
   @override
-  _SideProfileState createState() => _SideProfileState();
+  _SideProfileTentorState createState() => _SideProfileTentorState();
 }
 
-class _SideProfileState extends State<SideProfile> {
+class _SideProfileTentorState extends State<SideProfileTentor> {
   String nama = '',
       email = '',
       username = '',

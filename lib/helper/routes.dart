@@ -13,6 +13,7 @@ import 'package:lesin_app/siswa/pembayaran/listPembayaran.dart';
 import 'package:lesin_app/siswa/pembayaran/logPembayaran.dart';
 import 'package:lesin_app/siswa/tentor/listTentor.dart';
 import 'package:lesin_app/siswa/tentor/detailTentor.dart';
+import 'package:lesin_app/tentor/home/home.dart';
 import 'package:page_transition/page_transition.dart';
 
 class Routes {
@@ -22,6 +23,7 @@ class Routes {
   static const String LUPA_SANDI = '/lupa_sandi';
   static const String RESET_SANDI = '/reset_sandi';
   static const String HOME = '/home';
+  static const String HOME_TENTOR = '/home_tentor';
   static const String UPDATE_PROFIL = '/updateProfil';
   static const String BOOKING_KELAS = '/booking_kelas';
   static const String LIST_TENTOR = '/list_tentor';
@@ -55,6 +57,12 @@ class Routes {
       case HOME:
         return PageTransition(
             child: Home(
+              indexPage: settings.arguments,
+            ),
+            type: PageTransitionType.rightToLeft);
+      case HOME_TENTOR:
+        return PageTransition(
+            child: HomeTentor(
               indexPage: settings.arguments,
             ),
             type: PageTransitionType.rightToLeft);
