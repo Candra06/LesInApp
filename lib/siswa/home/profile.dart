@@ -142,7 +142,7 @@ class _SideProfileState extends State<SideProfile> {
                   },
                   child: new Container(
                     width: MediaQuery.of(context).size.width,
-                    height: 30,
+                    height: 35,
                     child: new Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
@@ -159,6 +159,7 @@ class _SideProfileState extends State<SideProfile> {
                               child: Container(
                                   child: Text(
                             tglLahir,
+                            textAlign: TextAlign.right,
                             style: TextStyle(
                                 fontSize: 14,
                                 fontFamily: 'AirbnbBold',
@@ -266,7 +267,7 @@ class _SideProfileState extends State<SideProfile> {
                   },
                   child: new Container(
                     width: MediaQuery.of(context).size.width,
-                    height: 30,
+                    height: 35,
                     child: new Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
@@ -281,8 +282,10 @@ class _SideProfileState extends State<SideProfile> {
                           ))),
                           new Flexible(
                               child: Container(
+                                alignment: Alignment.centerRight,
                                   child: Text(
                             '$email',
+                            textAlign: TextAlign.right,
                             style: TextStyle(
                                 fontSize: 14,
                                 fontFamily: 'AirbnbBold',

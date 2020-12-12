@@ -114,46 +114,50 @@ class _DashboardTentorPageState extends State<DashboardTentorPage> {
       );
     } else {
       return ListView.builder(
-        itemCount: jadwal.isEmpty ? 0 : jadwal.length,
-        itemBuilder: (BuildContext context, int i) {
-        return Card(
-          child: Container(
-              margin: EdgeInsets.all(8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                      child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+          itemCount: jadwal.isEmpty ? 0 : jadwal.length,
+          itemBuilder: (BuildContext context, int i) {
+            return Card(
+              child: Container(
+                  margin: EdgeInsets.all(8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text(
-                        jadwal[i]['nama'],
-                        style:
-                            TextStyle(fontSize: 16, fontFamily: 'AirbnbMedium'),
-                      ),
                       Container(
-                          margin: EdgeInsets.only(top: 4),
-                          child: Text(
-                            jadwal[i]['mapel'],
+                          child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            jadwal[i]['nama'],
                             style: TextStyle(
-                                fontFamily: 'Airbnb', color: Config.primary),
-                          )),
+                                fontSize: 16, fontFamily: 'AirbnbMedium'),
+                          ),
+                          Container(
+                              margin: EdgeInsets.only(top: 4),
+                              child: Text(
+                                jadwal[i]['mapel'],
+                                style: TextStyle(
+                                    fontFamily: 'Airbnb',
+                                    color: Config.primary),
+                              )),
+                        ],
+                      )),
+                      Container(
+                          child: Row(
+                        children: <Widget>[
+                          Text(
+                            jadwal[i]['pertemuan'].toString() +
+                                '/' +
+                                jadwal[i]['jumlah_pertemuan'].toString(),
+                            style: TextStyle(
+                                fontFamily: 'AirbnbMedium',
+                                color: Config.primary),
+                          )
+                        ],
+                      ))
                     ],
                   )),
-                  Container(
-                      child: Row(
-                    children: <Widget>[
-                      Text(
-                        jadwal[i]['pertemuan'].toString()+'/'+jadwal[i]['jumlah_pertemuan'].toString(),
-                        style: TextStyle(
-                            fontFamily: 'AirbnbMedium', color: Config.primary),
-                      )
-                    ],
-                  ))
-                ],
-              )),
-        );
-      });
+            );
+          });
     }
   }
 
@@ -308,108 +312,113 @@ class _DashboardTentorPageState extends State<DashboardTentorPage> {
             ),
             FadeAnimation(
               1.5,
-              new Container(
-                  width: displayWidth(context),
-                  margin: EdgeInsets.only(right: 16, left: 16, top: 16),
-                  height: 100,
-                  child: Container(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Expanded(
-                          child: Card(
-                            elevation: 3,
-                            child: Container(
-                              padding: EdgeInsets.all(8),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Container(
-                                      width: 30,
-                                      child:
-                                          Image.asset('assets/icons/chat.png')),
-                                  Container(
-                                    margin: EdgeInsets.only(top: 8),
-                                    child: Text('Chat',
-                                        style: TextStyle(
-                                            color: Colors.black45,
-                                            fontFamily: 'AirbnbMedium')),
+              InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, Routes.LIST_CHAT_TENTOR);
+                },
+                              child: new Container(
+                    width: displayWidth(context),
+                    margin: EdgeInsets.only(right: 16, left: 16, top: 16),
+                    height: 100,
+                    child: Container(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Expanded(
+                            child: Card(
+                              elevation: 3,
+                              child: Container(
+                                padding: EdgeInsets.all(8),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Container(
+                                        width: 30,
+                                        child:
+                                            Image.asset('assets/icons/chat.png')),
+                                    Container(
+                                      margin: EdgeInsets.only(top: 8),
+                                      child: Text('Chat',
+                                          style: TextStyle(
+                                              color: Colors.black45,
+                                              fontFamily: 'AirbnbMedium')),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, Routes.LIST_PEMBAYARAN);
+                              },
+                              child: Card(
+                                elevation: 3,
+                                child: Container(
+                                  padding: EdgeInsets.all(8),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Container(
+                                          width: 30,
+                                          child: Image.asset(
+                                              'assets/icons/wallet.png')),
+                                      Container(
+                                        margin: EdgeInsets.only(top: 8),
+                                        child: Text('Dompet',
+                                            style: TextStyle(
+                                                color: Colors.black45,
+                                                fontFamily: 'AirbnbMedium')),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, Routes.LIST_PEMBAYARAN);
-                            },
-                            child: Card(
-                              elevation: 3,
-                              child: Container(
-                                padding: EdgeInsets.all(8),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Container(
-                                        width: 30,
-                                        child: Image.asset(
-                                            'assets/icons/wallet.png')),
-                                    Container(
-                                      margin: EdgeInsets.only(top: 8),
-                                      child: Text('Dompet',
-                                          style: TextStyle(
-                                              color: Colors.black45,
-                                              fontFamily: 'AirbnbMedium')),
-                                    ),
-                                  ],
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, Routes.BOOKING_KELAS);
-                            },
-                            child: Card(
-                              elevation: 3,
-                              child: Container(
-                                width: 50,
-                                padding: EdgeInsets.all(8),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    Container(
-                                        width: 30,
-                                        child: Image.asset(
-                                            'assets/icons/booking.png')),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 55,
-                                      margin: EdgeInsets.only(top: 8),
-                                      child: Text('Booking Kelas',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              fontSize: 11,
-                                              color: Colors.black45,
-                                              fontFamily: 'AirbnbMedium')),
-                                    ),
-                                  ],
+                          Expanded(
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, Routes.BOOKING_KELAS);
+                              },
+                              child: Card(
+                                elevation: 3,
+                                child: Container(
+                                  width: 50,
+                                  padding: EdgeInsets.all(8),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      Container(
+                                          width: 30,
+                                          child: Image.asset(
+                                              'assets/icons/booking.png')),
+                                      Container(
+                                        alignment: Alignment.center,
+                                        width: 55,
+                                        margin: EdgeInsets.only(top: 8),
+                                        child: Text('Booking Kelas',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                fontSize: 11,
+                                                color: Colors.black45,
+                                                fontFamily: 'AirbnbMedium')),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  )),
+                        ],
+                      ),
+                    )),
+              ),
             ),
             FadeAnimation(
               1.6,

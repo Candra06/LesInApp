@@ -309,108 +309,113 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
             FadeAnimation(
               1.5,
-              new Container(
-                  width: displayWidth(context),
-                  margin: EdgeInsets.only(right: 16, left: 16, top: 16),
-                  height: 100,
-                  child: Container(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Expanded(
-                          child: Card(
-                            elevation: 3,
-                            child: Container(
-                              padding: EdgeInsets.all(8),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Container(
-                                      width: 30,
-                                      child:
-                                          Image.asset('assets/icons/chat.png')),
-                                  Container(
-                                    margin: EdgeInsets.only(top: 8),
-                                    child: Text('Chat',
-                                        style: TextStyle(
-                                            color: Colors.black45,
-                                            fontFamily: 'AirbnbMedium')),
+              InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, Routes.LIST_CHAT_SISWA);
+                },
+                              child: new Container(
+                    width: displayWidth(context),
+                    margin: EdgeInsets.only(right: 16, left: 16, top: 16),
+                    height: 100,
+                    child: Container(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Expanded(
+                            child: Card(
+                              elevation: 3,
+                              child: Container(
+                                padding: EdgeInsets.all(8),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Container(
+                                        width: 30,
+                                        child:
+                                            Image.asset('assets/icons/chat.png')),
+                                    Container(
+                                      margin: EdgeInsets.only(top: 8),
+                                      child: Text('Chat',
+                                          style: TextStyle(
+                                              color: Colors.black45,
+                                              fontFamily: 'AirbnbMedium')),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, Routes.LIST_PEMBAYARAN);
+                              },
+                              child: Card(
+                                elevation: 3,
+                                child: Container(
+                                  padding: EdgeInsets.all(8),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Container(
+                                          width: 30,
+                                          child: Image.asset(
+                                              'assets/icons/credit-card.png')),
+                                      Container(
+                                        margin: EdgeInsets.only(top: 8),
+                                        child: Text('Pembayaran',
+                                            style: TextStyle(
+                                                color: Colors.black45,
+                                                fontFamily: 'AirbnbMedium')),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, Routes.LIST_PEMBAYARAN);
-                            },
-                            child: Card(
-                              elevation: 3,
-                              child: Container(
-                                padding: EdgeInsets.all(8),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Container(
-                                        width: 30,
-                                        child: Image.asset(
-                                            'assets/icons/credit-card.png')),
-                                    Container(
-                                      margin: EdgeInsets.only(top: 8),
-                                      child: Text('Pembayaran',
-                                          style: TextStyle(
-                                              color: Colors.black45,
-                                              fontFamily: 'AirbnbMedium')),
-                                    ),
-                                  ],
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, Routes.BOOKING_KELAS);
-                            },
-                            child: Card(
-                              elevation: 3,
-                              child: Container(
-                                width: 50,
-                                padding: EdgeInsets.all(8),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    Container(
-                                        width: 30,
-                                        child: Image.asset(
-                                            'assets/icons/booking.png')),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 55,
-                                      margin: EdgeInsets.only(top: 8),
-                                      child: Text('Booking Kelas',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              fontSize: 11,
-                                              color: Colors.black45,
-                                              fontFamily: 'AirbnbMedium')),
-                                    ),
-                                  ],
+                          Expanded(
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, Routes.BOOKING_KELAS);
+                              },
+                              child: Card(
+                                elevation: 3,
+                                child: Container(
+                                  width: 50,
+                                  padding: EdgeInsets.all(8),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      Container(
+                                          width: 30,
+                                          child: Image.asset(
+                                              'assets/icons/booking.png')),
+                                      Container(
+                                        alignment: Alignment.center,
+                                        width: 55,
+                                        margin: EdgeInsets.only(top: 8),
+                                        child: Text('Booking Kelas',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                fontSize: 11,
+                                                color: Colors.black45,
+                                                fontFamily: 'AirbnbMedium')),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  )),
+                        ],
+                      ),
+                    )),
+              ),
             ),
             FadeAnimation(
               1.6,

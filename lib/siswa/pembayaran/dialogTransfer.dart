@@ -139,6 +139,7 @@ class _DialogTransferState extends State<DialogTransfer>
   @override
   void initState() {
     print(widget.harga);
+    print(widget.idKelas);
     super.initState();
   }
 

@@ -106,11 +106,14 @@ class _JadwalSideState extends State<JadwalSide> {
                         Flexible(
                           child: Container(
                               child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
                                 '$pertemuan/$jumlah Pertemuan',
                                 style: TextStyle(
                                     fontFamily: 'AirbnbMedium',
+                                    fontSize: 13,
                                     color: Config.primary),
                               )
                             ],

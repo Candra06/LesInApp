@@ -22,7 +22,7 @@ class Config {
   static final HexColor closed = new HexColor('#B3B3B3');
   static final HexColor open = new HexColor('#00C45C');
 
-  static final String ipServer = 'http://85a3f36b617f.ngrok.io/';
+  static final String ipServer = 'http://21d900025eb4.ngrok.io/';
   static final String ipServerAPI = ipServer + 'api/';
   static final String ipAssets = '';
 
@@ -93,6 +93,7 @@ class Config {
   static formattanggal(String tgl) {
     try {
       DateTime dt = DateTime.parse(tgl.toString());
+
       var bln = [
         '',
         'Januari',
@@ -110,9 +111,11 @@ class Config {
       ];
       var newDt = DateFormat.EEEE().format(dt);
       var bulan = tgl.toString().split('-');
+      // print(newDt + ', ' + bln[int.parse(bulan[1])] + ' ' + bulan[0]);
       String tanggal = newDt + ', ' + bln[int.parse(bulan[1])] + ' ' + bulan[0];
       return tanggal;
     } catch (e) {
+      // print('error' + e);
       return tgl.toString();
     }
   }
@@ -137,7 +140,7 @@ class Config {
 
   static getIDAkun() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String idAkun = preferences.getString('idAkun');
+    String idAkun = preferences.getString('id_akun');
     return idAkun;
   }
 
@@ -163,6 +166,18 @@ class Config {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String username = preferences.getString('username');
     return username;
+  }
+
+  static getHobi() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String hobi = preferences.getString('hobi');
+    return hobi;
+  }
+
+  static getMotto() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String motto = preferences.getString('motto');
+    return motto;
   }
 
   static getTelepon() async {

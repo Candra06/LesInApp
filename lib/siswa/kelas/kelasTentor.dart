@@ -7,18 +7,18 @@ import 'dart:convert';
 import 'package:lesin_app/helper/size.dart';
 import 'package:lesin_app/siswa/pembayaran/dialogTransfer.dart';
 
-class DetailKelas extends StatefulWidget {
+class DetailKelasTentor extends StatefulWidget {
   final String idKelas;
-  DetailKelas({this.idKelas});
+  DetailKelasTentor({this.idKelas});
   @override
-  _DetailKelasState createState() => _DetailKelasState();
+  _DetailKelasTentorState createState() => _DetailKelasTentorState();
 }
 
-class _DetailKelasState extends State<DetailKelas> {
+class _DetailKelasTentorState extends State<DetailKelasTentor> {
   String status = '',
-      tentor = '',
-      hpTentor = '',
-      alamatTentor = '',
+      dtSiswa = '',
+      hpSiswa = '',
+      alamatSiswa = '',
       tarif = '',
       pertemuan = '',
       total = '',
@@ -37,20 +37,20 @@ class _DetailKelasState extends State<DetailKelas> {
     token = await Config.getToken();
     String id = widget.idKelas;
 
-    http.Response res = await http.get(Config.ipServerAPI + 'kelasSiswa/$id',
+    http.Response res = await http.get(Config.ipServerAPI + 'kelasTentor/$id',
         headers: {'Authorization': 'Bearer $token'});
     if (res.statusCode == 200) {
       var data = json.decode(res.body);
-      var mentor = data['data']['mentor'];
+      var siswa = data['data']['siswa'];
       var dataPertemuan = data['data']['pertemuan'];
       var dataKelas = data['data']['dataKelas'];
       var jmlPertemuan = dataPertemuan['jumlah_pertemuan'];
       var totalTarif = dataPertemuan['tarif'];
       setState(() {
         load = false;
-        tentor = mentor['nama'];
-        hpTentor = mentor['telepon'];
-        alamatTentor = mentor['alamat'];
+        dtSiswa = siswa['nama'];
+        hpSiswa = siswa['telepon'];
+        alamatSiswa = siswa['alamat'];
 
         hari = dataPertemuan['hari'];
         tarif = totalTarif.toString();
@@ -78,7 +78,7 @@ class _DetailKelasState extends State<DetailKelas> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        Navigator.pushNamed(context, Routes.HOME, arguments: '1');
+        Navigator.pushNamed(context, Routes.HOME_TENTOR, arguments: '1');
       },
       child: Scaffold(
         appBar: AppBar(
@@ -140,7 +140,7 @@ class _DetailKelasState extends State<DetailKelas> {
                         margin: EdgeInsets.only(top: 8, bottom: 8),
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Tentor',
+                          'Siswa',
                           style: TextStyle(
                               fontFamily: 'AirbnbBold', color: Config.primary),
                           textAlign: TextAlign.right,
@@ -154,11 +154,11 @@ class _DetailKelasState extends State<DetailKelas> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  'Nama Tentor',
+                                  'Nama Siswa',
                                   style: TextStyle(fontFamily: 'Airbnb'),
                                 ),
                                 Text(
-                                  '$tentor',
+                                  '$dtSiswa',
                                   style: TextStyle(
                                       fontFamily: 'AirbnbMedium',
                                       color: Config.primary),
@@ -180,7 +180,7 @@ class _DetailKelasState extends State<DetailKelas> {
                                   style: TextStyle(fontFamily: 'Airbnb'),
                                 ),
                                 Text(
-                                  '$hpTentor',
+                                  '$hpSiswa',
                                   style: TextStyle(
                                       fontFamily: 'AirbnbMedium',
                                       color: Config.primary),
@@ -204,7 +204,7 @@ class _DetailKelasState extends State<DetailKelas> {
                                   style: TextStyle(fontFamily: 'Airbnb'),
                                 ),
                                 Text(
-                                  '$alamatTentor',
+                                  '$alamatSiswa',
                                   style: TextStyle(
                                       fontFamily: 'AirbnbMedium',
                                       color: Config.primary),
@@ -391,131 +391,59 @@ class _DetailKelasState extends State<DetailKelas> {
                           ],
                         ),
                       ),
-                      if (status == 'Pending') ...{
-                        Container(
-                          padding: EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(8)),
-                              color: Config.primary),
-                          child: Text(
-                            'Silahkan melakukan pembayaran DP sebelum kelas dimulai pada nomor Rekening 123-xxx-xxx BCA A.n Suryo Hadi dan unggah bukti pembayaran untuk mengaktifkan status kelas.',
-                            style: TextStyle(
-                                fontFamily: 'Airbnb', color: Config.textWhite),
-                          ),
-                        ),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          margin: EdgeInsets.fromLTRB(0, 16, 0, 8),
-                          child: RaisedButton(
-                            padding: EdgeInsets.only(top: 13, bottom: 13),
-                            color: Config.primary,
-                            onPressed: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      DialogTransfer(
-                                        idKelas: widget.idKelas,
-                                        harga: tarif,
-                                      ));
-                            },
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5)),
-                            child: Text(
-                              'Transfer',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'AirbnbBold',
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ),
-                      } else ...{
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          margin: EdgeInsets.fromLTRB(0, 16, 0, 8),
-                          child: RaisedButton(
-                            padding: EdgeInsets.only(top: 13, bottom: 13),
-                            color: Config.primary,
-                            onPressed: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      DialogTransfer(
-                                        idKelas: widget.idKelas,
-                                        harga: tarif,
-                                      ));
-                            },
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5)),
-                            child: Text(
-                              'Transfer',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'AirbnbBold',
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                margin: EdgeInsets.fromLTRB(0, 8, 4, 8),
-                                child: RaisedButton(
-                                  padding: EdgeInsets.only(top: 13, bottom: 13),
-                                  color: Config.primary,
-                                  onPressed: () {
-                                    // Navigator.pushNamed(context, Routes.HOMEPAGE,
-                                    //     arguments: 0.toString());
-                                    Navigator.pushNamed(context, Routes.LIST_MODUL,
-                                        arguments: widget.idKelas);
-                                  },
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5)),
-                                  child: Text(
-                                    'Modul',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'AirbnbBold',
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
-                                  ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              margin: EdgeInsets.fromLTRB(0, 8, 4, 8),
+                              child: RaisedButton(
+                                padding: EdgeInsets.only(top: 13, bottom: 13),
+                                color: Config.primary,
+                                onPressed: () {
+                                  Navigator.pushNamed(context, Routes.LIST_MODUL, arguments: widget.idKelas);
+                                },
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: Text(
+                                  'Modul',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'AirbnbBold',
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ),
                             ),
-                            Expanded(
-                              child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                margin: EdgeInsets.fromLTRB(4, 8, 0, 8),
-                                child: RaisedButton(
-                                  padding: EdgeInsets.only(top: 13, bottom: 13),
-                                  color: Config.primary,
-                                  onPressed: () {
-                                    // Navigator.pushNamed(context, Routes.HOMEPAGE,
-                                    //     arguments: 0.toString());
-                                    Navigator.pushNamed(context, Routes.ABSENSI,
-                                        arguments: widget.idKelas);
-                                  },
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5)),
-                                  child: Text(
-                                    'Absensi',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'AirbnbBold',
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
-                                  ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              margin: EdgeInsets.fromLTRB(4, 8, 0, 8),
+                              child: RaisedButton(
+                                padding: EdgeInsets.only(top: 13, bottom: 13),
+                                color: Config.primary,
+                                onPressed: () {
+                                  // Navigator.pushNamed(context, Routes.HOMEPAGE,
+                                  //     arguments: 0.toString());
+                                  Navigator.pushNamed(context, Routes.ABSENSI,
+                                      arguments: widget.idKelas);
+                                },
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: Text(
+                                  'Absensi',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'AirbnbBold',
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ),
                             ),
-                          ],
-                        )
-                      }
+                          ),
+                        ],
+                      )
                     ],
                   )),
         ),

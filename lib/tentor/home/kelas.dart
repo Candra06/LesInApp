@@ -56,7 +56,7 @@ class _KelasTentorSideState extends State<KelasTentorSide> {
             String jumlah = kelas[i]['jumlah_pertemuan'].toString();
             return InkWell(
               onTap: () {
-                Navigator.pushNamed(context, Routes.DETAIL_KELAS,
+                Navigator.pushNamed(context, Routes.DETAIL_KELAS_TENTOR,
                     arguments: kelas[i]['id'].toString());
               },
               child: Card(

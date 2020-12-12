@@ -142,7 +142,7 @@ class _SideProfileTentorState extends State<SideProfileTentor> {
                   },
                   child: new Container(
                     width: MediaQuery.of(context).size.width,
-                    height: 30,
+                    height: 35,
                     child: new Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
@@ -158,7 +158,8 @@ class _SideProfileTentorState extends State<SideProfileTentor> {
                           new Flexible(
                               child: Container(
                                   child: Text(
-                            tglLahir,
+                            Config.formattanggal(tglLahir),
+                            textAlign: TextAlign.right,
                             style: TextStyle(
                                 fontSize: 14,
                                 fontFamily: 'AirbnbBold',
@@ -266,7 +267,7 @@ class _SideProfileTentorState extends State<SideProfileTentor> {
                   },
                   child: new Container(
                     width: MediaQuery.of(context).size.width,
-                    height: 30,
+                    height: 35,
                     child: new Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
@@ -283,6 +284,7 @@ class _SideProfileTentorState extends State<SideProfileTentor> {
                               child: Container(
                                   child: Text(
                             '$email',
+                            textAlign: TextAlign.right,
                             style: TextStyle(
                                 fontSize: 14,
                                 fontFamily: 'AirbnbBold',
@@ -328,57 +330,306 @@ class _SideProfileTentorState extends State<SideProfileTentor> {
             ),
           ),
           FadeAnimation(
-              1.6,
-              Container(
-                child: Column(
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      margin: EdgeInsets.fromLTRB(16, 4, 16, 8),
-                      child: RaisedButton(
-                        padding: EdgeInsets.only(top: 13, bottom: 13),
-                        color: Config.primary,
-                        onPressed: () {
-                          Navigator.pushNamed(context, Routes.EDIT_PROFIL);
-                        },
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5)),
-                        child: Text(
-                          'Ubah ',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: 'AirbnbBold',
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold),
+            1.6,
+            GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, Routes.EDIT_DATA_DIRI);
+              },
+              child: Container(
+                margin: EdgeInsets.only(left: 16, right: 16),
+                child: Card(
+                  child: new Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 55,
+                    child: new Row(children: <Widget>[
+                      new Flexible(
+                          child: Container(
+                        margin: EdgeInsets.fromLTRB(10, 8, 10, 8),
+                        child: Column(
+                          children: [
+                            Container(
+                                width: double.infinity,
+                                child: Text(
+                                  'Ubah Data Diri',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontFamily: 'AirbnbBold',
+                                      color: Config.primary),
+                                )),
+                            Container(
+                                width: double.infinity,
+                                child: Text(
+                                  'Ubah Data Diri',
+                                  style: TextStyle(
+                                      fontFamily: 'AirbnbReguler',
+                                      color: Config.textGrey),
+                                )),
+                          ],
                         ),
-                      ),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      margin: EdgeInsets.fromLTRB(16, 4, 16, 8),
-                      child: RaisedButton(
-                        padding: EdgeInsets.only(top: 13, bottom: 13),
-                        color: Config.textWhite,
-                        onPressed: () {
-                          // Navigator.pushNamed(context, Routes.REGISTER);
-                          logout();
-                        },
-                        shape: RoundedRectangleBorder(
-                            side: BorderSide(color: Config.primary),
-                            borderRadius: BorderRadius.circular(5)),
-                        child: Text(
-                          'Logout',
-                          style: TextStyle(
-                              color: Config.primary,
-                              fontFamily: 'AirbnbBold',
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold),
+                      )),
+                      new ConstrainedBox(
+                        constraints: const BoxConstraints(
+                          minWidth: 25,
+                          maxWidth: 110,
                         ),
+                        child: Container(
+                            child: new IconButton(
+                          icon: Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.black38,
+                          ),
+                          onPressed: () {
+                            Navigator.pushNamed(context, Routes.EDIT_DATA_DIRI);
+                          },
+                        )),
                       ),
-                    ),
-                  ],
+                    ]),
+                  ),
                 ),
-              ))
+              ),
+            ),
+          ),
+          FadeAnimation(
+            1.6,
+            GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, Routes.RIWAYAT_PENDIDIKAN);
+              },
+              child: Container(
+                margin: EdgeInsets.only(left: 16, right: 16),
+                child: Card(
+                  child: new Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 55,
+                    child: new Row(children: <Widget>[
+                     new Flexible(
+                          child: Container(
+                        margin: EdgeInsets.fromLTRB(10, 8, 10, 8),
+                        child: Column(
+                          children: [
+                            Container(
+                                width: double.infinity,
+                                child: Text(
+                                  'Riwayat Pendidikan',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontFamily: 'AirbnbBold',
+                                      color: Config.primary),
+                                )),
+                            Container(
+                                width: double.infinity,
+                                child: Text(
+                                  'Tambah data riwayat pendidikan',
+                                  style: TextStyle(
+                                      fontFamily: 'AirbnbReguler',
+                                      color: Config.textGrey),
+                                )),
+                          ],
+                        ),
+                      )),
+                      new ConstrainedBox(
+                        constraints: const BoxConstraints(
+                          minWidth: 25,
+                          maxWidth: 110,
+                        ),
+                        child: Container(
+                            child: new IconButton(
+                          icon: Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.black38,
+                          ),
+                          onPressed: () {
+                            Navigator.pushNamed(
+                                context, Routes.RIWAYAT_PENDIDIKAN);
+                          },
+                        )),
+                      ),
+                    ]),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          FadeAnimation(
+            1.6,
+            GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, Routes.DATA_MENGAJAR);
+              },
+              child: Container(
+                margin: EdgeInsets.only(left: 16, right: 16),
+                child: Card(
+                  child: new Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 55,
+                    child: new Row(children: <Widget>[
+                     new Flexible(
+                          child: Container(
+                        margin: EdgeInsets.fromLTRB(10, 8, 10, 8),
+                        child: Column(
+                          children: [
+                            Container(
+                                width: double.infinity,
+                                child: Text(
+                                  'Data Mengajar',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontFamily: 'AirbnbBold',
+                                      color: Config.primary),
+                                )),
+                            Container(
+                                width: double.infinity,
+                                child: Text(
+                                  'Tambah dan hapus Data Mengajar',
+                                  style: TextStyle(
+                                      fontFamily: 'AirbnbReguler',
+                                      color: Config.textGrey),
+                                )),
+                          ],
+                        ),
+                      )),
+                      new ConstrainedBox(
+                        constraints: const BoxConstraints(
+                          minWidth: 25,
+                          maxWidth: 110,
+                        ),
+                        child: Container(
+                            child: new IconButton(
+                          icon: Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.black38,
+                          ),
+                          onPressed: () {
+                            Navigator.pushNamed(context, Routes.DATA_MENGAJAR);
+                          },
+                        )),
+                      ),
+                    ]),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          FadeAnimation(
+            1.6,
+            GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, Routes.DATA_PRESTASI);
+              },
+              child: Container(
+                margin: EdgeInsets.only(left: 16, right: 16),
+                child: Card(
+                  child: new Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 55,
+                    child: new Row(children: <Widget>[
+                     new Flexible(
+                          child: Container(
+                        margin: EdgeInsets.fromLTRB(10, 8, 10, 8),
+                        child: Column(
+                          children: [
+                            Container(
+                                width: double.infinity,
+                                child: Text(
+                                  'Data Prestasi',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontFamily: 'AirbnbBold',
+                                      color: Config.primary),
+                                )),
+                            Container(
+                                width: double.infinity,
+                                child: Text(
+                                  'Tambah dan hapus Data Prestasi',
+                                  style: TextStyle(
+                                      fontFamily: 'AirbnbReguler',
+                                      color: Config.textGrey),
+                                )),
+                          ],
+                        ),
+                      )),
+                      new ConstrainedBox(
+                        constraints: const BoxConstraints(
+                          minWidth: 25,
+                          maxWidth: 110,
+                        ),
+                        child: Container(
+                            child: new IconButton(
+                          icon: Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.black38,
+                          ),
+                          onPressed: () {
+                            Navigator.pushNamed(context, Routes.DATA_MENGAJAR);
+                          },
+                        )),
+                      ),
+                    ]),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          FadeAnimation(
+            1.6,
+            GestureDetector(
+              onTap: () {
+                logout();
+              },
+              child: Container(
+                margin: EdgeInsets.only(left: 16, right: 16, bottom: 16),
+                child: Card(
+                  child: new Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 55,
+                    child: new Row(children: <Widget>[
+                      new Flexible(
+                          child: Container(
+                        margin: EdgeInsets.fromLTRB(10, 8, 10, 8),
+                        child: Column(
+                          children: [
+                            Container(
+                                width: double.infinity,
+                                child: Text(
+                                  'LogOut',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontFamily: 'AirbnbBold',
+                                      color: Config.primary),
+                                )),
+                            Container(
+                                width: double.infinity,
+                                child: Text(
+                                  'Keluar dari akun yang sedang aktif',
+                                  style: TextStyle(
+                                      fontFamily: 'AirbnbReguler',
+                                      color: Config.textGrey),
+                                )),
+                          ],
+                        ),
+                      )),
+                      new ConstrainedBox(
+                        constraints: const BoxConstraints(
+                          minWidth: 25,
+                          maxWidth: 110,
+                        ),
+                        child: Container(
+                            child: new IconButton(
+                          icon: Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.black38,
+                          ),
+                          onPressed: () {
+                            Navigator.pushNamed(context, Routes.DATA_MENGAJAR);
+                          },
+                        )),
+                      ),
+                    ]),
+                  ),
+                ),
+              ),
+            ),
+          ),
         ]),
       ),
     );

@@ -4,6 +4,8 @@ import 'package:lesin_app/helper/fade_animation.dart';
 import 'package:lesin_app/helper/routes.dart';
 import 'package:lesin_app/helper/size.dart';
 import 'package:lesin_app/siswa/kelas/dialogConfirm.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class NegoTarif extends StatefulWidget {
   final Map<String, dynamic> param;
@@ -14,6 +16,42 @@ class NegoTarif extends StatefulWidget {
 
 class _NegoTarifState extends State<NegoTarif> {
   @override
+  TextEditingController pesan = new TextEditingController();
+  List nego = new List();
+  void createChat() async {
+    String token = await Config.getToken();
+    String id = await Config.getID();
+    var body = new Map<String, dynamic>();
+    body['id_siswa'] = id;
+    body['id_tentor'] = widget.param['tentor'].toString();
+    body['message'] = pesan.text;
+
+    http.Response req = await http.post(Config.ipServerAPI + 'createChat',
+        body: body, headers: {'Authorization': 'Bearer $token'});
+    if (req.statusCode == 200) {
+      var data = json.decode(req.body);
+      String room = data['room'].toString();
+      getChat(room);
+      print(req.body);
+      setState(() {
+        pesan.text = '';
+      });
+    } else {
+      print(req.body);
+    }
+  }
+
+  void getChat(String room) async {
+    String token = await Config.getToken();
+    http.Response res = await http.get(Config.ipServerAPI + 'detailChat/$room',
+        headers: {'Authorization': 'Bearer $token'});
+    if (res.statusCode == 200) {
+      print(res.body);
+    } else {
+      print('object');
+    }
+  }
+
   void initState() {
     print(widget.param);
     super.initState();
@@ -191,6 +229,7 @@ class _NegoTarifState extends State<NegoTarif> {
                                         constraints: BoxConstraints(
                                             minWidth: 200, maxWidth: 300),
                                         child: TextFormField(
+                                            controller: pesan,
                                             style: TextStyle(
                                                 color: Colors.black54),
                                             obscureText: false,
@@ -200,7 +239,8 @@ class _NegoTarifState extends State<NegoTarif> {
                                             decoration: InputDecoration(
                                               suffixIcon: IconButton(
                                                 onPressed: () {
-                                                  print('dipencet');
+                                                  createChat();
+                                                  print('push');
                                                 },
                                                 icon: Icon(
                                                   Icons.send,
@@ -240,8 +280,10 @@ class _NegoTarifState extends State<NegoTarif> {
                             padding: EdgeInsets.only(top: 13, bottom: 13),
                             color: Config.primary,
                             onPressed: () {
-                              showDialog(context: context, builder: (BuildContext context) => DialogConfirm(widget.param));
-                             
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      DialogConfirm(widget.param));
                             },
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5)),

@@ -14,6 +14,14 @@ class AbsensiPage extends StatefulWidget {
 }
 
 class _AbsensiPageState extends State<AbsensiPage> {
+  String role = '';
+  void info() async {
+    var tmpRole = await Config.getRole();
+    setState(() {
+      role = tmpRole;
+    });
+  }
+
   List absensi = new List();
   bool load = true;
   void getList() async {
@@ -49,7 +57,6 @@ class _AbsensiPageState extends State<AbsensiPage> {
       return ListView.builder(
           itemCount: absensi.isEmpty ? 0 : absensi.length,
           itemBuilder: (BuildContext context, int i) {
-            
             return Card(
               child: Container(
                   margin: EdgeInsets.all(8),
@@ -76,7 +83,7 @@ class _AbsensiPageState extends State<AbsensiPage> {
                               )),
                               Container(
                                   child: Text(
-                                'Jurnal : '+absensi[i]['jurnal'],
+                                'Jurnal : ' + absensi[i]['jurnal'],
                                 style: TextStyle(
                                     fontFamily: 'Airbnb',
                                     color: Config.primary),
@@ -107,6 +114,7 @@ class _AbsensiPageState extends State<AbsensiPage> {
   @override
   void initState() {
     getList();
+    info();
     super.initState();
   }
 
@@ -114,8 +122,13 @@ class _AbsensiPageState extends State<AbsensiPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        Navigator.pushNamed(context, Routes.DETAIL_KELAS,
+        if (role == 'siswa') {
+          Navigator.pushNamed(context, Routes.DETAIL_KELAS,
             arguments: widget.idKelas);
+        } else {
+          Navigator.pushNamed(context, Routes.DETAIL_KELAS_TENTOR,
+            arguments: widget.idKelas);
+        }
       },
       child: Scaffold(
         appBar: AppBar(
@@ -139,7 +152,7 @@ class _AbsensiPageState extends State<AbsensiPage> {
             style: TextStyle(fontFamily: 'AirbnbMedium'),
           ),
         ),
-        floatingActionButton: FloatingActionButton(
+        floatingActionButton: role == 'siswa' ? FloatingActionButton(
           onPressed: () {
             showDialog(
                 context: context,
@@ -149,7 +162,7 @@ class _AbsensiPageState extends State<AbsensiPage> {
           },
           child: Icon(Icons.add),
           backgroundColor: Config.primary,
-        ),
+        ) : Container(),
         body: Container(
             margin: EdgeInsets.fromLTRB(16, 8, 16, 0),
             child: FadeAnimation(
