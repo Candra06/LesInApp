@@ -22,7 +22,7 @@ class Config {
   static final HexColor closed = new HexColor('#B3B3B3');
   static final HexColor open = new HexColor('#00C45C');
 
-  static final String ipServer = 'http://21d900025eb4.ngrok.io/';
+  static final String ipServer = 'http://775c49661b61.ngrok.io/';
   static final String ipServerAPI = ipServer + 'api/';
   static final String ipAssets = '';
 
@@ -120,6 +120,15 @@ class Config {
     }
   }
 
+  static formatuang(amount) {
+    try {
+      final oCcy = new NumberFormat("#,##0", "id_ID");
+      return oCcy.format(double.parse(amount)).toString();
+    } catch (e) {
+      return amount;
+    }
+  }
+
   static getToken() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String token = preferences.getString('token');
@@ -148,6 +157,12 @@ class Config {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String gender = preferences.getString('gender');
     return gender;
+  }
+
+  static getRating() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String rating = preferences.getString('rating');
+    return rating;
   }
 
   static getEmail() async {

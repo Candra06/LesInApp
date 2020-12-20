@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:lesin_app/helper/config.dart';
 import 'package:lesin_app/helper/input.dart';
 import 'package:lesin_app/helper/routes.dart';
 import 'package:lesin_app/helper/size.dart';
 import 'package:http/http.dart' as http;
+import 'package:location/location.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DataDiri extends StatefulWidget {
@@ -12,8 +16,8 @@ class DataDiri extends StatefulWidget {
 }
 
 class _DataDiriState extends State<DataDiri> {
-  bool _isHidden = true, visible = true;
-  String token = '';
+  bool _isHidden = true, visible = true, hide = true;
+  String token = '', rating = '';
   TextEditingController txEmail = new TextEditingController();
   TextEditingController txpassword = new TextEditingController();
   TextEditingController txUsername = new TextEditingController();
@@ -27,6 +31,50 @@ class _DataDiriState extends State<DataDiri> {
   TextEditingController ctglLahir = new TextEditingController();
   TextEditingController calamat = new TextEditingController();
   DateTime tglLahir;
+  String _currentLatLong;
+  var location = new Location();
+  String myLat, myLong;
+
+  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+
+  getUserLocation() async {
+    await Permission.location.request();
+    var status = await Permission.location.status;
+    var latitude, longitude;
+    if (status.isGranted) {
+      Location location = new Location();
+      LocationData myLocation;
+      String error;
+      try {
+        myLocation = await location.getLocation();
+        _currentLatLong = myLocation.latitude.toString() +
+            ', ' +
+            myLocation.longitude.toString();
+      } on PlatformException catch (e) {
+        if (e.code == 'PERMISSION_DENIED') {
+          error = 'please grant permission';
+          print(error);
+        }
+        if (e.code == 'PERMISSION_DENIED_NEVER_ASK') {
+          error = 'permission denied- please enable it from app settings';
+          print(error);
+        }
+        myLocation = null;
+      }
+      setState(() {
+        var lokasi = _currentLatLong.split(",");
+        latitude = double.parse(lokasi[0]);
+        longitude = double.parse(lokasi[1]);
+      });
+    } else {
+      print('kosong');
+    }
+    myLat = latitude.toString();
+    myLong = longitude.toString();
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    await pref.setString('latitude', myLat);
+    await pref.setString('longitude', myLong);
+  }
 
   List<DropdownMenuItem<String>> gender;
   String getGender = "", tanggal;
@@ -74,6 +122,7 @@ class _DataDiriState extends State<DataDiri> {
     var tmpToken = await Config.getToken();
     var tmpHobi = await Config.getHobi();
     var tmpMotto = await Config.getMotto();
+    var tmpRating = await Config.getRating();
     setState(() {
       cNama.text = tmpNama;
       cTelepon.text = tmpTelepon;
@@ -83,6 +132,7 @@ class _DataDiriState extends State<DataDiri> {
       txUsername.text = tmpUsername;
       txEmail.text = tmpEmail;
       token = tmpToken;
+      rating = tmpRating;
       tanggal = tmpTglLahir.toString();
       ctglLahir.text = Config.formattanggal(tmpTglLahir);
       // tglLahir = DateTime.parse(tmpTglLahir.toString());
@@ -105,6 +155,8 @@ class _DataDiriState extends State<DataDiri> {
     body['alamat'] = calamat.text;
     body['hobi'] = txHobi.text;
     body['motto'] = txMotto.text;
+    body['lattitude'] = myLat;
+    body['longitude'] = myLong;
     http.Response up = await http.post(Config.ipServerAPI + 'updateUser',
         body: body, headers: {'Authorization': 'Bearer $token'});
     if (up.statusCode == 200) {
@@ -165,6 +217,37 @@ class _DataDiriState extends State<DataDiri> {
           margin: EdgeInsets.fromLTRB(16, 8, 16, 0),
           child: Column(
             children: [
+              Row(
+                children: [
+                  Text(
+                    'Rating : ',
+                    style: TextStyle(
+                        fontFamily: 'AirbnbMedium',
+                        fontSize: 16,
+                        color: Config.primary),
+                  ),
+                  if (rating == '0') ...{
+                    Icon(
+                      Icons.star,
+                      color: Colors.yellow[800],
+                    ),
+                    Text(
+                      '0',
+                      style: TextStyle(
+                          fontFamily: 'AirbnbMedium',
+                          fontSize: 16,
+                          color: Config.primary),
+                    ),
+                  } else ...{
+                    for (var i = 0; i < int.parse(rating.toString()); i++) ...{
+                      Icon(
+                        Icons.star,
+                        color: Colors.yellow[800],
+                      ),
+                    }
+                  }
+                ],
+              ),
               formInput(cNama, 'Nama'),
               formInput(cTelepon, 'Telepon'),
               formInput(txUsername, 'Username'),
@@ -320,6 +403,41 @@ class _DataDiriState extends State<DataDiri> {
                           )),
                     )
                   ],
+                ),
+              ),
+              Text(
+                  'Pastikan anda berada pada lokasi anda tinggal saat ini untuk mendapatkan kordinat lokasi anda saat ini.'),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                margin: EdgeInsets.fromLTRB(0, 4, 0, 8),
+                child: RaisedButton(
+                  padding: EdgeInsets.only(top: 13, bottom: 13),
+                  color: Config.primary,
+                  onPressed: () {
+                    getUserLocation();
+                    if (myLat == '' || myLong == '') {
+                      setState(() {
+                        hide = true;
+                      });
+                    } else {
+                      setState(() {
+                        hide = false;
+                        Config.alert(1, 'Lokasi berhasil didapatkan');
+                        print(myLat);
+                        print(myLong);
+                      });
+                    }
+                  },
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5)),
+                  child: Text(
+                    'Dapatkan Lokasi',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'AirbnbBold',
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
               Container(

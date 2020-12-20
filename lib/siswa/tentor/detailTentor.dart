@@ -18,6 +18,7 @@ class _DetailTentorState extends State<DetailTentor> {
   String idTentor = '', idMapel = '';
   List pendidikan = new List();
   List prestasi = new List();
+  List jadwal = new List();
   bool load = true;
   String token = '',
       nama = '',
@@ -27,6 +28,7 @@ class _DetailTentorState extends State<DetailTentor> {
       telepon = '',
       hobi = '',
       email = '',
+      tarif = '',
       motto = '';
   void getDetail() async {
     setState(() {
@@ -48,6 +50,7 @@ class _DetailTentorState extends State<DetailTentor> {
         telepon = data['data']['telepon'];
         motto = data['data']['motto'];
         rating = data['data']['rating'];
+        tarif = data['data']['tarif'].toString();
       });
     } else {}
   }
@@ -86,6 +89,23 @@ class _DetailTentorState extends State<DetailTentor> {
     } else {}
   }
 
+  void getJadwal() async {
+    setState(() {
+      load = true;
+    });
+    token = await Config.getToken();
+    http.Response res = await http.get(
+        Config.ipServerAPI + 'jadwal/' + idTentor,
+        headers: {'Authorization': 'Bearer $token'});
+
+    if (res.statusCode == 200) {
+      var data = json.decode(res.body);
+      setState(() {
+        jadwal = data['data'];
+      });
+    } else {}
+  }
+
   Widget itemPrestasi(a) {
     return Container(
       margin: EdgeInsets.only(bottom: 16),
@@ -119,6 +139,48 @@ class _DetailTentorState extends State<DetailTentor> {
             children: [
               Text(
                 prestasi[a]['penghargaan'],
+                style: TextStyle(fontFamily: 'Airbnb'),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget itemJadwal(a) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 16),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Column(
+            children: [
+              SizedBox(height: 5),
+              Container(
+                height: displayWidth(context) * 0.025,
+                width: displayWidth(context) * 0.025,
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: [
+                        HexColor('0e5ed3'),
+                        HexColor('097cd7'),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.all(
+                        Radius.circular(displayWidth(context) * 0.025))),
+              ),
+            ],
+          ),
+          SizedBox(width: 10),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                jadwal[a],
                 style: TextStyle(fontFamily: 'Airbnb'),
               ),
             ],
@@ -170,6 +232,7 @@ class _DetailTentorState extends State<DetailTentor> {
     getDetail();
     getPendidikan();
     getPrestasi();
+    getJadwal();
     idTentor = widget.param['idTentor'];
     idMapel = widget.param['idMapel'];
     print(widget.param);
@@ -346,6 +409,28 @@ class _DetailTentorState extends State<DetailTentor> {
               ),
               Container(
                 alignment: Alignment.centerLeft,
+                margin: EdgeInsets.only(top: 8),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Tarif',
+                      style: TextStyle(
+                          fontFamily: 'AirbnbMedium', color: Config.textGrey),
+                    ),
+                    Text(
+                      tarif == ''
+                          ? 'Memuat'
+                          : 'Rp. ' + Config.formatuang(tarif),
+                      style: TextStyle(
+                          fontFamily: 'Airbnb', color: Config.textGrey),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                alignment: Alignment.centerLeft,
                 margin: EdgeInsets.only(top: 16, bottom: 8),
                 child: Text(
                   'Riwayat Pendidikan',
@@ -378,6 +463,18 @@ class _DetailTentorState extends State<DetailTentor> {
               ),
               for (var i = 0; i < prestasi.length; i++) ...{itemPrestasi(i)},
               Container(
+                alignment: Alignment.centerLeft,
+                margin: EdgeInsets.only(top: 16, bottom: 8),
+                child: Text(
+                  'Jadwal Tersedia',
+                  style: TextStyle(
+                      fontFamily: 'AirbnbMedium',
+                      color: Config.textBlack,
+                      fontSize: 18),
+                ),
+              ),
+              for (var i = 0; i < jadwal.length; i++) ...{itemJadwal(i)},
+              Container(
                 width: MediaQuery.of(context).size.width,
                 margin: EdgeInsets.fromLTRB(0, 4, 0, 8),
                 child: RaisedButton(
@@ -390,7 +487,6 @@ class _DetailTentorState extends State<DetailTentor> {
                     };
                     Navigator.pushNamed(context, Routes.PILIH_JADWAL,
                         arguments: param);
-                    
                   },
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5)),

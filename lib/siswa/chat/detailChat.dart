@@ -5,15 +5,15 @@ import 'package:lesin_app/helper/size.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class DetailChatTentor extends StatefulWidget {
+class DetailChatSiswa extends StatefulWidget {
   final String idRoom;
-  DetailChatTentor({this.idRoom});
+  DetailChatSiswa({this.idRoom});
   @override
-  _DetailChatTentorState createState() => _DetailChatTentorState();
+  _DetailChatSiswaState createState() => _DetailChatSiswaState();
 }
 
-class _DetailChatTentorState extends State<DetailChatTentor> {
-  String idSiswa = '', idAkun = '';
+class _DetailChatSiswaState extends State<DetailChatSiswa> {
+  String idTentor = '', idAkun = '';
   TextEditingController pesan = new TextEditingController();
   List chat = new List();
   bool load = true;
@@ -28,7 +28,7 @@ class _DetailChatTentorState extends State<DetailChatTentor> {
   void createChat() async {
     String token = await Config.getToken();
     String tmpId = await Config.getIDAkun();
-    String idTentor = await Config.getID();
+    String idSiswa = await Config.getID();
     var body = new Map<String, dynamic>();
     body['id_siswa'] = idSiswa;
     body['id_tentor'] = idTentor;
@@ -62,7 +62,7 @@ class _DetailChatTentorState extends State<DetailChatTentor> {
       setState(() {
         load = false;
         idAkun = tmpId;
-        idSiswa = data['data'][0]['id_siswa'].toString();
+        idTentor = data['data'][0]['id_tentor'].toString();
         chat = data['data'];
       });
     } else {
@@ -93,6 +93,7 @@ class _DetailChatTentorState extends State<DetailChatTentor> {
           },
           itemCount: chat.length,
           itemBuilder: (context, int i) {
+            
             if (chat[i]['created_by'].toString() == idAkun.toString()) {
               return Container(
                 constraints: BoxConstraints(minWidth: 75, maxWidth: 150),
@@ -143,7 +144,7 @@ class _DetailChatTentorState extends State<DetailChatTentor> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        Navigator.pushNamed(context, Routes.LIST_CHAT_TENTOR);
+        Navigator.pushNamed(context, Routes.LIST_CHAT_SISWA);
       },
       child: Scaffold(
         appBar: AppBar(
@@ -176,8 +177,8 @@ class _DetailChatTentorState extends State<DetailChatTentor> {
               children: <Widget>[
                 Container(
                     constraints: BoxConstraints(
-                        minHeight: 100, maxHeight: double.infinity),
-                    margin: EdgeInsets.fromLTRB(4, 8, 4, 30),
+                        minHeight: 100, maxHeight: MediaQuery.of(context).size.height * 0.95),
+                    margin: EdgeInsets.fromLTRB(4, 4, 4, 60),
                     child: item()),
                 Stack(
                   children: [
@@ -212,7 +213,6 @@ class _DetailChatTentorState extends State<DetailChatTentor> {
                                             } else {
                                               createChat();
                                             }
-                                            print('push');
                                           },
                                           icon: Icon(
                                             Icons.send,

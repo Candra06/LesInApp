@@ -105,10 +105,8 @@ class _DialogAddDataMengajarState extends State<DialogAddDataMengajar> {
     body['mapel'] = getMapel;
     body['tentor'] = id.toString();
     print(body);
-    http.Response req = await http.post(
-        Config.ipServerAPI + 'addDataMengajar',
-        body: body,
-        headers: {'Authorization': 'Bearer $token'});
+    http.Response req = await http.post(Config.ipServerAPI + 'addDataMengajar',
+        body: body, headers: {'Authorization': 'Bearer $token'});
     if (req.statusCode == 200) {
       Navigator.pop(context);
       Config.alert(1, 'Berhasil menambahkan data');

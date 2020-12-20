@@ -96,7 +96,7 @@ class _ListRoomChatTentorState extends State<ListRoomChatTentor> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: <Widget>[
                                 Text(
-                                  Config.formattanggal(tanggal),
+                                  tanggal,
                                   // dataPenyakit[index]["nama_penyakit"],
                                   style: TextStyle(
                                       fontSize: 14,
@@ -110,13 +110,13 @@ class _ListRoomChatTentorState extends State<ListRoomChatTentor> {
                                       fontFamily: 'Airbnb',
                                       color: Config.textGrey),
                                 )),
-                                Container(
-                                    child: Text(
-                                  room[i]['status'],
-                                  style: TextStyle(
-                                      fontFamily: 'Airbnb',
-                                      color: Config.primary),
-                                )),
+                                // Container(
+                                //     child: Text(
+                                //   room[i]['status'],
+                                //   style: TextStyle(
+                                //       fontFamily: 'Airbnb',
+                                //       color: Config.primary),
+                                // )),
                               ],
                             )),
                       ],

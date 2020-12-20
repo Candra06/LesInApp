@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:lesin_app/auth/editProfil.dart';
 import 'package:lesin_app/auth/login.dart';
+import 'package:lesin_app/auth/lupaSandi.dart';
 import 'package:lesin_app/auth/register.dart';
+import 'package:lesin_app/auth/resetPassword.dart';
 import 'package:lesin_app/auth/splash.dart';
+import 'package:lesin_app/siswa/chat/detailChat.dart';
 import 'package:lesin_app/siswa/chat/listRoom.dart';
 import 'package:lesin_app/siswa/home/home.dart';
 import 'package:lesin_app/siswa/kelas/absensi.dart';
@@ -19,6 +22,7 @@ import 'package:lesin_app/siswa/tentor/listTentor.dart';
 import 'package:lesin_app/siswa/tentor/detailTentor.dart';
 import 'package:lesin_app/tentor/chat/detailChat.dart';
 import 'package:lesin_app/tentor/chat/listRoom.dart';
+import 'package:lesin_app/tentor/home/dompet.dart';
 import 'package:lesin_app/tentor/home/home.dart';
 import 'package:lesin_app/tentor/profile/dataDiri.dart';
 import 'package:lesin_app/tentor/profile/dataMengajar.dart';
@@ -58,6 +62,7 @@ class Routes {
   static const String DATA_PRESTASI = '/data_prestasi';
   static const String DETAIL_CHAT_TENTOR = '/detail_chat_tentor';
   static const String DETAIL_CHAT_SISWA = '/detail_chat_siswa';
+  static const String DOMPET = '/dompet';
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case SPLASH:
@@ -65,12 +70,21 @@ class Routes {
       case LOGIN:
         return PageTransition(
             child: LoginPage(), type: PageTransitionType.leftToRight);
+      case LUPA_SANDI:
+        return PageTransition(
+            child: LupaSandi(), type: PageTransitionType.bottomToTop);
+      case RESET_SANDI:
+        return PageTransition(
+            child: ResetPassword(idUser: settings.arguments,), type: PageTransitionType.bottomToTop);
       case REGISTER:
         return PageTransition(
             child: RegisterPage(), type: PageTransitionType.rightToLeft);
       case EDIT_PROFIL:
         return PageTransition(
             child: EditProfil(), type: PageTransitionType.rightToLeft);
+      case DOMPET:
+        return PageTransition(
+            child: DompetTentor(), type: PageTransitionType.rightToLeft);
       case EDIT_PROFIL_TENTOR:
         return PageTransition(
             child: EditProfileTentor(), type: PageTransitionType.fade);
@@ -148,8 +162,8 @@ class Routes {
             type: PageTransitionType.rightToLeft);
       case DETAIL_CHAT_SISWA:
         return PageTransition(
-            child: DetailKelasTentor(
-              idKelas: settings.arguments,
+            child: DetailChatSiswa(
+              idRoom: settings.arguments,
             ),
             type: PageTransitionType.rightToLeft);
       case ABSENSI:

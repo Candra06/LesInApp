@@ -83,7 +83,7 @@ class _ListPembayaranState extends State<ListPembayaran> {
                                 )),
                                 Container(
                                     child: Text(
-                                  pembayaran[i]['jumlah_bayar'],
+                                  'Rp. '+Config.formatuang(pembayaran[i]['jumlah_bayar']),
                                   style: TextStyle(
                                       fontFamily: 'Airbnb',
                                       color: Config.primary),

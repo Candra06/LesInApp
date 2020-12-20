@@ -353,7 +353,7 @@ class _DashboardTentorPageState extends State<DashboardTentorPage> {
                             child: InkWell(
                               onTap: () {
                                 Navigator.pushNamed(
-                                    context, Routes.LIST_PEMBAYARAN);
+                                    context, Routes.DOMPET);
                               },
                               child: Card(
                                 elevation: 3,
@@ -379,42 +379,7 @@ class _DashboardTentorPageState extends State<DashboardTentorPage> {
                               ),
                             ),
                           ),
-                          Expanded(
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.pushNamed(
-                                    context, Routes.BOOKING_KELAS);
-                              },
-                              child: Card(
-                                elevation: 3,
-                                child: Container(
-                                  width: 50,
-                                  padding: EdgeInsets.all(8),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: <Widget>[
-                                      Container(
-                                          width: 30,
-                                          child: Image.asset(
-                                              'assets/icons/booking.png')),
-                                      Container(
-                                        alignment: Alignment.center,
-                                        width: 55,
-                                        margin: EdgeInsets.only(top: 8),
-                                        child: Text('Booking Kelas',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                fontSize: 11,
-                                                color: Colors.black45,
-                                                fontFamily: 'AirbnbMedium')),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
+                         
                         ],
                       ),
                     )),

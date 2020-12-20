@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:lesin_app/helper/config.dart';
 import 'package:lesin_app/helper/fade_animation.dart';
@@ -8,88 +6,33 @@ import 'package:lesin_app/helper/size.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:shared_preferences/shared_preferences.dart';
-
-class LoginPage extends StatefulWidget {
+class LupaSandi extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _LupaSandiState createState() => _LupaSandiState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  bool _isHidden = true;
+class _LupaSandiState extends State<LupaSandi> {
   TextEditingController txEmail = new TextEditingController();
-  TextEditingController txpassword = new TextEditingController();
+  TextEditingController txtUsername = new TextEditingController();
   String _role = '';
-  void _toggleVisibility() {
-    setState(() {
-      _isHidden = !_isHidden;
-    });
-  }
 
   void login() async {
     Config.loading(context);
     var body = new Map<String, dynamic>();
-    body['username'] = txEmail.text;
-    body['password'] = txpassword.text;
+    body['email'] = txEmail.text;
+    body['username'] = txtUsername.text;
 
-    // request login
     http.Response res =
-        await http.post(Config.ipServerAPI + 'login', body: body);
+        await http.post(Config.ipServerAPI + 'requestPassword', body: body);
 
+    var respon = json.decode(res.body);
     if (res.statusCode == 200) {
-      var respon = json.decode(res.body);
-      var token = respon['data']['token'];
-
-      // request detail data
-      http.Response req = await http.post(Config.ipServerAPI + 'details',
-          headers: {'Authorization': 'Bearer $token'});
-      if (req.statusCode == 200) {
-        var data = jsonDecode(req.body);
-        var dt = data['data'];
-        String id = dt['id'].toString();
-        String idAkun = dt['id_akun'].toString();
-        String nama = dt['nama'].toString();
-        String email = dt['email'].toString();
-        String username = dt['username'].toString();
-        String telepon = dt['telepon'].toString();
-        String gender = dt['gender'].toString();
-        String tglLahir = Config.formattanggal(dt['tgl_lahir'].toString());
-        String role = dt['role'].toString();
-        String alamat = dt['alamat'].toString();
-        String hobi = dt['hobi'].toString();
-        String motto = dt['motto'].toString();
-        String rating = '';
-        if (role != 'siswa') {
-          rating = dt['rating'].toString();
-        }
-
-        SharedPreferences pref = await SharedPreferences.getInstance();
-        await pref.setString('id', id);
-        await pref.setString('token', token);
-        await pref.setString('id_akun', idAkun);
-        await pref.setString('nama', nama);
-        await pref.setString('email', email);
-        await pref.setString('username', username);
-        await pref.setString('telepon', telepon);
-        await pref.setString('gender', gender);
-        await pref.setString('tglLahir', tglLahir);
-        await pref.setString('role', role);
-        await pref.setString('alamat', alamat);
-        await pref.setString('hobi', hobi);
-        await pref.setString('motto', motto);
-        if (role != 'siswa') {
-          await pref.setString('rating', rating);
-        }
-        _role = role;
-        Navigator.pop(context);
-        showAlertDialog(context, '1');
-      } else {
-        Navigator.pop(context);
-        showAlertDialog(context, '3');
-      }
-    } else {
       Navigator.pop(context);
-      showAlertDialog(context, '2');
+      Config.alert(1, respon['data'].toString());
+      Navigator.pushNamed(context, Routes.RESET_SANDI, arguments: respon['id'].toString());
+    } else if (res.statusCode == 401) {
+      Navigator.pop(context);
+      Config.alert(0, respon['error'].toString());
     }
   }
 
@@ -137,40 +80,13 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Future<bool> _onWillPop() {
-    return showDialog(
-          context: context,
-          builder: (context) => new AlertDialog(
-            title: new Text('Apakah Anda Yakin?'),
-            content: new Text('Ingin Keluar Dari Aplikasi'),
-            actions: <Widget>[
-              new FlatButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: new Text(
-                  'Tidak',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-                ),
-              ),
-              new FlatButton(
-                onPressed: () => exit(0),
-                child: new Text(
-                  'Ya',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-                ),
-              ),
-            ],
-          ),
-        ) ??
-        false;
-  }
+  
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        _onWillPop();
+        Navigator.pushNamed(context, Routes.LOGIN);
       },
       child: Scaffold(
         body: Stack(
@@ -248,15 +164,6 @@ class _LoginPageState extends State<LoginPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
-                      child: Text(
-                        'Login',
-                        style: TextStyle(
-                            fontFamily: 'AirbnbBold',
-                            fontSize: 35,
-                            color: Config.primary),
-                      ),
-                    ),
-                    Container(
                       constraints: BoxConstraints(
                         minHeight: 100,
                         maxHeight: 300,
@@ -268,6 +175,16 @@ class _LoginPageState extends State<LoginPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.only(bottom: 16),
+                            child: Text(
+                              'Lupa Password',
+                              style: TextStyle(
+                                  fontFamily: 'AirbnbBold',
+                                  fontSize: 30,
+                                  color: Config.primary),
+                            ),
+                          ),
                           Container(
                             // margin: EdgeInsets.only(top: 8),
                             padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
@@ -290,7 +207,7 @@ class _LoginPageState extends State<LoginPage> {
                                         ),
                                         alignLabelWithHint: true,
                                         fillColor: Colors.black54,
-                                        hintText: "Username",
+                                        hintText: "Email",
                                         hintStyle: TextStyle(
                                             // color: Config.textWhite,
                                             fontStyle: FontStyle.italic,
@@ -313,54 +230,23 @@ class _LoginPageState extends State<LoginPage> {
                                 Container(
                                   child: TextFormField(
                                       style: TextStyle(color: Colors.black54),
-                                      obscureText: _isHidden,
-                                      controller: txpassword,
+                                      controller: txtUsername,
                                       decoration: InputDecoration(
                                         prefixIcon: Icon(
-                                          Icons.lock,
+                                          Icons.people_alt,
                                           color: Colors.black54,
                                         ),
                                         alignLabelWithHint: true,
-                                        hintText: "Password",
+                                        hintText: "Username",
                                         fillColor: Colors.black54,
                                         hintStyle: TextStyle(
                                             // color: Config.textWhite,
                                             fontStyle: FontStyle.italic,
                                             fontSize: 16),
                                         border: InputBorder.none,
-                                        suffixIcon: IconButton(
-                                          onPressed: _toggleVisibility,
-                                          icon: _isHidden
-                                              ? Icon(Icons.visibility_off,
-                                                  color: Colors.black45)
-                                              : Icon(Icons.visibility,
-                                                  color: Colors.black45),
-                                        ),
                                       )),
                                 )
                               ],
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.pushNamed(context, Routes.LUPA_SANDI);
-                            },
-                            child: Container(
-                              padding: EdgeInsets.fromLTRB(0, 4, 0, 4),
-                              alignment: Alignment.centerRight,
-                              child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.pushNamed(
-                                        context, Routes.LUPA_SANDI);
-                                  },
-                                  child: Text(
-                                    'Lupa Password?',
-                                    textAlign: TextAlign.right,
-                                    style: TextStyle(
-                                        fontFamily: 'AirBnb',
-                                        color: Config.primary,
-                                        fontSize: 15),
-                                  )),
                             ),
                           ),
                           Container(
@@ -372,7 +258,7 @@ class _LoginPageState extends State<LoginPage> {
                               onPressed: () {
                                 if (txEmail.text.isEmpty) {
                                   Config.alert(0, "Username tidak valid!");
-                                } else if (txpassword.text.isEmpty) {
+                                } else if (txtUsername.text.isEmpty) {
                                   Config.alert(0, "Password tidak valid!");
                                 } else {
                                   login();
@@ -381,31 +267,9 @@ class _LoginPageState extends State<LoginPage> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(5)),
                               child: Text(
-                                'LOGIN',
+                                'Reset Password'.toUpperCase(),
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontFamily: 'AirbnbBold',
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            margin: EdgeInsets.fromLTRB(0, 4, 0, 8),
-                            child: RaisedButton(
-                              padding: EdgeInsets.only(top: 13, bottom: 13),
-                              color: Config.textWhite,
-                              onPressed: () {
-                                Navigator.pushNamed(context, Routes.REGISTER);
-                              },
-                              shape: RoundedRectangleBorder(
-                                  side: BorderSide(color: Config.primary),
-                                  borderRadius: BorderRadius.circular(5)),
-                              child: Text(
-                                'DAFTAR',
-                                style: TextStyle(
-                                    color: Config.primary,
                                     fontFamily: 'AirbnbBold',
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold),

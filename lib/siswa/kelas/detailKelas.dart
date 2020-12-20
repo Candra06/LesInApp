@@ -5,7 +5,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:lesin_app/helper/size.dart';
-import 'package:lesin_app/siswa/pembayaran/dialogTransfer.dart';
+import 'package:lesin_app/siswa/pembayaran/dialogFeedback.dart';
+import 'package:lesin_app/siswa/pembayaran/dialogTf.dart';
 
 class DetailKelas extends StatefulWidget {
   final String idKelas;
@@ -17,6 +18,7 @@ class DetailKelas extends StatefulWidget {
 class _DetailKelasState extends State<DetailKelas> {
   String status = '',
       tentor = '',
+      idtentor = '',
       hpTentor = '',
       alamatTentor = '',
       tarif = '',
@@ -42,26 +44,40 @@ class _DetailKelasState extends State<DetailKelas> {
     if (res.statusCode == 200) {
       var data = json.decode(res.body);
       var mentor = data['data']['mentor'];
+      var id = data['data']['id'];
       var dataPertemuan = data['data']['pertemuan'];
       var dataKelas = data['data']['dataKelas'];
       var jmlPertemuan = dataPertemuan['jumlah_pertemuan'];
       var totalTarif = dataPertemuan['tarif'];
+      var deal = dataKelas['harga_deal'];
+      var idTntr = mentor['id'];
       setState(() {
         load = false;
         tentor = mentor['nama'];
         hpTentor = mentor['telepon'];
         alamatTentor = mentor['alamat'];
-
         hari = dataPertemuan['hari'];
         tarif = totalTarif.toString();
         pertemuan = dataPertemuan['pertemuan'].toString();
-        ttlTarif = totalTarif.toString();
+        ttlTarif = deal.toString();
         total = jmlPertemuan.toString();
-
+        idtentor = id.toString();
         mapel = dataKelas['mapel'];
         jenjang = dataKelas['mapel'];
         kelas = dataKelas['kelas'];
         status = dataKelas['status'];
+        idtentor = idTntr.toString();
+        if (pertemuan == total) {
+          Navigator.of(context).push(new MaterialPageRoute<Null>(
+              builder: (BuildContext context) {
+                return new DialogFeedback(
+                  idKelas: widget.idKelas,
+                  harga: tarif,
+                  idTentor: idtentor,
+                );
+              },
+              fullscreenDialog: true));
+        }
       });
     } else {
       Config.alert(0, 'Gagal memuat data');
@@ -237,7 +253,7 @@ class _DetailKelasState extends State<DetailKelas> {
                                   style: TextStyle(fontFamily: 'Airbnb'),
                                 ),
                                 Text(
-                                  '$tarif',
+                                 'Rp. '+Config.formatuang(tarif),
                                   style: TextStyle(
                                       fontFamily: 'AirbnbMedium',
                                       color: Config.primary),
@@ -303,7 +319,7 @@ class _DetailKelasState extends State<DetailKelas> {
                                   style: TextStyle(fontFamily: 'Airbnb'),
                                 ),
                                 Text(
-                                  '$ttlTarif',
+                                   'Rp. '+Config.formatuang(ttlTarif),
                                   style: TextStyle(
                                       fontFamily: 'AirbnbMedium',
                                       color: Config.primary),
@@ -411,13 +427,15 @@ class _DetailKelasState extends State<DetailKelas> {
                             padding: EdgeInsets.only(top: 13, bottom: 13),
                             color: Config.primary,
                             onPressed: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      DialogTransfer(
-                                        idKelas: widget.idKelas,
-                                        harga: tarif,
-                                      ));
+                                Navigator.of(context)
+                                  .push(new MaterialPageRoute<Null>(
+                                      builder: (BuildContext context) {
+                                        return new DialogTF(
+                                          idKelas: widget.idKelas,
+                                          harga: tarif,
+                                        );
+                                      },
+                                      fullscreenDialog: true));
                             },
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5)),
@@ -439,13 +457,15 @@ class _DetailKelasState extends State<DetailKelas> {
                             padding: EdgeInsets.only(top: 13, bottom: 13),
                             color: Config.primary,
                             onPressed: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      DialogTransfer(
-                                        idKelas: widget.idKelas,
-                                        harga: tarif,
-                                      ));
+                              Navigator.of(context)
+                                  .push(new MaterialPageRoute<Null>(
+                                      builder: (BuildContext context) {
+                                        return new DialogTF(
+                                          idKelas: widget.idKelas,
+                                          harga: tarif,
+                                        );
+                                      },
+                                      fullscreenDialog: true));
                             },
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5)),
@@ -471,7 +491,8 @@ class _DetailKelasState extends State<DetailKelas> {
                                   onPressed: () {
                                     // Navigator.pushNamed(context, Routes.HOMEPAGE,
                                     //     arguments: 0.toString());
-                                    Navigator.pushNamed(context, Routes.LIST_MODUL,
+                                    Navigator.pushNamed(
+                                        context, Routes.LIST_MODUL,
                                         arguments: widget.idKelas);
                                   },
                                   shape: RoundedRectangleBorder(

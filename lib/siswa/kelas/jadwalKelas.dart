@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:lesin_app/helper/config.dart';
 import 'package:lesin_app/helper/routes.dart';
 import 'package:lesin_app/helper/size.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class JadwalKelas extends StatefulWidget {
   final Map<String, dynamic> param;
@@ -12,17 +14,32 @@ class JadwalKelas extends StatefulWidget {
 
 class _JadwalKelasState extends State<JadwalKelas> {
   List<DropdownMenuItem<String>> hari;
-  String getHari = "";
+  String getHari = "", token = "", idTentor = "";
+  void getJadwal() async {
+    token = await Config.getToken();
+    idTentor = widget.param['tentor'];
+    http.Response res = await http.get(
+        Config.ipServerAPI + 'jadwal/' + idTentor,
+        headers: {'Authorization': 'Bearer $token'});
+    List tmp = new List();
+    print(res.body);
+    if (res.statusCode == 200) {
+      var data = json.decode(res.body);
+      for (var i = 0; i < data['data'].length; i++) {
+        tmp.add(data['data'][i]);
+      }
+      setState(() {
+        print(tmp);
+        listHari = tmp;
+        hari = getDropDownMenuItemsHari();
+        getHari = hari[0].value;
+      });
+    } else {}
+  }
+
   TextEditingController txtJumlah = new TextEditingController();
   List listHari = [
     'Pilih Hari',
-    'Senin',
-    'Selasa',
-    'Rabu',
-    'Kamis',
-    'Jum`at',
-    'Sabtu',
-    'Minggu'
   ];
 
   void changedDropDownItemHari(String selectedHari) {
@@ -42,8 +59,8 @@ class _JadwalKelasState extends State<JadwalKelas> {
 
   @override
   void initState() {
-    hari = getDropDownMenuItemsHari();
-    getHari = hari[0].value;
+    getJadwal();
+
     print(widget.param);
     super.initState();
   }
@@ -98,7 +115,7 @@ class _JadwalKelasState extends State<JadwalKelas> {
                         child: TextFormField(
                             style: TextStyle(color: Colors.black54),
                             obscureText: false,
-                            keyboardType: TextInputType.emailAddress,
+                            keyboardType: TextInputType.number,
                             controller: txtJumlah,
                             decoration: InputDecoration(
                               alignLabelWithHint: true,

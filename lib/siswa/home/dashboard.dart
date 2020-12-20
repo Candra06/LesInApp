@@ -220,20 +220,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         ),
                       ),
                     ),
-                    Positioned(
-                        top: 30,
-                        right: 10,
-                        child: FadeAnimation(
-                          1.2,
-                          IconButton(
-                            onPressed: () {},
-                            icon: Icon(
-                              Icons.notifications,
-                              size: 30,
-                              color: Config.textWhite,
-                            ),
-                          ),
-                        )),
+                   
                     Positioned(
                       bottom: 0,
                       right: 0,

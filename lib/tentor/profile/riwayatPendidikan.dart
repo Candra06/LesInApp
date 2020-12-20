@@ -38,6 +38,52 @@ class _RiwayatPendidikanState extends State<RiwayatPendidikan> {
     }
   }
 
+  void deleteData(String id) async {
+    Config.loading(context);
+    String token = await Config.getToken();
+    http.Response res = await http.post(
+        Config.ipServerAPI + 'deletePendidikan/$id',
+        headers: {'Authorization': 'Bearer $token'});
+    print(res.body);
+    if (res.statusCode == 200) {
+      Navigator.pop(context);
+      getData();
+      Config.alert(1, 'Berhasil Menghapus data');
+    } else {
+      Navigator.pop(context);
+      Config.alert(0, 'Gagal Menghapus data');
+    }
+  }
+
+  showAlertDialog(BuildContext context, String param) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () {
+        print(param);
+        Navigator.pop(context);
+        deleteData(param);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text('Konfirmasi'),
+      content: Text('Apakah anda ingin menghapus data tersebut?'),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   Widget item() {
     if (load) {
       return Config.newloader('Memuat data');
@@ -58,16 +104,43 @@ class _RiwayatPendidikanState extends State<RiwayatPendidikan> {
               margin: EdgeInsets.only(bottom: 8),
               child: Card(
                 child: Container(
-                  padding: EdgeInsets.all(8),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(riwayat[i]['nama_sekolah'], style: TextStyle(fontFamily: 'AirbnbMedium', color: Config.primary),),
-                      Text(riwayat[i]['jenjang_pendidikan']+' - '+riwayat[i]['status_pendidikan'], style: TextStyle(fontFamily: 'AirbnbMedium', color: Config.textBlack),),
-                      Text(riwayat[i]['tahun_lulus'], style: TextStyle(fontFamily: 'AirbnbMedium', color: Config.textGrey),),
-                    ],
-                  ),
-                ),
+                    padding: EdgeInsets.all(8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              riwayat[i]['nama_sekolah'],
+                              style: TextStyle(
+                                  fontFamily: 'AirbnbMedium',
+                                  color: Config.primary),
+                            ),
+                            Text(
+                              riwayat[i]['jenjang_pendidikan'] +
+                                  ' - ' +
+                                  riwayat[i]['status_pendidikan'],
+                              style: TextStyle(
+                                  fontFamily: 'AirbnbMedium',
+                                  color: Config.textBlack),
+                            ),
+                            Text(
+                              riwayat[i]['tahun_lulus'],
+                              style: TextStyle(
+                                  fontFamily: 'AirbnbMedium',
+                                  color: Config.textGrey),
+                            ),
+                          ],
+                        ),
+                        IconButton(
+                            icon: Icon(Icons.delete, color: Config.secondary),
+                            onPressed: () {
+                              showAlertDialog(
+                                  context, riwayat[i]['id'].toString());
+                            })
+                      ],
+                    )),
               ),
             );
           });
@@ -134,7 +207,7 @@ class _RiwayatPendidikanState extends State<RiwayatPendidikan> {
                   ),
                 ),
                 Container(
-                  constraints: BoxConstraints(minHeight: 300,maxHeight: 450),
+                  constraints: BoxConstraints(minHeight: 300, maxHeight: 450),
                   margin: EdgeInsets.fromLTRB(16, 8, 16, 8),
                   child: item(),
                 )

@@ -5,6 +5,8 @@ import 'package:lesin_app/helper/size.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class BookingKelasPage extends StatefulWidget {
   @override
   _BookingKelasPageState createState() => _BookingKelasPageState();
@@ -27,6 +29,32 @@ class _BookingKelasPageState extends State<BookingKelasPage> {
     'Matematika',
     'IPA'
   ];
+
+  void getParam() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String mapel = '', tentor = '', hari = '', pertemuan = '';
+    var tmpmapel = await pref.getString('mapel');
+    var tmptentor = pref.getString('tentor');
+    var tmphari = pref.getString('hari');
+    var tmppertemuan = pref.getString('pertemuan');
+    setState(() {
+      mapel = tmpmapel.toString();
+      tentor = tmptentor;
+      hari = tmphari;
+      pertemuan = tmppertemuan;
+    });
+    var parameter = {
+      'mapel': mapel,
+      'tentor': tentor,
+      'hari': hari,
+      'pertemuan': pertemuan,
+    };
+    print('mapel ' + mapel);
+    if (mapel != '0') {
+      Navigator.pushNamed(context, Routes.NEGO_TARIF, arguments: parameter);
+    }
+    // print(param);
+  }
 
   void changedDropDownItemJenjang(String selectedJenjang) {
     setState(() {
@@ -161,6 +189,7 @@ class _BookingKelasPageState extends State<BookingKelasPage> {
 
   @override
   void initState() {
+    getParam();
     jenjang = getDropDownMenuItemsJenjang();
     getJenjang = jenjang[0].value;
 

@@ -14,7 +14,7 @@ class _LogPembayaranState extends State<LogPembayaran> {
   List pembayaran = new List();
   bool load = true;
   String nama = '';
-  String keterangan = '';
+  String keterangan = '', sisa = '', deal = '', jumlah = '';
 
   void getList() async {
     String id = widget.idKelas;
@@ -25,11 +25,14 @@ class _LogPembayaranState extends State<LogPembayaran> {
     String token = await Config.getToken();
     http.Response req = await http.get(Config.ipServerAPI + 'logPembayaran/$id',
         headers: {'Authorization': 'Bearer $token'});
-    
+
     if (req.statusCode == 200) {
       var data = json.decode(req.body);
       setState(() {
         load = false;
+        jumlah = data['terbayar'].toString();
+        sisa = data['sisa'].toString();
+        deal = data['deal'].toString();
         pembayaran = data['data'];
       });
     } else {
@@ -87,7 +90,7 @@ class _LogPembayaranState extends State<LogPembayaran> {
                                 )),
                                 Container(
                                     child: Text(
-                                  pembayaran[i]['jumlah_bayar'],
+                                  'Rp. '+Config.formatuang(pembayaran[i]['jumlah_bayar']),
                                   style: TextStyle(
                                       fontFamily: 'Airbnb',
                                       color: Config.primary),
@@ -166,7 +169,75 @@ class _LogPembayaranState extends State<LogPembayaran> {
       ),
       body: Container(
         margin: EdgeInsets.fromLTRB(16, 8, 16, 0),
-        child: item(),
+        child: Column(
+          children: [
+            Card(
+              child: Container(
+                padding: EdgeInsets.all(8),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Haga Deal',
+                          style: TextStyle(fontFamily: 'Airbnb'),
+                        ),
+                        Text(
+                          'Rp. ' + Config.formatuang(deal),
+                          style: TextStyle(
+                              fontFamily: 'AirbnbMedium',
+                              color: Config.primary),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Terbayar',
+                          style: TextStyle(fontFamily: 'Airbnb'),
+                        ),
+                        Text(
+                          'Rp. ' + Config.formatuang(jumlah),
+                          style: TextStyle(
+                              fontFamily: 'AirbnbMedium',
+                              color: Config.primary),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Sisa',
+                          style: TextStyle(fontFamily: 'Airbnb'),
+                        ),
+                        Text(
+                          int.parse(sisa) < 0 ? 'Rp. 0' : 'Rp. ' + Config.formatuang(sisa),
+                          style: TextStyle(
+                              fontFamily: 'AirbnbMedium',
+                              color: Config.primary),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Container(
+                margin: EdgeInsets.only(top: 8, bottom: 8, left: 4),
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Riwayat Pembayaran',
+                  style: TextStyle(fontFamily: 'AirbnbMedium'),
+                )),
+            Container(
+              constraints: BoxConstraints(minHeight: 200, maxHeight: 470),
+              child: item(),
+            )
+          ],
+        ),
       ),
     );
   }

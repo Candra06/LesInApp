@@ -31,8 +31,13 @@ class _DialogConfirmState extends State<DialogConfirm>
     body['tanggal'] = txtTglMulai.text;
     body['mapel'] = widget.data['mapel'];
     body['tarif'] = txtHarga.text;
-    http.Response req = await http.post(Config.ipServerAPI + 'tambahKelas', body: body,
-        headers: {'Authorization': 'Bearer $token'});
+    String deal =
+        (int.parse(txtHarga.text) * int.parse(widget.data['pertemuan']))
+            .toString();
+    body['harga_deal'] = deal;
+    print(body);
+    http.Response req = await http.post(Config.ipServerAPI + 'tambahKelas',
+        body: body, headers: {'Authorization': 'Bearer $token'});
 
     if (req.statusCode == 200) {
       Navigator.pop(context);
@@ -87,9 +92,14 @@ class _DialogConfirmState extends State<DialogConfirm>
             ),
             child: Column(
               children: [
-                Text('Konfirmasi Pemesanan', style: TextStyle(fontFamily: 'AirbnbBold', fontSize: 18),),
-                SizedBox(height: 20,),
-                formInput(txtHarga, 'Harga Deal'),
+                Text(
+                  'Konfirmasi Pemesanan',
+                  style: TextStyle(fontFamily: 'AirbnbBold', fontSize: 18),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                formInputType(txtHarga, 'Harga Deal', TextInputType.number),
                 Container(
                   margin: EdgeInsets.only(top: 8),
                   padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
@@ -114,7 +124,7 @@ class _DialogConfirmState extends State<DialogConfirm>
                                       context: context,
                                       currentDate: DateTime.now(),
                                       initialDate: DateTime.now(),
-                                      firstDate: DateTime(1970),
+                                      firstDate: DateTime.now(),
                                       lastDate: DateTime(2022),
                                     ).then((date) {
                                       tglMulai = date;

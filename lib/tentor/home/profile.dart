@@ -402,7 +402,7 @@ class _SideProfileTentorState extends State<SideProfileTentor> {
                     width: MediaQuery.of(context).size.width,
                     height: 55,
                     child: new Row(children: <Widget>[
-                     new Flexible(
+                      new Flexible(
                           child: Container(
                         margin: EdgeInsets.fromLTRB(10, 8, 10, 8),
                         child: Column(
@@ -450,66 +450,66 @@ class _SideProfileTentorState extends State<SideProfileTentor> {
               ),
             ),
           ),
-          FadeAnimation(
-            1.6,
-            GestureDetector(
-              onTap: () {
-                Navigator.pushNamed(context, Routes.DATA_MENGAJAR);
-              },
-              child: Container(
-                margin: EdgeInsets.only(left: 16, right: 16),
-                child: Card(
-                  child: new Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 55,
-                    child: new Row(children: <Widget>[
-                     new Flexible(
-                          child: Container(
-                        margin: EdgeInsets.fromLTRB(10, 8, 10, 8),
-                        child: Column(
-                          children: [
-                            Container(
-                                width: double.infinity,
-                                child: Text(
-                                  'Data Mengajar',
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontFamily: 'AirbnbBold',
-                                      color: Config.primary),
-                                )),
-                            Container(
-                                width: double.infinity,
-                                child: Text(
-                                  'Tambah dan hapus Data Mengajar',
-                                  style: TextStyle(
-                                      fontFamily: 'AirbnbReguler',
-                                      color: Config.textGrey),
-                                )),
-                          ],
-                        ),
-                      )),
-                      new ConstrainedBox(
-                        constraints: const BoxConstraints(
-                          minWidth: 25,
-                          maxWidth: 110,
-                        ),
-                        child: Container(
-                            child: new IconButton(
-                          icon: Icon(
-                            Icons.arrow_forward_ios,
-                            color: Colors.black38,
-                          ),
-                          onPressed: () {
-                            Navigator.pushNamed(context, Routes.DATA_MENGAJAR);
-                          },
-                        )),
-                      ),
-                    ]),
-                  ),
-                ),
-              ),
-            ),
-          ),
+          // FadeAnimation(
+          //   1.6,
+          //   GestureDetector(
+          //     onTap: () {
+          //       Navigator.pushNamed(context, Routes.DATA_MENGAJAR);
+          //     },
+          //     child: Container(
+          //       margin: EdgeInsets.only(left: 16, right: 16),
+          //       child: Card(
+          //         child: new Container(
+          //           width: MediaQuery.of(context).size.width,
+          //           height: 55,
+          //           child: new Row(children: <Widget>[
+          //            new Flexible(
+          //                 child: Container(
+          //               margin: EdgeInsets.fromLTRB(10, 8, 10, 8),
+          //               child: Column(
+          //                 children: [
+          //                   Container(
+          //                       width: double.infinity,
+          //                       child: Text(
+          //                         'Data Mengajar',
+          //                         style: TextStyle(
+          //                             fontSize: 15,
+          //                             fontFamily: 'AirbnbBold',
+          //                             color: Config.primary),
+          //                       )),
+          //                   Container(
+          //                       width: double.infinity,
+          //                       child: Text(
+          //                         'Tambah dan hapus Data Mengajar',
+          //                         style: TextStyle(
+          //                             fontFamily: 'AirbnbReguler',
+          //                             color: Config.textGrey),
+          //                       )),
+          //                 ],
+          //               ),
+          //             )),
+          //             new ConstrainedBox(
+          //               constraints: const BoxConstraints(
+          //                 minWidth: 25,
+          //                 maxWidth: 110,
+          //               ),
+          //               child: Container(
+          //                   child: new IconButton(
+          //                 icon: Icon(
+          //                   Icons.arrow_forward_ios,
+          //                   color: Colors.black38,
+          //                 ),
+          //                 onPressed: () {
+          //                   Navigator.pushNamed(context, Routes.DATA_MENGAJAR);
+          //                 },
+          //               )),
+          //             ),
+          //           ]),
+          //         ),
+          //       ),
+          //     ),
+          //   ),
+          // ),
           FadeAnimation(
             1.6,
             GestureDetector(
@@ -523,7 +523,7 @@ class _SideProfileTentorState extends State<SideProfileTentor> {
                     width: MediaQuery.of(context).size.width,
                     height: 55,
                     child: new Row(children: <Widget>[
-                     new Flexible(
+                      new Flexible(
                           child: Container(
                         margin: EdgeInsets.fromLTRB(10, 8, 10, 8),
                         child: Column(
