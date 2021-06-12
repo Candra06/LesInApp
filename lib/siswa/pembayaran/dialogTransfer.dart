@@ -16,39 +16,39 @@ class DialogTransfer extends StatefulWidget {
   _DialogTransferState createState() => _DialogTransferState();
 }
 
-class _DialogTransferState extends State<DialogTransfer>
-    with TickerProviderStateMixin {
+class _DialogTransferState extends State<DialogTransfer> with TickerProviderStateMixin {
   TextEditingController txtKeterangan = new TextEditingController();
   TextEditingController txtTglMulai = new TextEditingController();
   TextEditingController txtJumlah = new TextEditingController();
   DateTime tglMulai;
   String fileName = '';
-  Future<File> foto;
-  String base64Image;
+  Future<PickedFile> file, foto;
   File tmpFile;
-  Future<File> file;
 
-  getImage(context) async {
+  Future getImage(context) async {
+    final picker = ImagePicker();
     final imgSrc = await showDialog<ImageSource>(
-        context: context,
-        builder: (context) => AlertDialog(
-              title: Text("Pilih sumber gambar"),
-              actions: <Widget>[
-                MaterialButton(
-                  child: Text("Kamera"),
-                  onPressed: () => Navigator.pop(context, ImageSource.camera),
-                  // onPressed: () => Navigator.pop(context, ImageSource.camera),
-                ),
-                MaterialButton(
-                  child: Text("Galeri"),
-                  onPressed: () => Navigator.pop(context, ImageSource.gallery),
-                )
-              ],
-            ));
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Pilih sumber gambar"),
+        actions: <Widget>[
+          MaterialButton(
+            child: Text("Kamera"),
+            onPressed: () => Navigator.pop(context, ImageSource.camera),
+            // onPressed: () => Navigator.pop(context, ImageSource.camera),
+          ),
+          MaterialButton(
+            child: Text("Galeri"),
+            onPressed: () => Navigator.pop(context, ImageSource.gallery),
+          )
+        ],
+      ),
+    );
 
     if (imgSrc != null) {
       setState(() {
-        foto = ImagePicker.pickImage(source: imgSrc);
+        foto = picker.getImage(source: imgSrc);
+        // xfoto = ImagePicker.platform.pickImage(source: imgSrc);
         String image = foto.toString();
         print('fotonya ' + image);
         print(foto);
@@ -57,64 +57,38 @@ class _DialogTransferState extends State<DialogTransfer>
   }
 
   Widget showImage() {
-    return Container(
-      child: FutureBuilder<File>(
-        future: foto,
-        builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
-          if (snapshot.connectionState == ConnectionState.done &&
-              snapshot.data != null) {
-            tmpFile = snapshot.data;
-            fileName = tmpFile.path.split("/").last;
-            base64Image = base64Encode(snapshot.data.readAsBytesSync());
-            return Column(
-              children: [
-                // Container(
-                //   width: MediaQuery.of(context).size.width,
-                //   height: 200,
-                //   child: Image.file(snapshot.data, fit: BoxFit.contain),
-                // ),
-                Container(
-                    alignment: Alignment.center,
-                    width: MediaQuery.of(context).size.width,
-                    child: Text(
-                      fileName,
-                      maxLines: 3,
-                    )),
-              ],
-            );
-            // return Container(
-            //   margin: EdgeInsets.all(8),
-            //   child: Image.file(snapshot.data, fit: BoxFit.fill),
-            // );
-          } else if (snapshot.error != null) {
-            return const Text(
-              'Error saat memilih foto!',
-              textAlign: TextAlign.center,
-            );
-          } else {
-            return Column(
-              children: <Widget>[Text('Pilih bukti transfer')],
-            );
-          }
-        },
-      ),
-    );
+    // tmpFile = snapshot.data;
+    fileName = foto.toString();
+    if (foto == null) {
+      return Container(
+        margin: EdgeInsets.only(top: 5, left: 8),
+        child: Column(
+          children: <Widget>[Text('Pilih bukti transfer')],
+        ),
+      );
+    } else {
+      return Container(
+          margin: EdgeInsets.only(top: 5, left: 8),
+          alignment: Alignment.centerLeft,
+          child: Text(
+            fileName,
+            maxLines: 1,
+            overflow: TextOverflow.clip,
+            softWrap: false,
+          ));
+    }
   }
 
   void simpanLaporan() async {
     Config.loading(context);
     String token = await Config.getToken();
-    Map<String, String> headers = {
-      'Authorization': 'Bearer ' + token,
-      'Accept': 'application/json'
-    };
+    Map<String, String> headers = {'Authorization': 'Bearer ' + token, 'Accept': 'application/json'};
     print(tmpFile.path);
     final imageUploadRequest = http.MultipartRequest(
       'POST',
       Uri.parse(Config.ipServerAPI + 'pembayaran'),
     );
-    imageUploadRequest.files
-        .add(await http.MultipartFile.fromPath('bukti_tf', tmpFile.path));
+    imageUploadRequest.files.add(await http.MultipartFile.fromPath('bukti_tf', tmpFile.path));
     imageUploadRequest.headers.addAll(headers);
     imageUploadRequest.fields['id_kelas'] = widget.idKelas;
     imageUploadRequest.fields['harga_deal'] = widget.harga;
@@ -216,16 +190,10 @@ class _DialogTransferState extends State<DialogTransfer>
                                       lastDate: DateTime(2022),
                                     ).then((date) {
                                       tglMulai = date;
-                                      String tanggal = tglMulai
-                                          .toString()
-                                          .replaceAll("00:00:00.000", "");
+                                      String tanggal = tglMulai.toString().replaceAll("00:00:00.000", "");
                                       print(tanggal);
-                                      print(Config.formattanggal(
-                                          tanggal.toString()));
-                                      txtTglMulai.text = Config.formattanggal(
-                                          tglMulai
-                                              .toString()
-                                              .replaceAll("00:00:00.000", ""));
+                                      print(Config.formattanggal(tanggal.toString()));
+                                      txtTglMulai.text = Config.formattanggal(tglMulai.toString().replaceAll("00:00:00.000", ""));
                                     });
                                   },
                                 ),
@@ -258,10 +226,7 @@ class _DialogTransferState extends State<DialogTransfer>
                             },
                             child: Text(
                               'Pilih Gambar',
-                              style: TextStyle(
-                                  color: Config.primary,
-                                  fontSize: 14,
-                                  fontFamily: 'AirbnbMedium'),
+                              style: TextStyle(color: Config.primary, fontSize: 14, fontFamily: 'AirbnbMedium'),
                             ),
                           ),
                         )
@@ -290,15 +255,10 @@ class _DialogTransferState extends State<DialogTransfer>
                               simpanLaporan();
                             }
                           },
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5)),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                           child: Text(
                             'Unggah',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'AirbnbBold',
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold),
+                            style: TextStyle(color: Colors.white, fontFamily: 'AirbnbBold', fontSize: 18, fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),

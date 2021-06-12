@@ -17,7 +17,8 @@ class DataDiri extends StatefulWidget {
 
 class _DataDiriState extends State<DataDiri> {
   bool _isHidden = true, visible = true, hide = true;
-  String token = '', rating = '';
+  String token = '';
+  int rating = 0;
   TextEditingController txEmail = new TextEditingController();
   TextEditingController txpassword = new TextEditingController();
   TextEditingController txUsername = new TextEditingController();
@@ -53,11 +54,13 @@ class _DataDiriState extends State<DataDiri> {
       } on PlatformException catch (e) {
         if (e.code == 'PERMISSION_DENIED') {
           error = 'please grant permission';
-          print(error);
+          Config.alert(0, error);
+          // print(error);
         }
         if (e.code == 'PERMISSION_DENIED_NEVER_ASK') {
           error = 'permission denied- please enable it from app settings';
-          print(error);
+          Config.alert(0, error);
+          // print(error);
         }
         myLocation = null;
       }
@@ -67,7 +70,7 @@ class _DataDiriState extends State<DataDiri> {
         longitude = double.parse(lokasi[1]);
       });
     } else {
-      print('kosong');
+      Config.alert(0, 'Gagal mendapatkan lokasi');
     }
     myLat = latitude.toString();
     myLong = longitude.toString();
@@ -132,7 +135,9 @@ class _DataDiriState extends State<DataDiri> {
       txUsername.text = tmpUsername;
       txEmail.text = tmpEmail;
       token = tmpToken;
-      rating = tmpRating;
+      double rate = double.parse(tmpRating.toString());
+      rating = rate.round();
+
       tanggal = tmpTglLahir.toString();
       ctglLahir.text = Config.formattanggal(tmpTglLahir);
       // tglLahir = DateTime.parse(tmpTglLahir.toString());
@@ -157,6 +162,7 @@ class _DataDiriState extends State<DataDiri> {
     body['motto'] = txMotto.text;
     body['lattitude'] = myLat;
     body['longitude'] = myLong;
+    // print(body);
     http.Response up = await http.post(Config.ipServerAPI + 'updateUser',
         body: body, headers: {'Authorization': 'Bearer $token'});
     if (up.statusCode == 200) {
@@ -226,7 +232,7 @@ class _DataDiriState extends State<DataDiri> {
                         fontSize: 16,
                         color: Config.primary),
                   ),
-                  if (rating == '0') ...{
+                  if (rating == 0) ...{
                     Icon(
                       Icons.star,
                       color: Colors.yellow[800],
@@ -239,7 +245,7 @@ class _DataDiriState extends State<DataDiri> {
                           color: Config.primary),
                     ),
                   } else ...{
-                    for (var i = 0; i < int.parse(rating.toString()); i++) ...{
+                    for (var i = 0; i < rating; i++) ...{
                       Icon(
                         Icons.star,
                         color: Colors.yellow[800],

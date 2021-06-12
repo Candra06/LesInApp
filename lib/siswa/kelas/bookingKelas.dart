@@ -228,7 +228,7 @@ class _BookingKelasPageState extends State<BookingKelasPage> {
             child: Column(
               children: [
                 Text(
-                  'Silahkan isi data informasi kelas , lalu temukan tentor disekitar anda',
+                  'Silahkan isi data informasi kelas , lalu temukan tutor disekitar anda',
                   style: TextStyle(fontFamily: 'Airbnb'),
                 ),
                 Container(
@@ -343,7 +343,7 @@ class _BookingKelasPageState extends State<BookingKelasPage> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5)),
                     child: Text(
-                      'Cari Tentor',
+                      'Cari Tutor',
                       style: TextStyle(
                           color: Colors.white,
                           fontFamily: 'AirbnbBold',

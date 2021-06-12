@@ -156,7 +156,7 @@ class _DetailKelasState extends State<DetailKelas> {
                         margin: EdgeInsets.only(top: 8, bottom: 8),
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Tentor',
+                          'Tutor',
                           style: TextStyle(
                               fontFamily: 'AirbnbBold', color: Config.primary),
                           textAlign: TextAlign.right,
@@ -170,7 +170,7 @@ class _DetailKelasState extends State<DetailKelas> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  'Nama Tentor',
+                                  'Nama Tutor',
                                   style: TextStyle(fontFamily: 'Airbnb'),
                                 ),
                                 Text(

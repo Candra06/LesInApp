@@ -33,16 +33,15 @@ class _LoginPageState extends State<LoginPage> {
     body['password'] = txpassword.text;
 
     // request login
-    http.Response res =
-        await http.post(Config.ipServerAPI + 'login', body: body);
-
+    http.Response res = await http.post(Config.ipServerAPI + 'login', body: body);
+    print(res.statusCode);
     if (res.statusCode == 200) {
       var respon = json.decode(res.body);
       var token = respon['data']['token'];
 
       // request detail data
-      http.Response req = await http.post(Config.ipServerAPI + 'details',
-          headers: {'Authorization': 'Bearer $token'});
+      http.Response req = await http.post(Config.ipServerAPI + 'details', headers: {'Authorization': 'Bearer $token'});
+
       if (req.statusCode == 200) {
         var data = jsonDecode(req.body);
         var dt = data['data'];
@@ -102,8 +101,7 @@ class _LoginPageState extends State<LoginPage> {
           if (_role == 'siswa') {
             Navigator.pushNamed(context, Routes.HOME, arguments: 0.toString());
           } else {
-            Navigator.pushNamed(context, Routes.HOME_TENTOR,
-                arguments: 0.toString());
+            Navigator.pushNamed(context, Routes.HOME_TENTOR, arguments: 0.toString());
           }
         } else {
           Navigator.pop(context);
@@ -148,16 +146,14 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: () => Navigator.of(context).pop(false),
                 child: new Text(
                   'Tidak',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
                 ),
               ),
               new FlatButton(
                 onPressed: () => exit(0),
                 child: new Text(
                   'Ya',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
                 ),
               ),
             ],
@@ -185,10 +181,7 @@ class _LoginPageState extends State<LoginPage> {
                   Container(
                     height: displayWidth(context) * 0.69,
                     width: displayWidth(context) * 0.69,
-                    decoration: BoxDecoration(
-                        color: Config.secondary,
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(displayWidth(context) * 0.5))),
+                    decoration: BoxDecoration(color: Config.secondary, borderRadius: BorderRadius.all(Radius.circular(displayWidth(context) * 0.5))),
                   ),
                 )),
 
@@ -201,10 +194,7 @@ class _LoginPageState extends State<LoginPage> {
                   Container(
                     height: displayWidth(context) * 0.45,
                     width: displayWidth(context) * 0.45,
-                    decoration: BoxDecoration(
-                        color: Config.primary.withOpacity(0.7),
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(displayWidth(context) * 0.5))),
+                    decoration: BoxDecoration(color: Config.primary.withOpacity(0.7), borderRadius: BorderRadius.all(Radius.circular(displayWidth(context) * 0.5))),
                   ),
                 )),
 
@@ -217,10 +207,7 @@ class _LoginPageState extends State<LoginPage> {
                   Container(
                     height: displayWidth(context) * 0.69,
                     width: displayWidth(context) * 0.69,
-                    decoration: BoxDecoration(
-                        color: Config.secondary,
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(displayWidth(context) * 0.5))),
+                    decoration: BoxDecoration(color: Config.secondary, borderRadius: BorderRadius.all(Radius.circular(displayWidth(context) * 0.5))),
                   ),
                 )),
 
@@ -233,10 +220,7 @@ class _LoginPageState extends State<LoginPage> {
                   Container(
                     height: displayWidth(context) * 0.3,
                     width: displayWidth(context) * 0.3,
-                    decoration: BoxDecoration(
-                        color: Config.primary.withOpacity(0.7),
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(displayWidth(context) * 0.5))),
+                    decoration: BoxDecoration(color: Config.primary.withOpacity(0.7), borderRadius: BorderRadius.all(Radius.circular(displayWidth(context) * 0.5))),
                   ),
                 )),
 
@@ -250,10 +234,7 @@ class _LoginPageState extends State<LoginPage> {
                     Container(
                       child: Text(
                         'Login',
-                        style: TextStyle(
-                            fontFamily: 'AirbnbBold',
-                            fontSize: 35,
-                            color: Config.primary),
+                        style: TextStyle(fontFamily: 'AirbnbBold', fontSize: 35, color: Config.primary),
                       ),
                     ),
                     Container(
@@ -330,11 +311,7 @@ class _LoginPageState extends State<LoginPage> {
                                         border: InputBorder.none,
                                         suffixIcon: IconButton(
                                           onPressed: _toggleVisibility,
-                                          icon: _isHidden
-                                              ? Icon(Icons.visibility_off,
-                                                  color: Colors.black45)
-                                              : Icon(Icons.visibility,
-                                                  color: Colors.black45),
+                                          icon: _isHidden ? Icon(Icons.visibility_off, color: Colors.black45) : Icon(Icons.visibility, color: Colors.black45),
                                         ),
                                       )),
                                 )
@@ -350,16 +327,12 @@ class _LoginPageState extends State<LoginPage> {
                               alignment: Alignment.centerRight,
                               child: GestureDetector(
                                   onTap: () {
-                                    Navigator.pushNamed(
-                                        context, Routes.LUPA_SANDI);
+                                    Navigator.pushNamed(context, Routes.LUPA_SANDI);
                                   },
                                   child: Text(
                                     'Lupa Password?',
                                     textAlign: TextAlign.right,
-                                    style: TextStyle(
-                                        fontFamily: 'AirBnb',
-                                        color: Config.primary,
-                                        fontSize: 15),
+                                    style: TextStyle(fontFamily: 'AirBnb', color: Config.primary, fontSize: 15),
                                   )),
                             ),
                           ),
@@ -378,15 +351,10 @@ class _LoginPageState extends State<LoginPage> {
                                   login();
                                 }
                               },
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5)),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                               child: Text(
                                 'LOGIN',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: 'AirbnbBold',
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold),
+                                style: TextStyle(color: Colors.white, fontFamily: 'AirbnbBold', fontSize: 18, fontWeight: FontWeight.bold),
                               ),
                             ),
                           ),
@@ -399,16 +367,10 @@ class _LoginPageState extends State<LoginPage> {
                               onPressed: () {
                                 Navigator.pushNamed(context, Routes.REGISTER);
                               },
-                              shape: RoundedRectangleBorder(
-                                  side: BorderSide(color: Config.primary),
-                                  borderRadius: BorderRadius.circular(5)),
+                              shape: RoundedRectangleBorder(side: BorderSide(color: Config.primary), borderRadius: BorderRadius.circular(5)),
                               child: Text(
                                 'DAFTAR',
-                                style: TextStyle(
-                                    color: Config.primary,
-                                    fontFamily: 'AirbnbBold',
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold),
+                                style: TextStyle(color: Config.primary, fontFamily: 'AirbnbBold', fontSize: 18, fontWeight: FontWeight.bold),
                               ),
                             ),
                           ),

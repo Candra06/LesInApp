@@ -44,6 +44,7 @@ class _ListTentorState extends State<ListTentor> {
     http.Response res = await http.get(
         Config.ipServerAPI + 'getTentor/$idMapel',
         headers: {'Authorization': 'Bearer $token'});
+    
     if (res.statusCode == 200) {
       var data = json.decode(res.body);
       print(data['data'].length);

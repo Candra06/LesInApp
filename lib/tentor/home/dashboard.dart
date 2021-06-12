@@ -212,7 +212,7 @@ class _DashboardTentorPageState extends State<DashboardTentorPage> {
                               ),
                             ),
                             new Text(
-                              'Selamat datang di Les.in'.toUpperCase(),
+                              'Selamat datang'.toUpperCase(),
                               style: new TextStyle(
                                 fontFamily: 'AirbnbBold',
                                 fontSize: 16,
@@ -223,20 +223,7 @@ class _DashboardTentorPageState extends State<DashboardTentorPage> {
                         ),
                       ),
                     ),
-                    Positioned(
-                        top: 30,
-                        right: 10,
-                        child: FadeAnimation(
-                          1.2,
-                          IconButton(
-                            onPressed: () {},
-                            icon: Icon(
-                              Icons.notifications,
-                              size: 30,
-                              color: Config.textWhite,
-                            ),
-                          ),
-                        )),
+                   
                     Positioned(
                       bottom: 0,
                       right: 0,

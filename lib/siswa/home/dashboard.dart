@@ -46,9 +46,7 @@ class _DashboardPageState extends State<DashboardPage> {
       String error;
       try {
         myLocation = await location.getLocation();
-        _currentLatLong = myLocation.latitude.toString() +
-            ', ' +
-            myLocation.longitude.toString();
+        _currentLatLong = myLocation.latitude.toString() + ', ' + myLocation.longitude.toString();
       } on PlatformException catch (e) {
         if (e.code == 'PERMISSION_DENIED') {
           error = 'please grant permission';
@@ -80,9 +78,8 @@ class _DashboardPageState extends State<DashboardPage> {
     setState(() {
       load = true;
     });
-    http.Response res = await http.get(Config.ipServerAPI + 'listJadwal',
-        headers: {'Authorization': 'Bearer $tokenn'});
-    
+    http.Response res = await http.get(Config.ipServerAPI + 'listJadwal', headers: {'Authorization': 'Bearer $tokenn'});
+    print(res.body);
     if (res.statusCode == 200) {
       var data = json.decode(res.body);
       setState(() {
@@ -115,46 +112,43 @@ class _DashboardPageState extends State<DashboardPage> {
       );
     } else {
       return ListView.builder(
-        itemCount: jadwal.isEmpty ? 0 : jadwal.length,
-        itemBuilder: (BuildContext context, int i) {
-        return Card(
-          child: Container(
-              margin: EdgeInsets.all(8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                      child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+          itemCount: jadwal.isEmpty ? 0 : jadwal.length,
+          itemBuilder: (BuildContext context, int i) {
+            return Card(
+              child: Container(
+                  margin: EdgeInsets.all(8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text(
-                        jadwal[i]['nama'],
-                        style:
-                            TextStyle(fontSize: 16, fontFamily: 'AirbnbMedium'),
-                      ),
                       Container(
-                          margin: EdgeInsets.only(top: 4),
-                          child: Text(
-                            jadwal[i]['mapel'],
-                            style: TextStyle(
-                                fontFamily: 'Airbnb', color: Config.primary),
-                          )),
+                          child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            jadwal[i]['nama'],
+                            style: TextStyle(fontSize: 16, fontFamily: 'AirbnbMedium'),
+                          ),
+                          Container(
+                              margin: EdgeInsets.only(top: 4),
+                              child: Text(
+                                jadwal[i]['mapel'],
+                                style: TextStyle(fontFamily: 'Airbnb', color: Config.primary),
+                              )),
+                        ],
+                      )),
+                      Container(
+                          child: Row(
+                        children: <Widget>[
+                          Text(
+                            jadwal[i]['pertemuan'].toString() + '/' + jadwal[i]['jumlah_pertemuan'].toString(),
+                            style: TextStyle(fontFamily: 'AirbnbMedium', color: Config.primary),
+                          )
+                        ],
+                      ))
                     ],
                   )),
-                  Container(
-                      child: Row(
-                    children: <Widget>[
-                      Text(
-                        jadwal[i]['pertemuan'].toString()+'/'+jadwal[i]['jumlah_pertemuan'].toString(),
-                        style: TextStyle(
-                            fontFamily: 'AirbnbMedium', color: Config.primary),
-                      )
-                    ],
-                  ))
-                ],
-              )),
-        );
-      });
+            );
+          });
     }
   }
 
@@ -185,15 +179,9 @@ class _DashboardPageState extends State<DashboardPage> {
                         padding: EdgeInsets.only(right: 16, left: 16, top: 38),
                         height: 225,
                         decoration: new BoxDecoration(
-                            borderRadius: new BorderRadius.only(
-                                bottomLeft: Radius.circular(35),
-                                bottomRight: Radius.circular(35)),
+                            borderRadius: new BorderRadius.only(bottomLeft: Radius.circular(35), bottomRight: Radius.circular(35)),
                             gradient: new LinearGradient(
-                              colors: <Color>[
-                                Config.primary,
-                                Config.secondary,
-                                Config.darkPrimary
-                              ],
+                              colors: <Color>[Config.primary, Config.secondary, Config.darkPrimary],
                               end: Alignment(1.5, 0.0),
                             )),
                         child: new Column(
@@ -209,7 +197,7 @@ class _DashboardPageState extends State<DashboardPage> {
                               ),
                             ),
                             new Text(
-                              'Selamat datang di Les.in'.toUpperCase(),
+                              'Selamat datang'.toUpperCase(),
                               style: new TextStyle(
                                 fontFamily: 'AirbnbBold',
                                 fontSize: 16,
@@ -220,7 +208,6 @@ class _DashboardPageState extends State<DashboardPage> {
                         ),
                       ),
                     ),
-                   
                     Positioned(
                       bottom: 0,
                       right: 0,
@@ -238,18 +225,14 @@ class _DashboardPageState extends State<DashboardPage> {
                                   Container(
                                     padding: EdgeInsets.all(8),
                                     child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: <Widget>[
                                         Container(
                                             width: 90.0,
                                             height: 90.0,
                                             decoration: new BoxDecoration(
                                               shape: BoxShape.circle,
-                                              image: new DecorationImage(
-                                                  fit: BoxFit.fill,
-                                                  image: AssetImage(
-                                                      'assets/icons/graduate.png')),
+                                              image: new DecorationImage(fit: BoxFit.fill, image: AssetImage('assets/icons/graduate.png')),
                                             ))
                                       ],
                                     ),
@@ -261,26 +244,14 @@ class _DashboardPageState extends State<DashboardPage> {
                                   Container(
                                     padding: EdgeInsets.all(8),
                                     child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: <Widget>[
                                         Container(
-                                          child: Text('$nama',
-                                              style: TextStyle(
-                                                  fontFamily: 'AirbnbMedium',
-                                                  color: Config.textWhite,
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold)),
+                                          child: Text('$nama', style: TextStyle(fontFamily: 'AirbnbMedium', color: Config.textWhite, fontSize: 18, fontWeight: FontWeight.bold)),
                                         ),
                                         Container(
-                                          child: Text('$username',
-                                              style: TextStyle(
-                                                  fontFamily: 'AirbnbMedium',
-                                                  color: Config.textWhite,
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold)),
+                                          child: Text('$username', style: TextStyle(fontFamily: 'AirbnbMedium', color: Config.textWhite, fontSize: 18, fontWeight: FontWeight.bold)),
                                         ),
                                       ],
                                     ),
@@ -300,7 +271,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 onTap: () {
                   Navigator.pushNamed(context, Routes.LIST_CHAT_SISWA);
                 },
-                              child: new Container(
+                child: new Container(
                     width: displayWidth(context),
                     margin: EdgeInsets.only(right: 16, left: 16, top: 16),
                     height: 100,
@@ -317,16 +288,10 @@ class _DashboardPageState extends State<DashboardPage> {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
-                                    Container(
-                                        width: 30,
-                                        child:
-                                            Image.asset('assets/icons/chat.png')),
+                                    Container(width: 30, child: Image.asset('assets/icons/chat.png')),
                                     Container(
                                       margin: EdgeInsets.only(top: 8),
-                                      child: Text('Chat',
-                                          style: TextStyle(
-                                              color: Colors.black45,
-                                              fontFamily: 'AirbnbMedium')),
+                                      child: Text('Chat', style: TextStyle(color: Colors.black45, fontFamily: 'AirbnbMedium')),
                                     ),
                                   ],
                                 ),
@@ -336,8 +301,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           Expanded(
                             child: InkWell(
                               onTap: () {
-                                Navigator.pushNamed(
-                                    context, Routes.LIST_PEMBAYARAN);
+                                Navigator.pushNamed(context, Routes.LIST_PEMBAYARAN);
                               },
                               child: Card(
                                 elevation: 3,
@@ -346,16 +310,10 @@ class _DashboardPageState extends State<DashboardPage> {
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
-                                      Container(
-                                          width: 30,
-                                          child: Image.asset(
-                                              'assets/icons/credit-card.png')),
+                                      Container(width: 30, child: Image.asset('assets/icons/credit-card.png')),
                                       Container(
                                         margin: EdgeInsets.only(top: 8),
-                                        child: Text('Pembayaran',
-                                            style: TextStyle(
-                                                color: Colors.black45,
-                                                fontFamily: 'AirbnbMedium')),
+                                        child: Text('Pembayaran', style: TextStyle(color: Colors.black45, fontFamily: 'AirbnbMedium')),
                                       ),
                                     ],
                                   ),
@@ -366,8 +324,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           Expanded(
                             child: InkWell(
                               onTap: () {
-                                Navigator.pushNamed(
-                                    context, Routes.BOOKING_KELAS);
+                                Navigator.pushNamed(context, Routes.BOOKING_KELAS);
                               },
                               child: Card(
                                 elevation: 3,
@@ -378,20 +335,12 @@ class _DashboardPageState extends State<DashboardPage> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: <Widget>[
-                                      Container(
-                                          width: 30,
-                                          child: Image.asset(
-                                              'assets/icons/booking.png')),
+                                      Container(width: 30, child: Image.asset('assets/icons/booking.png')),
                                       Container(
                                         alignment: Alignment.center,
                                         width: 55,
                                         margin: EdgeInsets.only(top: 8),
-                                        child: Text('Booking Kelas',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                fontSize: 11,
-                                                color: Colors.black45,
-                                                fontFamily: 'AirbnbMedium')),
+                                        child: Text('Booking Kelas', textAlign: TextAlign.center, style: TextStyle(fontSize: 11, color: Colors.black45, fontFamily: 'AirbnbMedium')),
                                       ),
                                     ],
                                   ),
@@ -417,10 +366,7 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
             FadeAnimation(
               1.7,
-              Container(
-                  constraints: BoxConstraints(minHeight: 200, maxHeight: 300),
-                  margin: EdgeInsets.fromLTRB(16, 8, 16, 8),
-                  child: item()),
+              Container(constraints: BoxConstraints(minHeight: 200, maxHeight: 300), margin: EdgeInsets.fromLTRB(16, 8, 16, 8), child: item()),
             )
           ],
         ),

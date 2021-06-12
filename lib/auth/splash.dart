@@ -12,16 +12,14 @@ class SplashScreen extends StatefulWidget {
   _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen>
-    with TickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMixin {
   AnimationController controller;
   Animation<double> animation;
 
   @override
   void initState() {
     super.initState();
-    controller = AnimationController(
-        duration: const Duration(milliseconds: 2000), vsync: this, value: 0.1);
+    controller = AnimationController(duration: const Duration(milliseconds: 2000), vsync: this, value: 0.1);
     animation = CurvedAnimation(parent: controller, curve: Curves.bounceInOut);
 
     controller.forward();
@@ -68,10 +66,7 @@ class _SplashScreenState extends State<SplashScreen>
                 Container(
                   height: displayWidth(context) * 0.69,
                   width: displayWidth(context) * 0.69,
-                  decoration: BoxDecoration(
-                      color: Config.secondary,
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(displayWidth(context) * 0.5))),
+                  decoration: BoxDecoration(color: Config.secondary, borderRadius: BorderRadius.all(Radius.circular(displayWidth(context) * 0.5))),
                 ),
               )),
 
@@ -84,10 +79,7 @@ class _SplashScreenState extends State<SplashScreen>
                 Container(
                   height: displayWidth(context) * 0.45,
                   width: displayWidth(context) * 0.45,
-                  decoration: BoxDecoration(
-                      color: Config.primary.withOpacity(0.7),
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(displayWidth(context) * 0.5))),
+                  decoration: BoxDecoration(color: Config.primary.withOpacity(0.7), borderRadius: BorderRadius.all(Radius.circular(displayWidth(context) * 0.5))),
                 ),
               )),
 
@@ -100,10 +92,7 @@ class _SplashScreenState extends State<SplashScreen>
                 Container(
                   height: displayWidth(context) * 0.69,
                   width: displayWidth(context) * 0.69,
-                  decoration: BoxDecoration(
-                      color: Config.secondary,
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(displayWidth(context) * 0.5))),
+                  decoration: BoxDecoration(color: Config.secondary, borderRadius: BorderRadius.all(Radius.circular(displayWidth(context) * 0.5))),
                 ),
               )),
 
@@ -116,10 +105,7 @@ class _SplashScreenState extends State<SplashScreen>
                 Container(
                   height: displayWidth(context) * 0.45,
                   width: displayWidth(context) * 0.45,
-                  decoration: BoxDecoration(
-                      color: Config.primary.withOpacity(0.7),
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(displayWidth(context) * 0.5))),
+                  decoration: BoxDecoration(color: Config.primary.withOpacity(0.7), borderRadius: BorderRadius.all(Radius.circular(displayWidth(context) * 0.5))),
                 ),
               )),
 
@@ -127,8 +113,13 @@ class _SplashScreenState extends State<SplashScreen>
             scale: animation,
             child: Container(
               margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
-              child: Center(
-                child: Image.asset('assets/images/logo.png'),
+              child: Container(
+                child: Center(
+                  child: Image.asset(
+                    'assets/images/logo.png',
+                    height: 150,
+                  ),
+                ),
               ),
             ),
           )
