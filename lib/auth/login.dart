@@ -34,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
 
     // request login
     http.Response res = await http.post(Config.ipServerAPI + 'login', body: body);
-    print(res.statusCode);
+    print(res.body);
     if (res.statusCode == 200) {
       var respon = json.decode(res.body);
       var token = respon['data']['token'];

@@ -10,13 +10,7 @@ class SideProfileTentor extends StatefulWidget {
 }
 
 class _SideProfileTentorState extends State<SideProfileTentor> {
-  String nama = '',
-      email = '',
-      username = '',
-      telepon = '',
-      tglLahir = '',
-      gender = '',
-      alamat;
+  String nama = '', email = '', username = '', telepon = '', tglLahir = '', gender = '', alamat;
   void getInfo() async {
     var tmpNama = await Config.getNama();
     var tmpEmail = await Config.getEmail();
@@ -58,17 +52,8 @@ class _SideProfileTentorState extends State<SideProfileTentor> {
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(30),
-                      bottomRight: Radius.circular(30)),
-                  gradient: LinearGradient(
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                      colors: <Color>[
-                        Config.primary,
-                        Config.secondary,
-                        Config.darkPrimary
-                      ])),
+                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30)),
+                  gradient: LinearGradient(begin: Alignment.centerLeft, end: Alignment.centerRight, colors: <Color>[Config.primary, Config.secondary, Config.darkPrimary])),
               //menampilkan detail profile akun
               child: Column(children: <Widget>[
                 Container(
@@ -86,10 +71,7 @@ class _SideProfileTentorState extends State<SideProfileTentor> {
                     margin: EdgeInsets.only(bottom: 10),
                     child: Text(
                       '$nama',
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
                     )),
                 Container(
                     margin: EdgeInsets.only(bottom: 15),
@@ -112,28 +94,20 @@ class _SideProfileTentorState extends State<SideProfileTentor> {
                   child: new Container(
                     width: MediaQuery.of(context).size.width,
                     height: 30,
-                    child: new Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          new Flexible(
-                              child: Container(
-                                  child: Text(
-                            'Nama',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'Airbnb',
-                                color: Config.textGrey),
-                          ))),
-                          new Flexible(
-                              child: Container(
-                                  child: Text(
-                            '$nama',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'AirbnbBold',
-                                color: Config.primary),
-                          ))),
-                        ]),
+                    child: new Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
+                      new Flexible(
+                          child: Container(
+                              child: Text(
+                        'Nama',
+                        style: TextStyle(fontSize: 14, fontFamily: 'Airbnb', color: Config.textGrey),
+                      ))),
+                      new Flexible(
+                          child: Container(
+                              child: Text(
+                        '$nama',
+                        style: TextStyle(fontSize: 14, fontFamily: 'AirbnbBold', color: Config.primary),
+                      ))),
+                    ]),
                   ),
                 ),
                 GestureDetector(
@@ -143,29 +117,21 @@ class _SideProfileTentorState extends State<SideProfileTentor> {
                   child: new Container(
                     width: MediaQuery.of(context).size.width,
                     height: 35,
-                    child: new Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          new Flexible(
-                              child: Container(
-                                  child: Text(
-                            'Tanggal Lahir',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'Airbnb',
-                                color: Config.textGrey),
-                          ))),
-                          new Flexible(
-                              child: Container(
-                                  child: Text(
-                            Config.formattanggal(tglLahir),
-                            textAlign: TextAlign.right,
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'AirbnbBold',
-                                color: Config.primary),
-                          ))),
-                        ]),
+                    child: new Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
+                      new Flexible(
+                          child: Container(
+                              child: Text(
+                        'Tanggal Lahir',
+                        style: TextStyle(fontSize: 14, fontFamily: 'Airbnb', color: Config.textGrey),
+                      ))),
+                      new Flexible(
+                          child: Container(
+                              child: Text(
+                        Config.formattanggal(tglLahir),
+                        textAlign: TextAlign.right,
+                        style: TextStyle(fontSize: 14, fontFamily: 'AirbnbBold', color: Config.primary),
+                      ))),
+                    ]),
                   ),
                 ),
                 GestureDetector(
@@ -175,28 +141,20 @@ class _SideProfileTentorState extends State<SideProfileTentor> {
                   child: new Container(
                     width: MediaQuery.of(context).size.width,
                     height: 30,
-                    child: new Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          new Flexible(
-                              child: Container(
-                                  child: Text(
-                            'Jenis Kelamin',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'Airbnb',
-                                color: Config.textGrey),
-                          ))),
-                          new Flexible(
-                              child: Container(
-                                  child: Text(
-                            '$gender',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'AirbnbBold',
-                                color: Config.primary),
-                          ))),
-                        ]),
+                    child: new Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
+                      new Flexible(
+                          child: Container(
+                              child: Text(
+                        'Jenis Kelamin',
+                        style: TextStyle(fontSize: 14, fontFamily: 'Airbnb', color: Config.textGrey),
+                      ))),
+                      new Flexible(
+                          child: Container(
+                              child: Text(
+                        '$gender',
+                        style: TextStyle(fontSize: 14, fontFamily: 'AirbnbBold', color: Config.primary),
+                      ))),
+                    ]),
                   ),
                 ),
                 GestureDetector(
@@ -206,28 +164,20 @@ class _SideProfileTentorState extends State<SideProfileTentor> {
                   child: new Container(
                     width: MediaQuery.of(context).size.width,
                     height: 30,
-                    child: new Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          new Flexible(
-                              child: Container(
-                                  child: Text(
-                            'Nomor HP',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'Airbnb',
-                                color: Config.textGrey),
-                          ))),
-                          new Flexible(
-                              child: Container(
-                                  child: Text(
-                            '$telepon',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'AirbnbBold',
-                                color: Config.primary),
-                          ))),
-                        ]),
+                    child: new Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
+                      new Flexible(
+                          child: Container(
+                              child: Text(
+                        'Nomor HP',
+                        style: TextStyle(fontSize: 14, fontFamily: 'Airbnb', color: Config.textGrey),
+                      ))),
+                      new Flexible(
+                          child: Container(
+                              child: Text(
+                        '$telepon',
+                        style: TextStyle(fontSize: 14, fontFamily: 'AirbnbBold', color: Config.primary),
+                      ))),
+                    ]),
                   ),
                 ),
                 GestureDetector(
@@ -237,28 +187,20 @@ class _SideProfileTentorState extends State<SideProfileTentor> {
                   child: new Container(
                     width: MediaQuery.of(context).size.width,
                     height: 30,
-                    child: new Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          new Flexible(
-                              child: Container(
-                                  child: Text(
-                            'Username',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'Airbnb',
-                                color: Config.textGrey),
-                          ))),
-                          new Flexible(
-                              child: Container(
-                                  child: Text(
-                            '$username',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'AirbnbBold',
-                                color: Config.primary),
-                          ))),
-                        ]),
+                    child: new Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
+                      new Flexible(
+                          child: Container(
+                              child: Text(
+                        'Username',
+                        style: TextStyle(fontSize: 14, fontFamily: 'Airbnb', color: Config.textGrey),
+                      ))),
+                      new Flexible(
+                          child: Container(
+                              child: Text(
+                        '$username',
+                        style: TextStyle(fontSize: 14, fontFamily: 'AirbnbBold', color: Config.primary),
+                      ))),
+                    ]),
                   ),
                 ),
                 GestureDetector(
@@ -268,29 +210,21 @@ class _SideProfileTentorState extends State<SideProfileTentor> {
                   child: new Container(
                     width: MediaQuery.of(context).size.width,
                     height: 35,
-                    child: new Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          new Flexible(
-                              child: Container(
-                                  child: Text(
-                            'Email',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'Airbnb',
-                                color: Config.textGrey),
-                          ))),
-                          new Flexible(
-                              child: Container(
-                                  child: Text(
-                            '$email',
-                            textAlign: TextAlign.right,
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'AirbnbBold',
-                                color: Config.primary),
-                          ))),
-                        ]),
+                    child: new Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
+                      new Flexible(
+                          child: Container(
+                              child: Text(
+                        'Email',
+                        style: TextStyle(fontSize: 14, fontFamily: 'Airbnb', color: Config.textGrey),
+                      ))),
+                      new Flexible(
+                          child: Container(
+                              child: Text(
+                        '$email',
+                        textAlign: TextAlign.right,
+                        style: TextStyle(fontSize: 14, fontFamily: 'AirbnbBold', color: Config.primary),
+                      ))),
+                    ]),
                   ),
                 ),
                 GestureDetector(
@@ -300,30 +234,22 @@ class _SideProfileTentorState extends State<SideProfileTentor> {
                   child: new Container(
                     width: MediaQuery.of(context).size.width,
                     height: 40,
-                    child: new Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          new Flexible(
-                              child: Container(
-                                  child: Text(
-                            'Alamat',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'Airbnb',
-                                color: Config.textGrey),
-                          ))),
-                          new Flexible(
-                              child: Container(
-                                  alignment: Alignment.centerRight,
-                                  child: Text(
-                                    '$alamat',
-                                    textAlign: TextAlign.right,
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        fontFamily: 'AirbnbBold',
-                                        color: Config.primary),
-                                  ))),
-                        ]),
+                    child: new Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
+                      new Flexible(
+                          child: Container(
+                              child: Text(
+                        'Alamat',
+                        style: TextStyle(fontSize: 14, fontFamily: 'Airbnb', color: Config.textGrey),
+                      ))),
+                      new Flexible(
+                          child: Container(
+                              alignment: Alignment.centerRight,
+                              child: Text(
+                                '$alamat',
+                                textAlign: TextAlign.right,
+                                style: TextStyle(fontSize: 14, fontFamily: 'AirbnbBold', color: Config.primary),
+                              ))),
+                    ]),
                   ),
                 ),
               ]),
@@ -351,18 +277,13 @@ class _SideProfileTentorState extends State<SideProfileTentor> {
                                 width: double.infinity,
                                 child: Text(
                                   'Ubah Data Diri',
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontFamily: 'AirbnbBold',
-                                      color: Config.primary),
+                                  style: TextStyle(fontSize: 15, fontFamily: 'AirbnbBold', color: Config.primary),
                                 )),
                             Container(
                                 width: double.infinity,
                                 child: Text(
                                   'Ubah Data Diri',
-                                  style: TextStyle(
-                                      fontFamily: 'AirbnbReguler',
-                                      color: Config.textGrey),
+                                  style: TextStyle(fontFamily: 'AirbnbReguler', color: Config.textGrey),
                                 )),
                           ],
                         ),
@@ -411,18 +332,13 @@ class _SideProfileTentorState extends State<SideProfileTentor> {
                                 width: double.infinity,
                                 child: Text(
                                   'Riwayat Pendidikan',
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontFamily: 'AirbnbBold',
-                                      color: Config.primary),
+                                  style: TextStyle(fontSize: 15, fontFamily: 'AirbnbBold', color: Config.primary),
                                 )),
                             Container(
                                 width: double.infinity,
                                 child: Text(
                                   'Tambah data riwayat pendidikan',
-                                  style: TextStyle(
-                                      fontFamily: 'AirbnbReguler',
-                                      color: Config.textGrey),
+                                  style: TextStyle(fontFamily: 'AirbnbReguler', color: Config.textGrey),
                                 )),
                           ],
                         ),
@@ -439,8 +355,7 @@ class _SideProfileTentorState extends State<SideProfileTentor> {
                             color: Colors.black38,
                           ),
                           onPressed: () {
-                            Navigator.pushNamed(
-                                context, Routes.RIWAYAT_PENDIDIKAN);
+                            Navigator.pushNamed(context, Routes.RIWAYAT_PENDIDIKAN);
                           },
                         )),
                       ),
@@ -450,66 +365,61 @@ class _SideProfileTentorState extends State<SideProfileTentor> {
               ),
             ),
           ),
-          // FadeAnimation(
-          //   1.6,
-          //   GestureDetector(
-          //     onTap: () {
-          //       Navigator.pushNamed(context, Routes.DATA_MENGAJAR);
-          //     },
-          //     child: Container(
-          //       margin: EdgeInsets.only(left: 16, right: 16),
-          //       child: Card(
-          //         child: new Container(
-          //           width: MediaQuery.of(context).size.width,
-          //           height: 55,
-          //           child: new Row(children: <Widget>[
-          //            new Flexible(
-          //                 child: Container(
-          //               margin: EdgeInsets.fromLTRB(10, 8, 10, 8),
-          //               child: Column(
-          //                 children: [
-          //                   Container(
-          //                       width: double.infinity,
-          //                       child: Text(
-          //                         'Data Mengajar',
-          //                         style: TextStyle(
-          //                             fontSize: 15,
-          //                             fontFamily: 'AirbnbBold',
-          //                             color: Config.primary),
-          //                       )),
-          //                   Container(
-          //                       width: double.infinity,
-          //                       child: Text(
-          //                         'Tambah dan hapus Data Mengajar',
-          //                         style: TextStyle(
-          //                             fontFamily: 'AirbnbReguler',
-          //                             color: Config.textGrey),
-          //                       )),
-          //                 ],
-          //               ),
-          //             )),
-          //             new ConstrainedBox(
-          //               constraints: const BoxConstraints(
-          //                 minWidth: 25,
-          //                 maxWidth: 110,
-          //               ),
-          //               child: Container(
-          //                   child: new IconButton(
-          //                 icon: Icon(
-          //                   Icons.arrow_forward_ios,
-          //                   color: Colors.black38,
-          //                 ),
-          //                 onPressed: () {
-          //                   Navigator.pushNamed(context, Routes.DATA_MENGAJAR);
-          //                 },
-          //               )),
-          //             ),
-          //           ]),
-          //         ),
-          //       ),
-          //     ),
-          //   ),
-          // ),
+          FadeAnimation(
+            1.6,
+            GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, Routes.DATA_MENGAJAR);
+              },
+              child: Container(
+                margin: EdgeInsets.only(left: 16, right: 16),
+                child: Card(
+                  child: new Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 55,
+                    child: new Row(children: <Widget>[
+                      new Flexible(
+                          child: Container(
+                        margin: EdgeInsets.fromLTRB(10, 8, 10, 8),
+                        child: Column(
+                          children: [
+                            Container(
+                                width: double.infinity,
+                                child: Text(
+                                  'Data Mengajar',
+                                  style: TextStyle(fontSize: 15, fontFamily: 'AirbnbBold', color: Config.primary),
+                                )),
+                            Container(
+                                width: double.infinity,
+                                child: Text(
+                                  'Tambah dan hapus Data Mengajar',
+                                  style: TextStyle(fontFamily: 'AirbnbReguler', color: Config.textGrey),
+                                )),
+                          ],
+                        ),
+                      )),
+                      new ConstrainedBox(
+                        constraints: const BoxConstraints(
+                          minWidth: 25,
+                          maxWidth: 110,
+                        ),
+                        child: Container(
+                            child: new IconButton(
+                          icon: Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.black38,
+                          ),
+                          onPressed: () {
+                            Navigator.pushNamed(context, Routes.DATA_MENGAJAR);
+                          },
+                        )),
+                      ),
+                    ]),
+                  ),
+                ),
+              ),
+            ),
+          ),
           FadeAnimation(
             1.6,
             GestureDetector(
@@ -532,18 +442,13 @@ class _SideProfileTentorState extends State<SideProfileTentor> {
                                 width: double.infinity,
                                 child: Text(
                                   'Data Prestasi',
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontFamily: 'AirbnbBold',
-                                      color: Config.primary),
+                                  style: TextStyle(fontSize: 15, fontFamily: 'AirbnbBold', color: Config.primary),
                                 )),
                             Container(
                                 width: double.infinity,
                                 child: Text(
                                   'Tambah dan hapus Data Prestasi',
-                                  style: TextStyle(
-                                      fontFamily: 'AirbnbReguler',
-                                      color: Config.textGrey),
+                                  style: TextStyle(fontFamily: 'AirbnbReguler', color: Config.textGrey),
                                 )),
                           ],
                         ),
@@ -560,7 +465,7 @@ class _SideProfileTentorState extends State<SideProfileTentor> {
                             color: Colors.black38,
                           ),
                           onPressed: () {
-                            Navigator.pushNamed(context, Routes.DATA_MENGAJAR);
+                            Navigator.pushNamed(context, Routes.DATA_PRESTASI);
                           },
                         )),
                       ),
@@ -592,18 +497,13 @@ class _SideProfileTentorState extends State<SideProfileTentor> {
                                 width: double.infinity,
                                 child: Text(
                                   'LogOut',
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontFamily: 'AirbnbBold',
-                                      color: Config.primary),
+                                  style: TextStyle(fontSize: 15, fontFamily: 'AirbnbBold', color: Config.primary),
                                 )),
                             Container(
                                 width: double.infinity,
                                 child: Text(
                                   'Keluar dari akun yang sedang aktif',
-                                  style: TextStyle(
-                                      fontFamily: 'AirbnbReguler',
-                                      color: Config.textGrey),
+                                  style: TextStyle(fontFamily: 'AirbnbReguler', color: Config.textGrey),
                                 )),
                           ],
                         ),

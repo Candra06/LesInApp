@@ -46,9 +46,7 @@ class _DashboardTentorPageState extends State<DashboardTentorPage> {
       String error;
       try {
         myLocation = await location.getLocation();
-        _currentLatLong = myLocation.latitude.toString() +
-            ', ' +
-            myLocation.longitude.toString();
+        _currentLatLong = myLocation.latitude.toString() + ', ' + myLocation.longitude.toString();
       } on PlatformException catch (e) {
         if (e.code == 'PERMISSION_DENIED') {
           error = 'please grant permission';
@@ -80,8 +78,7 @@ class _DashboardTentorPageState extends State<DashboardTentorPage> {
     setState(() {
       load = true;
     });
-    http.Response res = await http.get(Config.ipServerAPI + 'listJadwal',
-        headers: {'Authorization': 'Bearer $tokenn'});
+    http.Response res = await http.get(Config.ipServerAPI + 'listJadwal', headers: {'Authorization': 'Bearer $tokenn'});
     if (res.statusCode == 200) {
       var data = json.decode(res.body);
       setState(() {
@@ -128,16 +125,13 @@ class _DashboardTentorPageState extends State<DashboardTentorPage> {
                         children: <Widget>[
                           Text(
                             jadwal[i]['nama'],
-                            style: TextStyle(
-                                fontSize: 16, fontFamily: 'AirbnbMedium'),
+                            style: TextStyle(fontSize: 16, fontFamily: 'AirbnbMedium'),
                           ),
                           Container(
                               margin: EdgeInsets.only(top: 4),
                               child: Text(
                                 jadwal[i]['mapel'],
-                                style: TextStyle(
-                                    fontFamily: 'Airbnb',
-                                    color: Config.primary),
+                                style: TextStyle(fontFamily: 'Airbnb', color: Config.primary),
                               )),
                         ],
                       )),
@@ -145,12 +139,8 @@ class _DashboardTentorPageState extends State<DashboardTentorPage> {
                           child: Row(
                         children: <Widget>[
                           Text(
-                            jadwal[i]['pertemuan'].toString() +
-                                '/' +
-                                jadwal[i]['jumlah_pertemuan'].toString(),
-                            style: TextStyle(
-                                fontFamily: 'AirbnbMedium',
-                                color: Config.primary),
+                            jadwal[i]['pertemuan'].toString() + '/' + jadwal[i]['jumlah_pertemuan'].toString(),
+                            style: TextStyle(fontFamily: 'AirbnbMedium', color: Config.primary),
                           )
                         ],
                       ))
@@ -188,15 +178,9 @@ class _DashboardTentorPageState extends State<DashboardTentorPage> {
                         padding: EdgeInsets.only(right: 16, left: 16, top: 38),
                         height: 225,
                         decoration: new BoxDecoration(
-                            borderRadius: new BorderRadius.only(
-                                bottomLeft: Radius.circular(35),
-                                bottomRight: Radius.circular(35)),
+                            borderRadius: new BorderRadius.only(bottomLeft: Radius.circular(35), bottomRight: Radius.circular(35)),
                             gradient: new LinearGradient(
-                              colors: <Color>[
-                                Config.primary,
-                                Config.secondary,
-                                Config.darkPrimary
-                              ],
+                              colors: <Color>[Config.primary, Config.secondary, Config.darkPrimary],
                               end: Alignment(1.5, 0.0),
                             )),
                         child: new Column(
@@ -223,7 +207,6 @@ class _DashboardTentorPageState extends State<DashboardTentorPage> {
                         ),
                       ),
                     ),
-                   
                     Positioned(
                       bottom: 0,
                       right: 0,
@@ -241,18 +224,14 @@ class _DashboardTentorPageState extends State<DashboardTentorPage> {
                                   Container(
                                     padding: EdgeInsets.all(8),
                                     child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: <Widget>[
                                         Container(
                                             width: 90.0,
                                             height: 90.0,
                                             decoration: new BoxDecoration(
                                               shape: BoxShape.circle,
-                                              image: new DecorationImage(
-                                                  fit: BoxFit.fill,
-                                                  image: AssetImage(
-                                                      'assets/icons/graduate.png')),
+                                              image: new DecorationImage(fit: BoxFit.fill, image: AssetImage('assets/icons/graduate.png')),
                                             ))
                                       ],
                                     ),
@@ -264,26 +243,14 @@ class _DashboardTentorPageState extends State<DashboardTentorPage> {
                                   Container(
                                     padding: EdgeInsets.all(8),
                                     child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: <Widget>[
                                         Container(
-                                          child: Text('$nama',
-                                              style: TextStyle(
-                                                  fontFamily: 'AirbnbMedium',
-                                                  color: Config.textWhite,
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold)),
+                                          child: Text('$nama', style: TextStyle(fontFamily: 'AirbnbMedium', color: Config.textWhite, fontSize: 16, fontWeight: FontWeight.bold)),
                                         ),
                                         Container(
-                                          child: Text('$username',
-                                              style: TextStyle(
-                                                  fontFamily: 'AirbnbMedium',
-                                                  color: Config.textWhite,
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold)),
+                                          child: Text('$username', style: TextStyle(fontFamily: 'AirbnbMedium', color: Config.textWhite, fontSize: 14, fontWeight: FontWeight.bold)),
                                         ),
                                       ],
                                     ),
@@ -303,7 +270,7 @@ class _DashboardTentorPageState extends State<DashboardTentorPage> {
                 onTap: () {
                   Navigator.pushNamed(context, Routes.LIST_CHAT_TENTOR);
                 },
-                              child: new Container(
+                child: new Container(
                     width: displayWidth(context),
                     margin: EdgeInsets.only(right: 16, left: 16, top: 16),
                     height: 100,
@@ -320,16 +287,10 @@ class _DashboardTentorPageState extends State<DashboardTentorPage> {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
-                                    Container(
-                                        width: 30,
-                                        child:
-                                            Image.asset('assets/icons/chat.png')),
+                                    Container(width: 30, child: Image.asset('assets/icons/chat.png')),
                                     Container(
                                       margin: EdgeInsets.only(top: 8),
-                                      child: Text('Chat',
-                                          style: TextStyle(
-                                              color: Colors.black45,
-                                              fontFamily: 'AirbnbMedium')),
+                                      child: Text('Chat', style: TextStyle(color: Colors.black45, fontFamily: 'AirbnbMedium')),
                                     ),
                                   ],
                                 ),
@@ -339,8 +300,7 @@ class _DashboardTentorPageState extends State<DashboardTentorPage> {
                           Expanded(
                             child: InkWell(
                               onTap: () {
-                                Navigator.pushNamed(
-                                    context, Routes.DOMPET);
+                                Navigator.pushNamed(context, Routes.DOMPET);
                               },
                               child: Card(
                                 elevation: 3,
@@ -349,16 +309,10 @@ class _DashboardTentorPageState extends State<DashboardTentorPage> {
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
-                                      Container(
-                                          width: 30,
-                                          child: Image.asset(
-                                              'assets/icons/wallet.png')),
+                                      Container(width: 30, child: Image.asset('assets/icons/wallet.png')),
                                       Container(
                                         margin: EdgeInsets.only(top: 8),
-                                        child: Text('Dompet',
-                                            style: TextStyle(
-                                                color: Colors.black45,
-                                                fontFamily: 'AirbnbMedium')),
+                                        child: Text('Dompet', style: TextStyle(color: Colors.black45, fontFamily: 'AirbnbMedium')),
                                       ),
                                     ],
                                   ),
@@ -366,7 +320,6 @@ class _DashboardTentorPageState extends State<DashboardTentorPage> {
                               ),
                             ),
                           ),
-                         
                         ],
                       ),
                     )),
@@ -385,10 +338,7 @@ class _DashboardTentorPageState extends State<DashboardTentorPage> {
             ),
             FadeAnimation(
               1.7,
-              Container(
-                  constraints: BoxConstraints(minHeight: 200, maxHeight: 300),
-                  margin: EdgeInsets.fromLTRB(16, 8, 16, 8),
-                  child: item()),
+              Container(constraints: BoxConstraints(minHeight: 200, maxHeight: 300), margin: EdgeInsets.fromLTRB(16, 8, 16, 8), child: item()),
             )
           ],
         ),

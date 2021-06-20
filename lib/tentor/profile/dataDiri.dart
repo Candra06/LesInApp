@@ -48,9 +48,7 @@ class _DataDiriState extends State<DataDiri> {
       String error;
       try {
         myLocation = await location.getLocation();
-        _currentLatLong = myLocation.latitude.toString() +
-            ', ' +
-            myLocation.longitude.toString();
+        _currentLatLong = myLocation.latitude.toString() + ', ' + myLocation.longitude.toString();
       } on PlatformException catch (e) {
         if (e.code == 'PERMISSION_DENIED') {
           error = 'please grant permission';
@@ -162,9 +160,8 @@ class _DataDiriState extends State<DataDiri> {
     body['motto'] = txMotto.text;
     body['lattitude'] = myLat;
     body['longitude'] = myLong;
-    // print(body);
-    http.Response up = await http.post(Config.ipServerAPI + 'updateUser',
-        body: body, headers: {'Authorization': 'Bearer $token'});
+    print(body);
+    http.Response up = await http.post(Config.ipServerAPI + 'updateUser', body: body, headers: {'Authorization': 'Bearer $token'});
     if (up.statusCode == 200) {
       Navigator.pop(context);
       Config.alert(1, 'Berhasil mengubah profil');
@@ -201,17 +198,8 @@ class _DataDiriState extends State<DataDiri> {
         backgroundColor: Colors.transparent,
         flexibleSpace: Container(
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20)),
-              gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: <Color>[
-                    Config.primary,
-                    Config.secondary,
-                    Config.darkPrimary
-                  ])),
+              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+              gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: <Color>[Config.primary, Config.secondary, Config.darkPrimary])),
         ),
         title: Text(
           'Edit Profil',
@@ -227,10 +215,7 @@ class _DataDiriState extends State<DataDiri> {
                 children: [
                   Text(
                     'Rating : ',
-                    style: TextStyle(
-                        fontFamily: 'AirbnbMedium',
-                        fontSize: 16,
-                        color: Config.primary),
+                    style: TextStyle(fontFamily: 'AirbnbMedium', fontSize: 16, color: Config.primary),
                   ),
                   if (rating == 0) ...{
                     Icon(
@@ -239,10 +224,7 @@ class _DataDiriState extends State<DataDiri> {
                     ),
                     Text(
                       '0',
-                      style: TextStyle(
-                          fontFamily: 'AirbnbMedium',
-                          fontSize: 16,
-                          color: Config.primary),
+                      style: TextStyle(fontFamily: 'AirbnbMedium', fontSize: 16, color: Config.primary),
                     ),
                   } else ...{
                     for (var i = 0; i < rating; i++) ...{
@@ -284,8 +266,7 @@ class _DataDiriState extends State<DataDiri> {
                       items: gender,
                       onChanged: changedDropDownItemGender,
                       value: getGender,
-                      style: TextStyle(
-                          color: Config.textBlack, fontFamily: 'Airbnb'),
+                      style: TextStyle(color: Config.textBlack, fontFamily: 'Airbnb'),
                     ),
                   ),
                 ),
@@ -319,9 +300,7 @@ class _DataDiriState extends State<DataDiri> {
                                 ).then((date) {
                                   tglLahir = date;
 
-                                  ctglLahir.text = Config.formattanggal(tglLahir
-                                      .toString()
-                                      .replaceAll("00:00:00.000", ""));
+                                  ctglLahir.text = Config.formattanggal(tglLahir.toString().replaceAll("00:00:00.000", ""));
                                 });
                               },
                             ),
@@ -364,11 +343,7 @@ class _DataDiriState extends State<DataDiri> {
                             border: InputBorder.none,
                             suffixIcon: IconButton(
                               onPressed: _toggleVisibility,
-                              icon: _isHidden
-                                  ? Icon(Icons.visibility_off,
-                                      color: Colors.black45)
-                                  : Icon(Icons.visibility,
-                                      color: Colors.black45),
+                              icon: _isHidden ? Icon(Icons.visibility_off, color: Colors.black45) : Icon(Icons.visibility, color: Colors.black45),
                             ),
                           )),
                     )
@@ -400,19 +375,14 @@ class _DataDiriState extends State<DataDiri> {
                             border: InputBorder.none,
                             suffixIcon: IconButton(
                               onPressed: _toggleVisibility2,
-                              icon: visible
-                                  ? Icon(Icons.visibility_off,
-                                      color: Colors.black45)
-                                  : Icon(Icons.visibility,
-                                      color: Colors.black45),
+                              icon: visible ? Icon(Icons.visibility_off, color: Colors.black45) : Icon(Icons.visibility, color: Colors.black45),
                             ),
                           )),
                     )
                   ],
                 ),
               ),
-              Text(
-                  'Pastikan anda berada pada lokasi anda tinggal saat ini untuk mendapatkan kordinat lokasi anda saat ini.'),
+              Text('Pastikan anda berada pada lokasi anda tinggal saat ini untuk mendapatkan kordinat lokasi anda saat ini.'),
               Container(
                 width: MediaQuery.of(context).size.width,
                 margin: EdgeInsets.fromLTRB(0, 4, 0, 8),
@@ -434,15 +404,10 @@ class _DataDiriState extends State<DataDiri> {
                       });
                     }
                   },
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                   child: Text(
                     'Dapatkan Lokasi',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'AirbnbBold',
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
+                    style: TextStyle(color: Colors.white, fontFamily: 'AirbnbBold', fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -475,15 +440,10 @@ class _DataDiriState extends State<DataDiri> {
                       updateProfil();
                     }
                   },
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                   child: Text(
                     'Simpan',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'AirbnbBold',
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
+                    style: TextStyle(color: Colors.white, fontFamily: 'AirbnbBold', fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
