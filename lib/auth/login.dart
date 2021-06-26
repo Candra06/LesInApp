@@ -64,6 +64,7 @@ class _LoginPageState extends State<LoginPage> {
 
         SharedPreferences pref = await SharedPreferences.getInstance();
         await pref.setString('id', id);
+        await pref.setString('mapel', '0');
         await pref.setString('token', token);
         await pref.setString('id_akun', idAkun);
         await pref.setString('nama', nama);

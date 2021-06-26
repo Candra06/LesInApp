@@ -20,24 +20,13 @@ class _DetailTentorState extends State<DetailTentor> {
   List prestasi = new List();
   List jadwal = new List();
   bool load = true;
-  String token = '',
-      nama = '',
-      username = '',
-      rating = '',
-      alamat = '',
-      telepon = '',
-      hobi = '',
-      email = '',
-      tarif = '',
-      motto = '';
+  String token = '', nama = '', username = '', rating = '', alamat = '', telepon = '', hobi = '', email = '', tarif = '', motto = '';
   void getDetail() async {
     setState(() {
       load = true;
     });
     token = await Config.getToken();
-    http.Response res = await http.get(
-        Config.ipServerAPI + 'getInfo/' + idTentor,
-        headers: {'Authorization': 'Bearer $token'});
+    http.Response res = await http.get(Config.ipServerAPI + 'getInfo/' + idTentor, headers: {'Authorization': 'Bearer $token'});
 
     if (res.statusCode == 200) {
       var data = json.decode(res.body);
@@ -60,9 +49,7 @@ class _DetailTentorState extends State<DetailTentor> {
       load = true;
     });
     token = await Config.getToken();
-    http.Response res = await http.get(
-        Config.ipServerAPI + 'riwayatPendidikan/' + idTentor,
-        headers: {'Authorization': 'Bearer $token'});
+    http.Response res = await http.get(Config.ipServerAPI + 'riwayatPendidikan/' + idTentor, headers: {'Authorization': 'Bearer $token'});
 
     if (res.statusCode == 200) {
       var data = json.decode(res.body);
@@ -77,9 +64,7 @@ class _DetailTentorState extends State<DetailTentor> {
       load = true;
     });
     token = await Config.getToken();
-    http.Response res = await http.get(
-        Config.ipServerAPI + 'getPrestasi/' + idTentor,
-        headers: {'Authorization': 'Bearer $token'});
+    http.Response res = await http.get(Config.ipServerAPI + 'getPrestasi/' + idTentor, headers: {'Authorization': 'Bearer $token'});
 
     if (res.statusCode == 200) {
       var data = json.decode(res.body);
@@ -94,9 +79,7 @@ class _DetailTentorState extends State<DetailTentor> {
       load = true;
     });
     token = await Config.getToken();
-    http.Response res = await http.get(
-        Config.ipServerAPI + 'jadwal/' + idTentor,
-        headers: {'Authorization': 'Bearer $token'});
+    http.Response res = await http.get(Config.ipServerAPI + 'jadwal/' + idTentor, headers: {'Authorization': 'Bearer $token'});
 
     if (res.statusCode == 200) {
       var data = json.decode(res.body);
@@ -127,8 +110,7 @@ class _DetailTentorState extends State<DetailTentor> {
                         HexColor('097cd7'),
                       ],
                     ),
-                    borderRadius: BorderRadius.all(
-                        Radius.circular(displayWidth(context) * 0.025))),
+                    borderRadius: BorderRadius.all(Radius.circular(displayWidth(context) * 0.025))),
               ),
             ],
           ),
@@ -169,8 +151,7 @@ class _DetailTentorState extends State<DetailTentor> {
                         HexColor('097cd7'),
                       ],
                     ),
-                    borderRadius: BorderRadius.all(
-                        Radius.circular(displayWidth(context) * 0.025))),
+                    borderRadius: BorderRadius.all(Radius.circular(displayWidth(context) * 0.025))),
               ),
             ],
           ),
@@ -213,13 +194,11 @@ class _DetailTentorState extends State<DetailTentor> {
           children: [
             Text(
               pendidikan[i]['nama_sekolah'],
-              style:
-                  TextStyle(fontFamily: 'AirbnbMedium', color: Config.textGrey),
+              style: TextStyle(fontFamily: 'AirbnbMedium', color: Config.textGrey),
             ),
             Text(
               pendidikan[i]['status_pendidikan'],
-              style:
-                  TextStyle(fontFamily: 'AirbnbMedium', color: Config.primary),
+              style: TextStyle(fontFamily: 'AirbnbMedium', color: Config.primary),
             ),
           ],
         ),
@@ -246,20 +225,11 @@ class _DetailTentorState extends State<DetailTentor> {
         backgroundColor: Colors.transparent,
         flexibleSpace: Container(
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20)),
-              gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: <Color>[
-                    Config.primary,
-                    Config.secondary,
-                    Config.darkPrimary
-                  ])),
+              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+              gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: <Color>[Config.primary, Config.secondary, Config.darkPrimary])),
         ),
         title: Text(
-          'Detail Tentor',
+          'Detail Tutor',
           style: TextStyle(fontFamily: 'AirbnbMedium'),
         ),
       ),
@@ -282,10 +252,7 @@ class _DetailTentorState extends State<DetailTentor> {
                             height: 70.0,
                             decoration: new BoxDecoration(
                               shape: BoxShape.circle,
-                              image: new DecorationImage(
-                                  fit: BoxFit.fill,
-                                  image:
-                                      AssetImage('assets/icons/graduate.png')),
+                              image: new DecorationImage(fit: BoxFit.fill, image: AssetImage('assets/icons/graduate.png')),
                             ))
                       ],
                     ),
@@ -298,12 +265,7 @@ class _DetailTentorState extends State<DetailTentor> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Container(
-                          child: Text(nama == '' ? 'Memuat' : '$nama',
-                              style: TextStyle(
-                                  fontFamily: 'AirbnbMedium',
-                                  color: Config.textBlack,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold)),
+                          child: Text(nama == '' ? 'Memuat' : '$nama', style: TextStyle(fontFamily: 'AirbnbMedium', color: Config.textBlack, fontSize: 18, fontWeight: FontWeight.bold)),
                         ),
                         Container(
                           child: Text(username == '' ? 'Memuat' : username,
@@ -329,8 +291,7 @@ class _DetailTentorState extends State<DetailTentor> {
                     alignment: Alignment.centerRight,
                     child: Text(
                       rating == '' ? '' : 'Rating : $rating/5',
-                      style: TextStyle(
-                          color: Config.primary, fontFamily: 'Airbnb'),
+                      style: TextStyle(color: Config.primary, fontFamily: 'Airbnb'),
                     ),
                   )
                 ],
@@ -340,10 +301,7 @@ class _DetailTentorState extends State<DetailTentor> {
                 margin: EdgeInsets.only(top: 8, bottom: 8),
                 child: Text(
                   'Data Diri',
-                  style: TextStyle(
-                      fontFamily: 'AirbnbMedium',
-                      color: Config.textBlack,
-                      fontSize: 18),
+                  style: TextStyle(fontFamily: 'AirbnbMedium', color: Config.textBlack, fontSize: 18),
                 ),
               ),
               Container(
@@ -355,13 +313,11 @@ class _DetailTentorState extends State<DetailTentor> {
                   children: [
                     Text(
                       'Alamat',
-                      style: TextStyle(
-                          fontFamily: 'AirbnbMedium', color: Config.textGrey),
+                      style: TextStyle(fontFamily: 'AirbnbMedium', color: Config.textGrey),
                     ),
                     Text(
                       alamat == '' ? 'Memuat' : alamat,
-                      style: TextStyle(
-                          fontFamily: 'Airbnb', color: Config.textGrey),
+                      style: TextStyle(fontFamily: 'Airbnb', color: Config.textGrey),
                     ),
                   ],
                 ),
@@ -375,13 +331,11 @@ class _DetailTentorState extends State<DetailTentor> {
                   children: [
                     Text(
                       'Hobi',
-                      style: TextStyle(
-                          fontFamily: 'AirbnbMedium', color: Config.textGrey),
+                      style: TextStyle(fontFamily: 'AirbnbMedium', color: Config.textGrey),
                     ),
                     Text(
                       hobi == '' ? 'Memuat' : hobi,
-                      style: TextStyle(
-                          fontFamily: 'Airbnb', color: Config.textGrey),
+                      style: TextStyle(fontFamily: 'Airbnb', color: Config.textGrey),
                     ),
                   ],
                 ),
@@ -396,13 +350,11 @@ class _DetailTentorState extends State<DetailTentor> {
                   children: [
                     Text(
                       'Motto',
-                      style: TextStyle(
-                          fontFamily: 'AirbnbMedium', color: Config.textGrey),
+                      style: TextStyle(fontFamily: 'AirbnbMedium', color: Config.textGrey),
                     ),
                     Text(
                       motto == '' ? 'Memuat' : motto,
-                      style: TextStyle(
-                          fontFamily: 'Airbnb', color: Config.textGrey),
+                      style: TextStyle(fontFamily: 'Airbnb', color: Config.textGrey),
                     ),
                   ],
                 ),
@@ -416,15 +368,11 @@ class _DetailTentorState extends State<DetailTentor> {
                   children: [
                     Text(
                       'Tarif',
-                      style: TextStyle(
-                          fontFamily: 'AirbnbMedium', color: Config.textGrey),
+                      style: TextStyle(fontFamily: 'AirbnbMedium', color: Config.textGrey),
                     ),
                     Text(
-                      tarif == ''
-                          ? 'Memuat'
-                          : 'Rp. ' + Config.formatuang(tarif),
-                      style: TextStyle(
-                          fontFamily: 'Airbnb', color: Config.textGrey),
+                      tarif == '' ? 'Memuat' : 'Rp. ' + Config.formatuang(tarif),
+                      style: TextStyle(fontFamily: 'Airbnb', color: Config.textGrey),
                     ),
                   ],
                 ),
@@ -434,19 +382,14 @@ class _DetailTentorState extends State<DetailTentor> {
                 margin: EdgeInsets.only(top: 16, bottom: 8),
                 child: Text(
                   'Riwayat Pendidikan',
-                  style: TextStyle(
-                      fontFamily: 'AirbnbMedium',
-                      color: Config.textBlack,
-                      fontSize: 18),
+                  style: TextStyle(fontFamily: 'AirbnbMedium', color: Config.textBlack, fontSize: 18),
                 ),
               ),
               Container(
                 margin: EdgeInsets.only(top: 8),
                 child: Column(
                   children: [
-                    for (var i = 0; i < pendidikan.length; i++) ...{
-                      itemPendidikan(i)
-                    }
+                    for (var i = 0; i < pendidikan.length; i++) ...{itemPendidikan(i)}
                   ],
                 ),
               ),
@@ -455,10 +398,7 @@ class _DetailTentorState extends State<DetailTentor> {
                 margin: EdgeInsets.only(top: 16, bottom: 8),
                 child: Text(
                   'Prestasi',
-                  style: TextStyle(
-                      fontFamily: 'AirbnbMedium',
-                      color: Config.textBlack,
-                      fontSize: 18),
+                  style: TextStyle(fontFamily: 'AirbnbMedium', color: Config.textBlack, fontSize: 18),
                 ),
               ),
               for (var i = 0; i < prestasi.length; i++) ...{itemPrestasi(i)},
@@ -467,10 +407,7 @@ class _DetailTentorState extends State<DetailTentor> {
                 margin: EdgeInsets.only(top: 16, bottom: 8),
                 child: Text(
                   'Jadwal Tersedia',
-                  style: TextStyle(
-                      fontFamily: 'AirbnbMedium',
-                      color: Config.textBlack,
-                      fontSize: 18),
+                  style: TextStyle(fontFamily: 'AirbnbMedium', color: Config.textBlack, fontSize: 18),
                 ),
               ),
               for (var i = 0; i < jadwal.length; i++) ...{itemJadwal(i)},
@@ -485,18 +422,12 @@ class _DetailTentorState extends State<DetailTentor> {
                       'mapel': idMapel,
                       'tentor': idTentor,
                     };
-                    Navigator.pushNamed(context, Routes.PILIH_JADWAL,
-                        arguments: param);
+                    Navigator.pushNamed(context, Routes.PILIH_JADWAL, arguments: param);
                   },
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                   child: Text(
                     'Booking Tentor',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'AirbnbBold',
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
+                    style: TextStyle(color: Colors.white, fontFamily: 'AirbnbBold', fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),

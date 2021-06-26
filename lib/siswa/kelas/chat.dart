@@ -31,9 +31,10 @@ class _NegoTarifState extends State<NegoTarif> {
     body['created_by'] = idAkun;
     body['id_tentor'] = widget.param['tentor'].toString();
     body['message'] = pesan.text;
-
-    http.Response req = await http.post(Config.ipServerAPI + 'createChat',
-        body: body, headers: {'Authorization': 'Bearer $token'});
+    print(body);
+    print(token);
+    http.Response req = await http.post(Config.ipServerAPI + 'createChat', body: body, headers: {'Authorization': 'Bearer $token'});
+    print(req.body);
     if (req.statusCode == 200) {
       var data = json.decode(req.body);
       String room = data['room'].toString();
@@ -54,8 +55,7 @@ class _NegoTarifState extends State<NegoTarif> {
     String tntr = widget.param['tentor'].toString();
     print(tntr);
     String token = await Config.getToken();
-    http.Response res = await http.get(Config.ipServerAPI + 'getInfo/' + tntr,
-        headers: {'Authorization': 'Bearer $token'});
+    http.Response res = await http.get(Config.ipServerAPI + 'getInfo/' + tntr, headers: {'Authorization': 'Bearer $token'});
     print(res.body);
     if (res.statusCode == 200) {
       var data = json.decode(res.body);
@@ -74,8 +74,7 @@ class _NegoTarifState extends State<NegoTarif> {
     });
     String token = await Config.getToken();
     String akn = await Config.getIDAkun();
-    http.Response res = await http.get(Config.ipServerAPI + 'detailChat/$room',
-        headers: {'Authorization': 'Bearer $token'});
+    http.Response res = await http.get(Config.ipServerAPI + 'detailChat/$room', headers: {'Authorization': 'Bearer $token'});
     if (res.statusCode == 200) {
       var data = json.decode(res.body);
       setState(() {
@@ -90,7 +89,7 @@ class _NegoTarifState extends State<NegoTarif> {
 
   @override
   void initState() {
-    print(widget.param);
+    // print(widget.param);
     getTentor();
     super.initState();
   }
@@ -103,34 +102,28 @@ class _NegoTarifState extends State<NegoTarif> {
             context: context,
             builder: (context) => new AlertDialog(
                   title: new Text('Konfirmasi?'),
-                  content: new Text(
-                      'Apakah anda ingin keluar dari halaman ini dan menyimpan proses booking?'),
+                  content: new Text('Apakah anda ingin keluar dari halaman ini dan menyimpan proses booking?'),
                   actions: <Widget>[
                     new FlatButton(
                       onPressed: () => Navigator.of(context).pop(false),
                       child: new Text(
                         'Tidak',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Config.primary),
+                        style: TextStyle(fontWeight: FontWeight.bold, color: Config.primary),
                       ),
                     ),
                     new FlatButton(
                       onPressed: () async {
                         print(widget.param.toString());
-                        SharedPreferences pref =
-                            await SharedPreferences.getInstance();
+                        SharedPreferences pref = await SharedPreferences.getInstance();
                         await pref.setString('mapel', widget.param['mapel']);
                         await pref.setString('tentor', widget.param['tentor']);
                         await pref.setString('hari', widget.param['hari']);
-                        await pref.setString(
-                            'pertemuan', widget.param['pertemuan']);
-                        Navigator.pushNamed(context, Routes.HOME,
-                            arguments: '0');
+                        await pref.setString('pertemuan', widget.param['pertemuan']);
+                        Navigator.pushNamed(context, Routes.HOME, arguments: '0');
                       },
                       child: new Text(
                         'Ya',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Config.primary),
+                        style: TextStyle(fontWeight: FontWeight.bold, color: Config.primary),
                       ),
                     ),
                   ],
@@ -141,17 +134,8 @@ class _NegoTarifState extends State<NegoTarif> {
           backgroundColor: Colors.transparent,
           flexibleSpace: Container(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20)),
-                gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: <Color>[
-                      Config.primary,
-                      Config.secondary,
-                      Config.darkPrimary
-                    ])),
+                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+                gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: <Color>[Config.primary, Config.secondary, Config.darkPrimary])),
           ),
           title: Text(
             'Nego Tarif',
@@ -177,10 +161,7 @@ class _NegoTarifState extends State<NegoTarif> {
                                 height: 60.0,
                                 decoration: new BoxDecoration(
                                   shape: BoxShape.circle,
-                                  image: new DecorationImage(
-                                      fit: BoxFit.fill,
-                                      image: AssetImage(
-                                          'assets/icons/graduate.png')),
+                                  image: new DecorationImage(fit: BoxFit.fill, image: AssetImage('assets/icons/graduate.png')),
                                 ))
                           ],
                         ),
@@ -231,9 +212,7 @@ class _NegoTarifState extends State<NegoTarif> {
                             Icon(Icons.star, color: Colors.yellow[800]),
                             Text(
                               rating == '' ? '0' : rating,
-                              style: TextStyle(
-                                  color: Config.primary,
-                                  fontFamily: 'AirbnbBold'),
+                              style: TextStyle(color: Config.primary, fontFamily: 'AirbnbBold'),
                             ),
                           ],
                         ),
@@ -241,15 +220,13 @@ class _NegoTarifState extends State<NegoTarif> {
                     ],
                   ),
                   Container(
-                      constraints:
-                          BoxConstraints(minHeight: 200, maxHeight: 445),
+                      constraints: BoxConstraints(minHeight: 200, maxHeight: 445),
                       margin: EdgeInsets.only(top: 8),
                       padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
                       child: Column(
                         children: <Widget>[
                           Container(
-                              constraints: BoxConstraints(
-                                  minHeight: 100, maxHeight: 380),
+                              constraints: BoxConstraints(minHeight: 100, maxHeight: 380),
                               margin: EdgeInsets.fromLTRB(4, 8, 4, 8),
                               child: ListView.separated(
                                   separatorBuilder: (context, int i) {
@@ -261,41 +238,32 @@ class _NegoTarifState extends State<NegoTarif> {
                                   },
                                   itemCount: nego.isEmpty ? 0 : nego.length,
                                   itemBuilder: (context, int i) {
-                                    if (nego[i]['created_by'].toString() ==
-                                        akun.toString()) {
+                                    if (nego[i]['created_by'].toString() == akun.toString()) {
                                       return Container(
-                                        margin:
-                                            EdgeInsets.only(left: 40, top: 4),
+                                        margin: EdgeInsets.only(left: 40, top: 4),
                                         padding: EdgeInsets.all(8),
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
+                                          borderRadius: BorderRadius.all(Radius.circular(10)),
                                           color: Config.secondary,
                                         ),
                                         alignment: Alignment.centerRight,
                                         child: Text(
                                           nego[i]['message'],
-                                          style: TextStyle(
-                                              color: Config.textWhite,
-                                              fontFamily: 'Airbnb'),
+                                          style: TextStyle(color: Config.textWhite, fontFamily: 'Airbnb'),
                                         ),
                                       );
                                     } else {
                                       return Container(
-                                        margin:
-                                            EdgeInsets.only(right: 40, top: 4),
+                                        margin: EdgeInsets.only(right: 40, top: 4),
                                         padding: EdgeInsets.all(8),
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
+                                          borderRadius: BorderRadius.all(Radius.circular(10)),
                                           color: Colors.black12,
                                         ),
                                         alignment: Alignment.centerRight,
                                         child: Text(
                                           nego[i]['message'],
-                                          style: TextStyle(
-                                              color: Config.textBlack,
-                                              fontFamily: 'Airbnb'),
+                                          style: TextStyle(color: Config.textBlack, fontFamily: 'Airbnb'),
                                         ),
                                       );
                                     }
@@ -313,24 +281,21 @@ class _NegoTarifState extends State<NegoTarif> {
                                     child: Column(
                                       children: <Widget>[
                                         Container(
-                                          constraints: BoxConstraints(
-                                              minWidth: 200, maxWidth: 300),
+                                          constraints: BoxConstraints(minWidth: 200, maxWidth: 300),
                                           child: TextFormField(
                                               controller: pesan,
-                                              style: TextStyle(
-                                                  color: Colors.black54),
+                                              style: TextStyle(color: Colors.black54),
                                               obscureText: false,
-                                              keyboardType:
-                                                  TextInputType.emailAddress,
+                                              keyboardType: TextInputType.emailAddress,
                                               // controller: txEmail,
                                               decoration: InputDecoration(
                                                 suffixIcon: IconButton(
                                                   onPressed: () {
                                                     if (pesan.text.isEmpty) {
-                                                      Config.alert(
-                                                          0, 'Pesan kosong!');
+                                                      Config.alert(0, 'Pesan kosong!');
                                                     } else {
                                                       createChat();
+                                                      // print('tersimpan');
                                                     }
                                                   },
                                                   icon: Icon(
@@ -371,72 +336,43 @@ class _NegoTarifState extends State<NegoTarif> {
                                     width: MediaQuery.of(context).size.width,
                                     margin: EdgeInsets.fromLTRB(0, 16, 4, 8),
                                     child: RaisedButton(
-                                      padding:
-                                          EdgeInsets.only(top: 13, bottom: 13),
+                                      padding: EdgeInsets.only(top: 13, bottom: 13),
                                       color: Config.primary,
                                       onPressed: () {
                                         showDialog(
                                             context: context,
-                                            builder: (context) =>
-                                                new AlertDialog(
-                                                  title: new Text(
-                                                      'Apakah Anda Yakin?'),
-                                                  content: new Text(
-                                                      'Ingin membatalkan proses booking?'),
+                                            builder: (context) => new AlertDialog(
+                                                  title: new Text('Apakah Anda Yakin?'),
+                                                  content: new Text('Ingin membatalkan proses booking?'),
                                                   actions: <Widget>[
                                                     new FlatButton(
-                                                      onPressed: () =>
-                                                          Navigator.of(context)
-                                                              .pop(false),
+                                                      onPressed: () => Navigator.of(context).pop(false),
                                                       child: new Text(
                                                         'Tidak',
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color:
-                                                                Config.primary),
+                                                        style: TextStyle(fontWeight: FontWeight.bold, color: Config.primary),
                                                       ),
                                                     ),
                                                     new FlatButton(
                                                       onPressed: () async {
-                                                        SharedPreferences pref =
-                                                            await SharedPreferences
-                                                                .getInstance();
-                                                        await pref.setString(
-                                                            'mapel', '0');
-                                                        await pref.setString(
-                                                            'tentor', '');
-                                                        await pref.setString(
-                                                            'hari', '');
-                                                        await pref.setString(
-                                                            'pertemuan', '');
-                                                        Navigator.pushNamed(
-                                                            context,
-                                                            Routes.HOME,
-                                                            arguments: '0');
+                                                        SharedPreferences pref = await SharedPreferences.getInstance();
+                                                        await pref.setString('mapel', '0');
+                                                        await pref.setString('tentor', '');
+                                                        await pref.setString('hari', '');
+                                                        await pref.setString('pertemuan', '');
+                                                        Navigator.pushNamed(context, Routes.HOME, arguments: '0');
                                                       },
                                                       child: new Text(
                                                         'Ya',
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color:
-                                                                Config.primary),
+                                                        style: TextStyle(fontWeight: FontWeight.bold, color: Config.primary),
                                                       ),
                                                     ),
                                                   ],
                                                 ));
                                       },
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(5)),
+                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                                       child: Text(
                                         'Batal',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontFamily: 'AirbnbBold',
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
+                                        style: TextStyle(color: Colors.white, fontFamily: 'AirbnbBold', fontSize: 18, fontWeight: FontWeight.bold),
                                       ),
                                     ),
                                   ),
@@ -446,32 +382,20 @@ class _NegoTarifState extends State<NegoTarif> {
                                     width: MediaQuery.of(context).size.width,
                                     margin: EdgeInsets.fromLTRB(4, 16, 0, 8),
                                     child: RaisedButton(
-                                      padding:
-                                          EdgeInsets.only(top: 13, bottom: 13),
+                                      padding: EdgeInsets.only(top: 13, bottom: 13),
                                       color: Config.primary,
                                       onPressed: () async {
-                                        SharedPreferences pref =
-                                            await SharedPreferences
-                                                .getInstance();
+                                        SharedPreferences pref = await SharedPreferences.getInstance();
                                         await pref.setString('mapel', '');
                                         await pref.setString('tentor', '');
                                         await pref.setString('hari', '');
                                         await pref.setString('pertemuan', '');
-                                        showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) =>
-                                                DialogConfirm(widget.param));
+                                        showDialog(context: context, builder: (BuildContext context) => DialogConfirm(widget.param));
                                       },
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(5)),
+                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                                       child: Text(
                                         'Selanjutnya',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontFamily: 'AirbnbBold',
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
+                                        style: TextStyle(color: Colors.white, fontFamily: 'AirbnbBold', fontSize: 18, fontWeight: FontWeight.bold),
                                       ),
                                     ),
                                   ),

@@ -22,21 +22,16 @@ class _BookingKelasPageState extends State<BookingKelasPage> {
   String getMapel = "";
   List listJenjang = ['Pilih Jenjang', 'SD', 'SMP', 'SMA'];
   List listKelas = ['Pilih Kelas'];
-  List listMapel = [
-    'Pilih Mapel',
-    'Bahasa Indonesia',
-    'Bahasa Inggris',
-    'Matematika',
-    'IPA'
-  ];
+  List listMapel = ['Pilih Mapel', 'Bahasa Indonesia', 'Bahasa Inggris', 'Matematika', 'IPA'];
 
   void getParam() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String mapel = '', tentor = '', hari = '', pertemuan = '';
-    var tmpmapel = await pref.getString('mapel');
+    var tmpmapel = pref.getString('mapel');
     var tmptentor = pref.getString('tentor');
     var tmphari = pref.getString('hari');
     var tmppertemuan = pref.getString('pertemuan');
+
     setState(() {
       mapel = tmpmapel.toString();
       tentor = tmptentor;
@@ -49,10 +44,13 @@ class _BookingKelasPageState extends State<BookingKelasPage> {
       'hari': hari,
       'pertemuan': pertemuan,
     };
-    print('mapel ' + mapel);
-    if (mapel != '0') {
+    print(mapel);
+    if (parameter['mapel'] != '0') {
+      print('mapel tidak kosong');
       Navigator.pushNamed(context, Routes.NEGO_TARIF, arguments: parameter);
     }
+    // if (mapel != 'null' || mapel != '0') {
+    // }
     // print(param);
   }
 
@@ -94,16 +92,14 @@ class _BookingKelasPageState extends State<BookingKelasPage> {
     token = await Config.getToken();
     String kls = getKelas.toString();
     String mpl = getMapel.toString();
-    http.Response res = await http.get(Config.ipServerAPI + 'mapelBy/$kls/$mpl',
-        headers: {'Authorization': 'Bearer $token'});
+    http.Response res = await http.get(Config.ipServerAPI + 'mapelBy/$kls/$mpl', headers: {'Authorization': 'Bearer $token'});
     if (res.statusCode == 200) {
       var data = jsonDecode(res.body);
       Navigator.pop(context);
       if (data['data'] == null || data['data'] == '') {
         showAlertDialog(context, '2');
       } else {
-        Navigator.pushNamed(context, Routes.LIST_TENTOR,
-            arguments: data['data']['id'].toString());
+        Navigator.pushNamed(context, Routes.LIST_TENTOR, arguments: data['data']['id'].toString());
       }
     } else {
       Navigator.pop(context);
@@ -205,17 +201,8 @@ class _BookingKelasPageState extends State<BookingKelasPage> {
         backgroundColor: Colors.transparent,
         flexibleSpace: Container(
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20)),
-              gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: <Color>[
-                    Config.primary,
-                    Config.secondary,
-                    Config.darkPrimary
-                  ])),
+              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+              gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: <Color>[Config.primary, Config.secondary, Config.darkPrimary])),
         ),
         title: Text(
           'Booking Kelas',
@@ -255,8 +242,7 @@ class _BookingKelasPageState extends State<BookingKelasPage> {
                         items: jenjang,
                         onChanged: changedDropDownItemJenjang,
                         value: getJenjang,
-                        style: TextStyle(
-                            color: Config.textBlack, fontFamily: 'Airbnb'),
+                        style: TextStyle(color: Config.textBlack, fontFamily: 'Airbnb'),
                       ),
                     ),
                   ),
@@ -285,8 +271,7 @@ class _BookingKelasPageState extends State<BookingKelasPage> {
                         items: kelas,
                         onChanged: changedDropDownItemKelas,
                         value: getKelas,
-                        style: TextStyle(
-                            color: Config.textBlack, fontFamily: 'Airbnb'),
+                        style: TextStyle(color: Config.textBlack, fontFamily: 'Airbnb'),
                       ),
                     ),
                   ),
@@ -315,8 +300,7 @@ class _BookingKelasPageState extends State<BookingKelasPage> {
                         items: mapel,
                         onChanged: changedDropDownItemMapel,
                         value: getMapel,
-                        style: TextStyle(
-                            color: Config.textBlack, fontFamily: 'Airbnb'),
+                        style: TextStyle(color: Config.textBlack, fontFamily: 'Airbnb'),
                       ),
                     ),
                   ),
@@ -340,15 +324,10 @@ class _BookingKelasPageState extends State<BookingKelasPage> {
                       // Navigator.pushNamed(context, Routes.LIST_TENTOR,
                       //     arguments: 0.toString());
                     },
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                     child: Text(
                       'Cari Tutor',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'AirbnbBold',
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
+                      style: TextStyle(color: Colors.white, fontFamily: 'AirbnbBold', fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
