@@ -33,8 +33,8 @@ class _LoginPageState extends State<LoginPage> {
     body['password'] = txpassword.text;
 
     // request login
-    http.Response res = await http.post(Config.ipServerAPI + 'login', body: body);
-    print(res.body);
+    http.Response res = await http.post(Uri.parse(Config.ipServerAPI + 'login'), body: body);
+
     if (res.statusCode == 200) {
       var respon = json.decode(res.body);
       var token = respon['data']['token'];

@@ -13,7 +13,8 @@ class LocalRepository {
     if (result != null) {
       PlatformFile file = result.files.single;
       // Cek apabila ukuran file lebih dari 10 mb
-      if (file.size > 1024 * 10) {
+      print(file.size);
+      if (file.size > 1024 * 1000) {
         Config.alert(0, "Ukuran file tidak boleh melebihi 10 mb");
         return null;
       }

@@ -27,6 +27,7 @@ class _DialogTFState extends State<DialogTF> with TickerProviderStateMixin {
   Future<File> foto;
   String base64Image;
   File tmpFile;
+  List<String> _rekening = new List();
   Future<File> file;
 
   List<String> listRekening = new List();
@@ -35,20 +36,22 @@ class _DialogTFState extends State<DialogTF> with TickerProviderStateMixin {
 
   void getDataRekening() async {
     String token = await Config.getToken();
-    http.Response req = await http.get(Config.ipServerAPI + 'rekening',
-        headers: {'Authorization': 'Bearer $token'});
+    http.Response req = await http.get(Uri.parse(Config.ipServerAPI + 'rekening'), headers: {'Authorization': 'Bearer $token'});
     print(req.body);
     if (req.statusCode == 200) {
       var data = json.decode(req.body);
       List<String> val = new List();
       List<String> idMpl = new List();
+      List<String> rek = new List();
       List tmp = data['data'];
       for (var i = 0; i < tmp.length; i++) {
         val.add(tmp[i]['nama_rekening'] + '(' + tmp[i]['bank'] + ')');
         idMpl.add(tmp[i]['id'].toString());
+        rek.add(tmp[i]['nomor_rekening'].toString());
       }
       setState(() {
-        print(val);
+        _rekening = rek;
+
         listRekening = val;
         idRekening = idMpl;
       });
@@ -60,76 +63,65 @@ class _DialogTFState extends State<DialogTF> with TickerProviderStateMixin {
   }
 
   getImage(context) async {
+    final picker = ImagePicker();
+    PickedFile pickedFile;
     final imgSrc = await showDialog<ImageSource>(
-        context: context,
-        builder: (context) => AlertDialog(
-              title: Text("Pilih sumber gambar"),
-              actions: <Widget>[
-                MaterialButton(
-                  child: Text("Kamera"),
-                  onPressed: () => Navigator.pop(context, ImageSource.camera),
-                  // onPressed: () => Navigator.pop(context, ImageSource.camera),
-                ),
-                MaterialButton(
-                  child: Text("Galeri"),
-                  onPressed: () => Navigator.pop(context, ImageSource.gallery),
-                )
-              ],
-            ));
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Pilih sumber gambar"),
+        actions: <Widget>[
+          MaterialButton(
+            child: Text("Kamera"),
+            onPressed: () async {
+              Navigator.pop(context, ImageSource.camera);
+              // foto = picker.getImage(source: ImageSource.camera);
+              pickedFile = await picker.getImage(source: ImageSource.camera);
 
-    if (imgSrc != null) {
-      setState(() {
-        foto = ImagePicker.pickImage(source: imgSrc);
-        String image = foto.toString();
-        print('fotonya ' + image);
-        print(foto);
-      });
-    }
+              print('fotonya ' + pickedFile.path);
+              print(foto);
+            },
+            // onPressed: () => Navigator.pop(context, ImageSource.camera),
+          ),
+          MaterialButton(
+              child: Text("Galeri"),
+              onPressed: () async {
+                Navigator.pop(context, ImageSource.gallery);
+                pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+                setState(() {
+                  // foto = picker.getImage(source: ImageSource.gallery);
+                  fileName = pickedFile.path.toString();
+                  tmpFile = File(pickedFile.path);
+                });
+              })
+        ],
+      ),
+    );
   }
 
   Widget showImage() {
-    return Container(
-      child: FutureBuilder<File>(
-        future: foto,
-        builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
-          if (snapshot.connectionState == ConnectionState.done &&
-              snapshot.data != null) {
-            tmpFile = snapshot.data;
-            fileName = tmpFile.path.split("/").last;
-            base64Image = base64Encode(snapshot.data.readAsBytesSync());
-            return Column(
-              children: [
-                // Container(
-                //   width: MediaQuery.of(context).size.width,
-                //   height: 200,
-                //   child: Image.file(snapshot.data, fit: BoxFit.contain),
-                // ),
-                Container(
-                    alignment: Alignment.center,
-                    width: MediaQuery.of(context).size.width,
-                    child: Text(
-                      fileName,
-                      maxLines: 3,
-                    )),
-              ],
-            );
-            // return Container(
-            //   margin: EdgeInsets.all(8),
-            //   child: Image.file(snapshot.data, fit: BoxFit.fill),
-            // );
-          } else if (snapshot.error != null) {
-            return const Text(
-              'Error saat memilih foto!',
-              textAlign: TextAlign.center,
-            );
-          } else {
-            return Column(
-              children: <Widget>[Text('Pilih bukti transfer')],
-            );
-          }
-        },
-      ),
-    );
+    // tmpFile = snapshot.data;
+    String name = fileName.split("/").last;
+
+    if (fileName == null) {
+      return Container(
+        margin: EdgeInsets.only(top: 5, left: 8),
+        child: Column(
+          children: <Widget>[Text('Pilih bukti transfer')],
+        ),
+      );
+    } else {
+      return Container(
+          width: MediaQuery.of(context).size.width,
+          margin: EdgeInsets.only(top: 5, left: 8),
+          alignment: Alignment.center,
+          child: Text(
+            name,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            softWrap: false,
+          ));
+    }
   }
 
   void simpanLaporan() async {
@@ -139,18 +131,14 @@ class _DialogTFState extends State<DialogTF> with TickerProviderStateMixin {
     setState(() {
       token = tmp;
     });
-    
-    Map<String, String> headers = {
-      'Authorization': 'Bearer ' + token,
-      'Accept': 'application/json'
-    };
+    Map<String, String> headers = {'Authorization': 'Bearer $token', 'Accept': 'application/json'};
+    print(tmpFile.path.toString());
 
     final imageUploadRequest = http.MultipartRequest(
       'POST',
       Uri.parse(Config.ipServerAPI + 'pembayaran'),
     );
-    imageUploadRequest.files
-        .add(await http.MultipartFile.fromPath('bukti_tf', tmpFile.path));
+    imageUploadRequest.files.add(await http.MultipartFile.fromPath('bukti_tf', tmpFile.path));
     imageUploadRequest.headers.addAll(headers);
     imageUploadRequest.fields['id_kelas'] = widget.idKelas;
     imageUploadRequest.fields['harga_deal'] = widget.harga;
@@ -160,7 +148,7 @@ class _DialogTFState extends State<DialogTF> with TickerProviderStateMixin {
     imageUploadRequest.fields['id_rekening'] = getRekening;
     var res = await imageUploadRequest.send();
     var conf = res.reasonPhrase;
-    print("resnya" + conf.toString());
+    print("resnya " + conf.toString());
     print(res.statusCode);
     if (res.statusCode == 200) {
       Navigator.pop(context);
@@ -181,6 +169,24 @@ class _DialogTFState extends State<DialogTF> with TickerProviderStateMixin {
     super.initState();
   }
 
+  Widget _customPopupItemBuilderExample(BuildContext context, dynamic item, bool isSelected) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 8),
+      decoration: !isSelected
+          ? null
+          : BoxDecoration(
+              border: Border.all(color: Theme.of(context).primaryColor),
+              borderRadius: BorderRadius.circular(5),
+              color: Colors.white,
+            ),
+      child: ListTile(
+        selected: isSelected,
+        title: Text(item),
+        subtitle: Text(_rekening[listRekening.indexOf(item)]),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -188,17 +194,8 @@ class _DialogTFState extends State<DialogTF> with TickerProviderStateMixin {
         backgroundColor: Colors.transparent,
         flexibleSpace: Container(
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20)),
-              gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: <Color>[
-                    Config.primary,
-                    Config.secondary,
-                    Config.darkPrimary
-                  ])),
+              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+              gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: <Color>[Config.primary, Config.secondary, Config.darkPrimary])),
         ),
         title: Text(
           'Form Transfer',
@@ -217,14 +214,15 @@ class _DialogTFState extends State<DialogTF> with TickerProviderStateMixin {
                 width: displayWidth(context),
                 height: 50,
                 child: DropdownSearch(
-                  mode: Mode.MENU,
+                  mode: Mode.DIALOG,
                   searchBoxController: txtRekening,
                   showSearchBox: true,
                   showSelectedItem: true,
-                  items:
-                      listRekening == null ? ['Pilih Rekening'] : listRekening,
+                  items: listRekening == null ? ['Pilih Rekening'] : listRekening,
                   label: "Rekening Tujuan",
                   hint: "Pilih Rekening Tujuan",
+                  popupItemBuilder: _customPopupItemBuilderExample,
+
                   popupItemDisabled: (String s) => s.startsWith('I'),
                   onChanged: (value) {
                     setState(() {
@@ -265,16 +263,10 @@ class _DialogTFState extends State<DialogTF> with TickerProviderStateMixin {
                                   lastDate: DateTime(2022),
                                 ).then((date) {
                                   tglMulai = date;
-                                  String tanggal = tglMulai
-                                      .toString()
-                                      .replaceAll("00:00:00.000", "");
+                                  String tanggal = tglMulai.toString().replaceAll("00:00:00.000", "");
                                   print(tanggal);
-                                  print(
-                                      Config.formattanggal(tanggal.toString()));
-                                  txtTglMulai.text = Config.formattanggal(
-                                      tglMulai
-                                          .toString()
-                                          .replaceAll("00:00:00.000", ""));
+                                  print(Config.formattanggal(tanggal.toString()));
+                                  txtTglMulai.text = Config.formattanggal(tglMulai.toString().replaceAll("00:00:00.000", ""));
                                 });
                               },
                             ),
@@ -307,10 +299,7 @@ class _DialogTFState extends State<DialogTF> with TickerProviderStateMixin {
                         },
                         child: Text(
                           'Pilih Gambar',
-                          style: TextStyle(
-                              color: Config.primary,
-                              fontSize: 14,
-                              fontFamily: 'AirbnbMedium'),
+                          style: TextStyle(color: Config.primary, fontSize: 14, fontFamily: 'AirbnbMedium'),
                         ),
                       ),
                     )
@@ -334,15 +323,10 @@ class _DialogTFState extends State<DialogTF> with TickerProviderStateMixin {
                     simpanLaporan();
                   }
                 },
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                 child: Text(
                   'Simpan',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'AirbnbBold',
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold),
+                  style: TextStyle(color: Colors.white, fontFamily: 'AirbnbBold', fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
             ),

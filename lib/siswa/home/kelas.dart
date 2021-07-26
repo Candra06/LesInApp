@@ -19,8 +19,8 @@ class _JadwalSideState extends State<JadwalSide> {
     String token = await Config.getToken();
     String id = await Config.getID();
 
-    http.Response req = await http.get(Config.ipServerAPI + 'listKelas/$id',
-        headers: {'Authorization': 'Bearer $token'});
+    http.Response req = await http.get(Config.ipServerAPI + 'listKelas/$id', headers: {'Authorization': 'Bearer $token'});
+    print(Config.ipServerAPI + 'listKelas/$id');
     if (req.statusCode == 200) {
       var data = json.decode(req.body);
       setState(() {
@@ -56,8 +56,7 @@ class _JadwalSideState extends State<JadwalSide> {
             String jumlah = kelas[i]['jumlah_pertemuan'].toString();
             return InkWell(
               onTap: () {
-                Navigator.pushNamed(context, Routes.DETAIL_KELAS,
-                    arguments: kelas[i]['id'].toString());
+                Navigator.pushNamed(context, Routes.DETAIL_KELAS, arguments: kelas[i]['id'].toString());
               },
               child: Card(
                 child: Container(
@@ -65,60 +64,46 @@ class _JadwalSideState extends State<JadwalSide> {
                     child: Row(
                       children: <Widget>[
                         Container(
-                            width: 35.0,
-                            height: 35.0,
+                            width: 50.0,
+                            height: 50.0,
                             decoration: new BoxDecoration(
                               shape: BoxShape.circle,
-                              image: new DecorationImage(
-                                  fit: BoxFit.fill,
-                                  image:
-                                      AssetImage('assets/icons/graduate.png')),
+                              image: new DecorationImage(fit: BoxFit.fill, image: AssetImage('assets/icons/graduate.png')),
                             )),
                         Container(
-                            constraints:
-                                BoxConstraints(minWidth: 150, maxWidth: 300),
+                            constraints: BoxConstraints(minWidth: 150, maxWidth: 200),
                             margin: EdgeInsets.only(left: 8, right: 8),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
                                   kelas[i]['nama'],
-                                  // dataPenyakit[index]["nama_penyakit"],
-                                  style: TextStyle(
-                                      fontSize: 16, fontFamily: 'AirbnbMedium'),
+                                  
+                                  style: TextStyle(fontSize: 14, fontFamily: 'AirbnbMedium'),
                                 ),
-                                Container(
-                                    child: Text(
-                                  kelas[i]['username'],
-                                  style: TextStyle(
-                                      fontFamily: 'Airbnb',
-                                      color: Config.textGrey),
-                                )),
+                                // Container(
+                                //     child: Text(
+                                //   kelas[i]['username'],
+                                //   style: TextStyle(fontFamily: 'Airbnb', fontSize: 12, color: Config.textGrey),
+                                // )),
                                 Container(
                                     child: Text(
                                   kelas[i]['mapel'],
-                                  style: TextStyle(
-                                      fontFamily: 'Airbnb',
-                                      color: Config.primary),
+                                  style: TextStyle(fontFamily: 'Airbnb', fontSize: 12, color: Config.primary),
                                 )),
+                                Container(
+                                    child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      '$pertemuan/$jumlah Pertemuan',
+                                      style: TextStyle(fontFamily: 'AirbnbMedium', fontSize: 12, color: Config.primary),
+                                    )
+                                  ],
+                                ))
                               ],
                             )),
-                        Flexible(
-                          child: Container(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                '$pertemuan/$jumlah Pertemuan',
-                                style: TextStyle(
-                                    fontFamily: 'AirbnbMedium',
-                                    fontSize: 13,
-                                    color: Config.primary),
-                              )
-                            ],
-                          )),
-                        )
                       ],
                     )),
               ),
@@ -141,17 +126,8 @@ class _JadwalSideState extends State<JadwalSide> {
         backgroundColor: Colors.transparent,
         flexibleSpace: Container(
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20)),
-              gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: <Color>[
-                    Config.primary,
-                    Config.secondary,
-                    Config.darkPrimary
-                  ])),
+              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+              gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: <Color>[Config.primary, Config.secondary, Config.darkPrimary])),
         ),
         title: Text(
           'Kelas',

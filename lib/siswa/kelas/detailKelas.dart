@@ -16,20 +16,7 @@ class DetailKelas extends StatefulWidget {
 }
 
 class _DetailKelasState extends State<DetailKelas> {
-  String status = '',
-      tentor = '',
-      idtentor = '',
-      hpTentor = '',
-      alamatTentor = '',
-      tarif = '',
-      pertemuan = '',
-      total = '',
-      hari = '',
-      ttlTarif = '',
-      jenjang = '',
-      kelas = '',
-      mapel = '',
-      token = '';
+  String status = '', tentor = '', idtentor = '', hpTentor = '', alamatTentor = '', tarif = '', pertemuan = '', total = '', hari = '', ttlTarif = '', jenjang = '', kelas = '', mapel = '', token = '';
   bool load = true;
 
   void getDetail() async {
@@ -39,8 +26,7 @@ class _DetailKelasState extends State<DetailKelas> {
     token = await Config.getToken();
     String id = widget.idKelas;
 
-    http.Response res = await http.get(Config.ipServerAPI + 'kelasSiswa/$id',
-        headers: {'Authorization': 'Bearer $token'});
+    http.Response res = await http.get(Config.ipServerAPI + 'kelasSiswa/$id', headers: {'Authorization': 'Bearer $token'});
     if (res.statusCode == 200) {
       var data = json.decode(res.body);
       var mentor = data['data']['mentor'];
@@ -106,23 +92,13 @@ class _DetailKelasState extends State<DetailKelas> {
                   color: Config.textWhite,
                 ),
                 onPressed: () {
-                  Navigator.pushNamed(context, Routes.LOG_PEMBAYARAN,
-                      arguments: widget.idKelas);
+                  Navigator.pushNamed(context, Routes.LOG_PEMBAYARAN, arguments: widget.idKelas);
                 })
           ],
           flexibleSpace: Container(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20)),
-                gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: <Color>[
-                      Config.primary,
-                      Config.secondary,
-                      Config.darkPrimary
-                    ])),
+                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+                gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: <Color>[Config.primary, Config.secondary, Config.darkPrimary])),
           ),
           title: Text(
             'Detail Kelas',
@@ -146,9 +122,7 @@ class _DetailKelasState extends State<DetailKelas> {
                         alignment: Alignment.centerRight,
                         child: Text(
                           'Status Kelas : $status',
-                          style: TextStyle(
-                              fontFamily: 'AirbnbMedium',
-                              color: Config.primary),
+                          style: TextStyle(fontFamily: 'AirbnbMedium', color: Config.primary),
                           textAlign: TextAlign.right,
                         ),
                       ),
@@ -157,8 +131,7 @@ class _DetailKelasState extends State<DetailKelas> {
                         alignment: Alignment.centerLeft,
                         child: Text(
                           'Tutor',
-                          style: TextStyle(
-                              fontFamily: 'AirbnbBold', color: Config.primary),
+                          style: TextStyle(fontFamily: 'AirbnbBold', color: Config.primary),
                           textAlign: TextAlign.right,
                         ),
                       ),
@@ -175,9 +148,7 @@ class _DetailKelasState extends State<DetailKelas> {
                                 ),
                                 Text(
                                   '$tentor',
-                                  style: TextStyle(
-                                      fontFamily: 'AirbnbMedium',
-                                      color: Config.primary),
+                                  style: TextStyle(fontFamily: 'AirbnbMedium', color: Config.primary),
                                 ),
                               ],
                             ),
@@ -197,9 +168,7 @@ class _DetailKelasState extends State<DetailKelas> {
                                 ),
                                 Text(
                                   '$hpTentor',
-                                  style: TextStyle(
-                                      fontFamily: 'AirbnbMedium',
-                                      color: Config.primary),
+                                  style: TextStyle(fontFamily: 'AirbnbMedium', color: Config.primary),
                                 ),
                               ],
                             ),
@@ -208,8 +177,7 @@ class _DetailKelasState extends State<DetailKelas> {
                         ),
                       ),
                       Container(
-                        constraints:
-                            BoxConstraints(minHeight: 10, maxHeight: 36),
+                        constraints: BoxConstraints(minHeight: 10, maxHeight: 36),
                         child: Column(
                           children: [
                             Row(
@@ -221,9 +189,7 @@ class _DetailKelasState extends State<DetailKelas> {
                                 ),
                                 Text(
                                   '$alamatTentor',
-                                  style: TextStyle(
-                                      fontFamily: 'AirbnbMedium',
-                                      color: Config.primary),
+                                  style: TextStyle(fontFamily: 'AirbnbMedium', color: Config.primary),
                                 ),
                               ],
                             ),
@@ -236,8 +202,7 @@ class _DetailKelasState extends State<DetailKelas> {
                         alignment: Alignment.centerLeft,
                         child: Text(
                           'Pertemuan',
-                          style: TextStyle(
-                              fontFamily: 'AirbnbBold', color: Config.primary),
+                          style: TextStyle(fontFamily: 'AirbnbBold', color: Config.primary),
                           textAlign: TextAlign.right,
                         ),
                       ),
@@ -253,10 +218,8 @@ class _DetailKelasState extends State<DetailKelas> {
                                   style: TextStyle(fontFamily: 'Airbnb'),
                                 ),
                                 Text(
-                                 'Rp. '+Config.formatuang(tarif),
-                                  style: TextStyle(
-                                      fontFamily: 'AirbnbMedium',
-                                      color: Config.primary),
+                                  'Rp. ' + Config.formatuang(tarif),
+                                  style: TextStyle(fontFamily: 'AirbnbMedium', color: Config.primary),
                                 ),
                               ],
                             ),
@@ -276,9 +239,7 @@ class _DetailKelasState extends State<DetailKelas> {
                                 ),
                                 Text(
                                   '$pertemuan / $total',
-                                  style: TextStyle(
-                                      fontFamily: 'AirbnbMedium',
-                                      color: Config.primary),
+                                  style: TextStyle(fontFamily: 'AirbnbMedium', color: Config.primary),
                                 ),
                               ],
                             ),
@@ -298,9 +259,7 @@ class _DetailKelasState extends State<DetailKelas> {
                                 ),
                                 Text(
                                   '$hari',
-                                  style: TextStyle(
-                                      fontFamily: 'AirbnbMedium',
-                                      color: Config.primary),
+                                  style: TextStyle(fontFamily: 'AirbnbMedium', color: Config.primary),
                                 ),
                               ],
                             ),
@@ -319,10 +278,8 @@ class _DetailKelasState extends State<DetailKelas> {
                                   style: TextStyle(fontFamily: 'Airbnb'),
                                 ),
                                 Text(
-                                   'Rp. '+Config.formatuang(ttlTarif),
-                                  style: TextStyle(
-                                      fontFamily: 'AirbnbMedium',
-                                      color: Config.primary),
+                                  'Rp. ' + Config.formatuang(ttlTarif),
+                                  style: TextStyle(fontFamily: 'AirbnbMedium', color: Config.primary),
                                 ),
                               ],
                             ),
@@ -335,8 +292,7 @@ class _DetailKelasState extends State<DetailKelas> {
                         alignment: Alignment.centerLeft,
                         child: Text(
                           'Info Kelas',
-                          style: TextStyle(
-                              fontFamily: 'AirbnbBold', color: Config.primary),
+                          style: TextStyle(fontFamily: 'AirbnbBold', color: Config.primary),
                           textAlign: TextAlign.right,
                         ),
                       ),
@@ -353,9 +309,7 @@ class _DetailKelasState extends State<DetailKelas> {
                                 ),
                                 Text(
                                   '$jenjang',
-                                  style: TextStyle(
-                                      fontFamily: 'AirbnbMedium',
-                                      color: Config.primary),
+                                  style: TextStyle(fontFamily: 'AirbnbMedium', color: Config.primary),
                                 ),
                               ],
                             ),
@@ -375,9 +329,7 @@ class _DetailKelasState extends State<DetailKelas> {
                                 ),
                                 Text(
                                   '$kelas',
-                                  style: TextStyle(
-                                      fontFamily: 'AirbnbMedium',
-                                      color: Config.primary),
+                                  style: TextStyle(fontFamily: 'AirbnbMedium', color: Config.primary),
                                 ),
                               ],
                             ),
@@ -397,9 +349,7 @@ class _DetailKelasState extends State<DetailKelas> {
                                 ),
                                 Text(
                                   '$mapel',
-                                  style: TextStyle(
-                                      fontFamily: 'AirbnbMedium',
-                                      color: Config.primary),
+                                  style: TextStyle(fontFamily: 'AirbnbMedium', color: Config.primary),
                                 ),
                               ],
                             ),
@@ -410,14 +360,10 @@ class _DetailKelasState extends State<DetailKelas> {
                       if (status == 'Pending') ...{
                         Container(
                           padding: EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(8)),
-                              color: Config.primary),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(8)), color: Config.primary),
                           child: Text(
-                            'Silahkan melakukan pembayaran DP sebelum kelas dimulai pada nomor Rekening 123-xxx-xxx BCA A.n Suryo Hadi dan unggah bukti pembayaran untuk mengaktifkan status kelas.',
-                            style: TextStyle(
-                                fontFamily: 'Airbnb', color: Config.textWhite),
+                            'Silahkan melakukan pembayaran DP (minimal 30% dari harga deal) sebelum kelas dimulai pada bank yang tersedia dan unggah bukti pembayaran untuk mengaktifkan status kelas.',
+                            style: TextStyle(fontFamily: 'Airbnb', color: Config.textWhite),
                           ),
                         ),
                         Container(
@@ -427,25 +373,19 @@ class _DetailKelasState extends State<DetailKelas> {
                             padding: EdgeInsets.only(top: 13, bottom: 13),
                             color: Config.primary,
                             onPressed: () {
-                                Navigator.of(context)
-                                  .push(new MaterialPageRoute<Null>(
-                                      builder: (BuildContext context) {
-                                        return new DialogTF(
-                                          idKelas: widget.idKelas,
-                                          harga: tarif,
-                                        );
-                                      },
-                                      fullscreenDialog: true));
+                              Navigator.of(context).push(new MaterialPageRoute<Null>(
+                                  builder: (BuildContext context) {
+                                    return new DialogTF(
+                                      idKelas: widget.idKelas,
+                                      harga: tarif,
+                                    );
+                                  },
+                                  fullscreenDialog: true));
                             },
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5)),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                             child: Text(
                               'Transfer',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'AirbnbBold',
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold),
+                              style: TextStyle(color: Colors.white, fontFamily: 'AirbnbBold', fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                           ),
                         ),
@@ -457,25 +397,19 @@ class _DetailKelasState extends State<DetailKelas> {
                             padding: EdgeInsets.only(top: 13, bottom: 13),
                             color: Config.primary,
                             onPressed: () {
-                              Navigator.of(context)
-                                  .push(new MaterialPageRoute<Null>(
-                                      builder: (BuildContext context) {
-                                        return new DialogTF(
-                                          idKelas: widget.idKelas,
-                                          harga: tarif,
-                                        );
-                                      },
-                                      fullscreenDialog: true));
+                              Navigator.of(context).push(new MaterialPageRoute<Null>(
+                                  builder: (BuildContext context) {
+                                    return new DialogTF(
+                                      idKelas: widget.idKelas,
+                                      harga: tarif,
+                                    );
+                                  },
+                                  fullscreenDialog: true));
                             },
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5)),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                             child: Text(
                               'Transfer',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'AirbnbBold',
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold),
+                              style: TextStyle(color: Colors.white, fontFamily: 'AirbnbBold', fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                           ),
                         ),
@@ -491,19 +425,12 @@ class _DetailKelasState extends State<DetailKelas> {
                                   onPressed: () {
                                     // Navigator.pushNamed(context, Routes.HOMEPAGE,
                                     //     arguments: 0.toString());
-                                    Navigator.pushNamed(
-                                        context, Routes.LIST_MODUL,
-                                        arguments: widget.idKelas);
+                                    Navigator.pushNamed(context, Routes.LIST_MODUL, arguments: widget.idKelas);
                                   },
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5)),
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                                   child: Text(
                                     'Modul',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'AirbnbBold',
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
+                                    style: TextStyle(color: Colors.white, fontFamily: 'AirbnbBold', fontSize: 18, fontWeight: FontWeight.bold),
                                   ),
                                 ),
                               ),
@@ -518,18 +445,12 @@ class _DetailKelasState extends State<DetailKelas> {
                                   onPressed: () {
                                     // Navigator.pushNamed(context, Routes.HOMEPAGE,
                                     //     arguments: 0.toString());
-                                    Navigator.pushNamed(context, Routes.ABSENSI,
-                                        arguments: widget.idKelas);
+                                    Navigator.pushNamed(context, Routes.ABSENSI, arguments: widget.idKelas);
                                   },
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5)),
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                                   child: Text(
                                     'Absensi',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'AirbnbBold',
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
+                                    style: TextStyle(color: Colors.white, fontFamily: 'AirbnbBold', fontSize: 18, fontWeight: FontWeight.bold),
                                   ),
                                 ),
                               ),

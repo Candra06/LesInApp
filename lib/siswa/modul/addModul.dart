@@ -36,8 +36,7 @@ class _TambahModulState extends State<TambahModul> {
   void getList() async {
     String token = await Config.getToken();
     String id = widget.idKelas;
-    http.Response req = await http.get(Config.ipServerAPI + 'modul/$id',
-        headers: {'Authorization': 'Bearer $token'});
+    http.Response req = await http.get(Config.ipServerAPI + 'modul/$id', headers: {'Authorization': 'Bearer $token'});
     if (req.statusCode == 200) {
       var data = json.decode(req.body);
       print(data['data']);
@@ -54,10 +53,7 @@ class _TambahModulState extends State<TambahModul> {
     Config.loading(context);
     String token = await Config.getToken();
     String id = await Config.getID();
-    Map<String, String> headers = {
-      'Authorization': 'Bearer ' + token,
-      'Accept': 'application/json'
-    };
+    Map<String, String> headers = {'Authorization': 'Bearer ' + token, 'Accept': 'application/json'};
     print(labelModul.path);
     final save = http.MultipartRequest(
       'POST',
@@ -75,8 +71,7 @@ class _TambahModulState extends State<TambahModul> {
 
     if (res.statusCode == 200) {
       Navigator.pop(context);
-      Navigator.pushNamed(context, Routes.LIST_MODUL,
-          arguments: widget.idKelas);
+      Navigator.pushNamed(context, Routes.LIST_MODUL, arguments: widget.idKelas);
       // success(context);
       Config.alert(1, 'Berhasil menambahkan modul');
     } else {
@@ -96,25 +91,15 @@ class _TambahModulState extends State<TambahModul> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        Navigator.pushNamed(context, Routes.LIST_MODUL,
-            arguments: widget.idKelas);
+        return Navigator.pushNamed(context, Routes.LIST_MODUL, arguments: widget.idKelas);
       },
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           flexibleSpace: Container(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20)),
-                gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: <Color>[
-                      Config.primary,
-                      Config.secondary,
-                      Config.darkPrimary
-                    ])),
+                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+                gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: <Color>[Config.primary, Config.secondary, Config.darkPrimary])),
           ),
           title: Text(
             'Tambah Modul',
@@ -165,15 +150,10 @@ class _TambahModulState extends State<TambahModul> {
                             addMateri();
                           }
                         },
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5)),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                         child: Text(
                           'Simpan',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: 'AirbnbBold',
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold),
+                          style: TextStyle(color: Colors.white, fontFamily: 'AirbnbBold', fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
