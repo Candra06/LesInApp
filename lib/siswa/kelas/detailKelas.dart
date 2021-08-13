@@ -49,7 +49,7 @@ class _DetailKelasState extends State<DetailKelas> {
         total = jmlPertemuan.toString();
         idtentor = id.toString();
         mapel = dataKelas['mapel'];
-        jenjang = dataKelas['mapel'];
+        jenjang = dataKelas['jenjang'];
         kelas = dataKelas['kelas'];
         status = dataKelas['status'];
         idtentor = idTntr.toString();
@@ -163,7 +163,7 @@ class _DetailKelasState extends State<DetailKelas> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  'Momor HP',
+                                  'Nomor HP',
                                   style: TextStyle(fontFamily: 'Airbnb'),
                                 ),
                                 Text(
@@ -449,7 +449,7 @@ class _DetailKelasState extends State<DetailKelas> {
                                   },
                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                                   child: Text(
-                                    'Absensi',
+                                    'Presensi',
                                     style: TextStyle(color: Colors.white, fontFamily: 'AirbnbBold', fontSize: 18, fontWeight: FontWeight.bold),
                                   ),
                                 ),

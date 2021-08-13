@@ -10,13 +10,7 @@ class SideProfile extends StatefulWidget {
 }
 
 class _SideProfileState extends State<SideProfile> {
-  String nama = '',
-      email = '',
-      username = '',
-      telepon = '',
-      tglLahir = '',
-      gender = '',
-      alamat;
+  String nama = '', email = '', username = '', telepon = '', tglLahir = '', gender = '', alamat;
   void getInfo() async {
     var tmpNama = await Config.getNama();
     var tmpEmail = await Config.getEmail();
@@ -37,9 +31,27 @@ class _SideProfileState extends State<SideProfile> {
   }
 
   void logout() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    await pref.clear();
-    Navigator.pushNamed(context, Routes.LOGIN);
+    showDialog(
+      context: context,
+      builder: (context) => new AlertDialog(
+        title: new Text('Apakah anda yakin?'),
+        content: new Text('Ingin keluar dari akun ini.'),
+        actions: <Widget>[
+          new FlatButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: new Text('Tidak'),
+          ),
+          new FlatButton(
+            onPressed: () async {
+              SharedPreferences pref = await SharedPreferences.getInstance();
+              await pref.clear();
+              Navigator.pushNamed(context, Routes.LOGIN);
+            },
+            child: new Text('Iya'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -58,17 +70,8 @@ class _SideProfileState extends State<SideProfile> {
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(30),
-                      bottomRight: Radius.circular(30)),
-                  gradient: LinearGradient(
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                      colors: <Color>[
-                        Config.primary,
-                        Config.secondary,
-                        Config.darkPrimary
-                      ])),
+                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30)),
+                  gradient: LinearGradient(begin: Alignment.centerLeft, end: Alignment.centerRight, colors: <Color>[Config.primary, Config.secondary, Config.darkPrimary])),
               //menampilkan detail profile akun
               child: Column(children: <Widget>[
                 Container(
@@ -86,10 +89,7 @@ class _SideProfileState extends State<SideProfile> {
                     margin: EdgeInsets.only(bottom: 10),
                     child: Text(
                       '$nama',
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
                     )),
                 Container(
                     margin: EdgeInsets.only(bottom: 15),
@@ -112,28 +112,20 @@ class _SideProfileState extends State<SideProfile> {
                   child: new Container(
                     width: MediaQuery.of(context).size.width,
                     height: 30,
-                    child: new Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          new Flexible(
-                              child: Container(
-                                  child: Text(
-                            'Nama',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'Airbnb',
-                                color: Config.textGrey),
-                          ))),
-                          new Flexible(
-                              child: Container(
-                                  child: Text(
-                            '$nama',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'AirbnbBold',
-                                color: Config.primary),
-                          ))),
-                        ]),
+                    child: new Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
+                      new Flexible(
+                          child: Container(
+                              child: Text(
+                        'Nama',
+                        style: TextStyle(fontSize: 14, fontFamily: 'Airbnb', color: Config.textGrey),
+                      ))),
+                      new Flexible(
+                          child: Container(
+                              child: Text(
+                        '$nama',
+                        style: TextStyle(fontSize: 14, fontFamily: 'AirbnbBold', color: Config.primary),
+                      ))),
+                    ]),
                   ),
                 ),
                 GestureDetector(
@@ -143,29 +135,21 @@ class _SideProfileState extends State<SideProfile> {
                   child: new Container(
                     width: MediaQuery.of(context).size.width,
                     height: 35,
-                    child: new Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          new Flexible(
-                              child: Container(
-                                  child: Text(
-                            'Tanggal Lahir',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'Airbnb',
-                                color: Config.textGrey),
-                          ))),
-                          new Flexible(
-                              child: Container(
-                                  child: Text(
-                            tglLahir,
-                            textAlign: TextAlign.right,
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'AirbnbBold',
-                                color: Config.primary),
-                          ))),
-                        ]),
+                    child: new Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
+                      new Flexible(
+                          child: Container(
+                              child: Text(
+                        'Tanggal Lahir',
+                        style: TextStyle(fontSize: 14, fontFamily: 'Airbnb', color: Config.textGrey),
+                      ))),
+                      new Flexible(
+                          child: Container(
+                              child: Text(
+                        tglLahir,
+                        textAlign: TextAlign.right,
+                        style: TextStyle(fontSize: 14, fontFamily: 'AirbnbBold', color: Config.primary),
+                      ))),
+                    ]),
                   ),
                 ),
                 GestureDetector(
@@ -175,28 +159,20 @@ class _SideProfileState extends State<SideProfile> {
                   child: new Container(
                     width: MediaQuery.of(context).size.width,
                     height: 30,
-                    child: new Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          new Flexible(
-                              child: Container(
-                                  child: Text(
-                            'Jenis Kelamin',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'Airbnb',
-                                color: Config.textGrey),
-                          ))),
-                          new Flexible(
-                              child: Container(
-                                  child: Text(
-                            '$gender',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'AirbnbBold',
-                                color: Config.primary),
-                          ))),
-                        ]),
+                    child: new Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
+                      new Flexible(
+                          child: Container(
+                              child: Text(
+                        'Jenis Kelamin',
+                        style: TextStyle(fontSize: 14, fontFamily: 'Airbnb', color: Config.textGrey),
+                      ))),
+                      new Flexible(
+                          child: Container(
+                              child: Text(
+                        '$gender',
+                        style: TextStyle(fontSize: 14, fontFamily: 'AirbnbBold', color: Config.primary),
+                      ))),
+                    ]),
                   ),
                 ),
                 GestureDetector(
@@ -206,28 +182,20 @@ class _SideProfileState extends State<SideProfile> {
                   child: new Container(
                     width: MediaQuery.of(context).size.width,
                     height: 30,
-                    child: new Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          new Flexible(
-                              child: Container(
-                                  child: Text(
-                            'Nomor HP',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'Airbnb',
-                                color: Config.textGrey),
-                          ))),
-                          new Flexible(
-                              child: Container(
-                                  child: Text(
-                            '$telepon',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'AirbnbBold',
-                                color: Config.primary),
-                          ))),
-                        ]),
+                    child: new Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
+                      new Flexible(
+                          child: Container(
+                              child: Text(
+                        'Nomor HP',
+                        style: TextStyle(fontSize: 14, fontFamily: 'Airbnb', color: Config.textGrey),
+                      ))),
+                      new Flexible(
+                          child: Container(
+                              child: Text(
+                        '$telepon',
+                        style: TextStyle(fontSize: 14, fontFamily: 'AirbnbBold', color: Config.primary),
+                      ))),
+                    ]),
                   ),
                 ),
                 GestureDetector(
@@ -237,28 +205,20 @@ class _SideProfileState extends State<SideProfile> {
                   child: new Container(
                     width: MediaQuery.of(context).size.width,
                     height: 30,
-                    child: new Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          new Flexible(
-                              child: Container(
-                                  child: Text(
-                            'Username',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'Airbnb',
-                                color: Config.textGrey),
-                          ))),
-                          new Flexible(
-                              child: Container(
-                                  child: Text(
-                            '$username',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'AirbnbBold',
-                                color: Config.primary),
-                          ))),
-                        ]),
+                    child: new Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
+                      new Flexible(
+                          child: Container(
+                              child: Text(
+                        'Username',
+                        style: TextStyle(fontSize: 14, fontFamily: 'Airbnb', color: Config.textGrey),
+                      ))),
+                      new Flexible(
+                          child: Container(
+                              child: Text(
+                        '$username',
+                        style: TextStyle(fontSize: 14, fontFamily: 'AirbnbBold', color: Config.primary),
+                      ))),
+                    ]),
                   ),
                 ),
                 GestureDetector(
@@ -268,30 +228,22 @@ class _SideProfileState extends State<SideProfile> {
                   child: new Container(
                     width: MediaQuery.of(context).size.width,
                     height: 35,
-                    child: new Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          new Flexible(
-                              child: Container(
-                                  child: Text(
-                            'Email',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'Airbnb',
-                                color: Config.textGrey),
-                          ))),
-                          new Flexible(
-                              child: Container(
-                                alignment: Alignment.centerRight,
-                                  child: Text(
-                            '$email',
-                            textAlign: TextAlign.right,
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'AirbnbBold',
-                                color: Config.primary),
-                          ))),
-                        ]),
+                    child: new Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
+                      new Flexible(
+                          child: Container(
+                              child: Text(
+                        'Email',
+                        style: TextStyle(fontSize: 14, fontFamily: 'Airbnb', color: Config.textGrey),
+                      ))),
+                      new Flexible(
+                          child: Container(
+                              alignment: Alignment.centerRight,
+                              child: Text(
+                                '$email',
+                                textAlign: TextAlign.right,
+                                style: TextStyle(fontSize: 14, fontFamily: 'AirbnbBold', color: Config.primary),
+                              ))),
+                    ]),
                   ),
                 ),
                 GestureDetector(
@@ -301,30 +253,22 @@ class _SideProfileState extends State<SideProfile> {
                   child: new Container(
                     width: MediaQuery.of(context).size.width,
                     height: 40,
-                    child: new Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          new Flexible(
-                              child: Container(
-                                  child: Text(
-                            'Alamat',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'Airbnb',
-                                color: Config.textGrey),
-                          ))),
-                          new Flexible(
-                              child: Container(
-                                  alignment: Alignment.centerRight,
-                                  child: Text(
-                                    '$alamat',
-                                    textAlign: TextAlign.right,
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        fontFamily: 'AirbnbBold',
-                                        color: Config.primary),
-                                  ))),
-                        ]),
+                    child: new Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
+                      new Flexible(
+                          child: Container(
+                              child: Text(
+                        'Alamat',
+                        style: TextStyle(fontSize: 14, fontFamily: 'Airbnb', color: Config.textGrey),
+                      ))),
+                      new Flexible(
+                          child: Container(
+                              alignment: Alignment.centerRight,
+                              child: Text(
+                                '$alamat',
+                                textAlign: TextAlign.right,
+                                style: TextStyle(fontSize: 14, fontFamily: 'AirbnbBold', color: Config.primary),
+                              ))),
+                    ]),
                   ),
                 ),
               ]),
@@ -344,15 +288,10 @@ class _SideProfileState extends State<SideProfile> {
                         onPressed: () {
                           Navigator.pushNamed(context, Routes.EDIT_PROFIL);
                         },
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5)),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                         child: Text(
                           'Ubah ',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: 'AirbnbBold',
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold),
+                          style: TextStyle(color: Colors.white, fontFamily: 'AirbnbBold', fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
@@ -366,16 +305,10 @@ class _SideProfileState extends State<SideProfile> {
                           // Navigator.pushNamed(context, Routes.REGISTER);
                           logout();
                         },
-                        shape: RoundedRectangleBorder(
-                            side: BorderSide(color: Config.primary),
-                            borderRadius: BorderRadius.circular(5)),
+                        shape: RoundedRectangleBorder(side: BorderSide(color: Config.primary), borderRadius: BorderRadius.circular(5)),
                         child: Text(
                           'Logout',
-                          style: TextStyle(
-                              color: Config.primary,
-                              fontFamily: 'AirbnbBold',
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold),
+                          style: TextStyle(color: Config.primary, fontFamily: 'AirbnbBold', fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),

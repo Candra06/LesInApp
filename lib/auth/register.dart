@@ -82,8 +82,7 @@ class _RegisterPageState extends State<RegisterPage> {
     body['password'] = txpassword.text;
     print(body);
 
-    http.Response res =
-        await http.post(Config.ipServerAPI + 'register', body: body);
+    http.Response res = await http.post(Config.ipServerAPI + 'register', body: body);
     print(Config.ipServerAPI + 'register');
     print(res.body);
     if (res.statusCode == 200) {
@@ -145,16 +144,14 @@ class _RegisterPageState extends State<RegisterPage> {
                 onPressed: () => Navigator.of(context).pop(false),
                 child: new Text(
                   'Tidak',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
                 ),
               ),
               new FlatButton(
                 onPressed: () => exit(0),
                 child: new Text(
                   'Ya',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
                 ),
               ),
             ],
@@ -184,10 +181,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       Container(
                         height: displayWidth(context) * 0.69,
                         width: displayWidth(context) * 0.69,
-                        decoration: BoxDecoration(
-                            color: Config.secondary,
-                            borderRadius: BorderRadius.all(
-                                Radius.circular(displayWidth(context) * 0.5))),
+                        decoration: BoxDecoration(color: Config.secondary, borderRadius: BorderRadius.all(Radius.circular(displayWidth(context) * 0.5))),
                       ),
                     )),
 
@@ -200,10 +194,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       Container(
                         height: displayWidth(context) * 0.45,
                         width: displayWidth(context) * 0.45,
-                        decoration: BoxDecoration(
-                            color: Config.primary.withOpacity(0.7),
-                            borderRadius: BorderRadius.all(
-                                Radius.circular(displayWidth(context) * 0.5))),
+                        decoration: BoxDecoration(color: Config.primary.withOpacity(0.7), borderRadius: BorderRadius.all(Radius.circular(displayWidth(context) * 0.5))),
                       ),
                     )),
 
@@ -223,11 +214,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         Container(
                           margin: EdgeInsets.only(top: 72),
                           child: Text(
-                            'Daftar',
-                            style: TextStyle(
-                                fontFamily: 'AirbnbBold',
-                                fontSize: 35,
-                                color: Config.primary),
+                            'Daftar Siswa',
+                            style: TextStyle(fontFamily: 'AirbnbBold', fontSize: 30, color: Config.primary),
                           ),
                         ),
                         Container(
@@ -316,17 +304,10 @@ class _RegisterPageState extends State<RegisterPage> {
                                             lastDate: DateTime.now(),
                                           ).then((date) {
                                             tglLahir = date;
-                                            String tanggal = tglLahir
-                                                .toString()
-                                                .replaceAll("00:00:00.000", "");
+                                            String tanggal = tglLahir.toString().replaceAll("00:00:00.000", "");
                                             print(tanggal);
-                                            print(Config.formattanggal(
-                                                tanggal.toString()));
-                                            ctglLahir.text =
-                                                Config.formattanggal(tglLahir
-                                                    .toString()
-                                                    .replaceAll(
-                                                        "00:00:00.000", ""));
+                                            print(Config.formattanggal(tanggal.toString()));
+                                            ctglLahir.text = Config.formattanggal(tglLahir.toString().replaceAll("00:00:00.000", ""));
                                           });
                                         },
                                       ),
@@ -396,9 +377,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 items: gender,
                                 onChanged: changedDropDownItemGender,
                                 value: getGender,
-                                style: TextStyle(
-                                    color: Config.textBlack,
-                                    fontFamily: 'Airbnb'),
+                                style: TextStyle(color: Config.textBlack, fontFamily: 'Airbnb'),
                               ),
                             ),
                           ),
@@ -486,11 +465,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                       border: InputBorder.none,
                                       suffixIcon: IconButton(
                                         onPressed: _toggleVisibility,
-                                        icon: _isHidden
-                                            ? Icon(Icons.visibility_off,
-                                                color: Colors.black45)
-                                            : Icon(Icons.visibility,
-                                                color: Colors.black45),
+                                        icon: _isHidden ? Icon(Icons.visibility_off, color: Colors.black45) : Icon(Icons.visibility, color: Colors.black45),
                                       ),
                                     )),
                               )
@@ -522,11 +497,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                       border: InputBorder.none,
                                       suffixIcon: IconButton(
                                         onPressed: _toggleVisibility2,
-                                        icon: visible
-                                            ? Icon(Icons.visibility_off,
-                                                color: Colors.black45)
-                                            : Icon(Icons.visibility,
-                                                color: Colors.black45),
+                                        icon: visible ? Icon(Icons.visibility_off, color: Colors.black45) : Icon(Icons.visibility, color: Colors.black45),
                                       ),
                                     )),
                               )
@@ -548,8 +519,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 Config.alert(0, "Password tidak sesuai!");
                               } else if (txpassword.text.isEmpty) {
                                 Config.alert(0, "Password tidak valid!");
-                              } else if (getGender == '' ||
-                                  getGender == 'Pilih Gender') {
+                              } else if (getGender == '' || getGender == 'Pilih Gender') {
                                 Config.alert(0, "Pilih Gender!");
                               } else if (txUsername.text.isEmpty) {
                                 Config.alert(0, "Username tidak valid!");
@@ -563,15 +533,10 @@ class _RegisterPageState extends State<RegisterPage> {
                                 register();
                               }
                             },
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5)),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                             child: Text(
                               'DAFTAR',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'AirbnbBold',
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold),
+                              style: TextStyle(color: Colors.white, fontFamily: 'AirbnbBold', fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                           ),
                         ),
@@ -584,16 +549,10 @@ class _RegisterPageState extends State<RegisterPage> {
                             onPressed: () {
                               Navigator.pushNamed(context, Routes.LOGIN);
                             },
-                            shape: RoundedRectangleBorder(
-                                side: BorderSide(color: Config.primary),
-                                borderRadius: BorderRadius.circular(5)),
+                            shape: RoundedRectangleBorder(side: BorderSide(color: Config.primary), borderRadius: BorderRadius.circular(5)),
                             child: Text(
                               'LOGIN',
-                              style: TextStyle(
-                                  color: Config.primary,
-                                  fontFamily: 'AirbnbBold',
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold),
+                              style: TextStyle(color: Config.primary, fontFamily: 'AirbnbBold', fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                           ),
                         ),

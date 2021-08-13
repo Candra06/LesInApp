@@ -88,7 +88,7 @@ class _DialogFeedbackState extends State<DialogFeedback>
                   ])),
         ),
         title: Text(
-          'Fedback ',
+          'Feedback ',
           style: TextStyle(fontFamily: 'AirbnbMedium'),
         ),
       ),

@@ -426,7 +426,7 @@ class _DetailTentorState extends State<DetailTentor> {
                   },
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                   child: Text(
-                    'Booking Tentor',
+                    'Booking Tutor',
                     style: TextStyle(color: Colors.white, fontFamily: 'AirbnbBold', fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),

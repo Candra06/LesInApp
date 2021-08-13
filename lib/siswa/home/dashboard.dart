@@ -79,7 +79,7 @@ class _DashboardPageState extends State<DashboardPage> {
       load = true;
     });
     http.Response res = await http.get(Config.ipServerAPI + 'listJadwal', headers: {'Authorization': 'Bearer $tokenn'});
-    print(res.body);
+    // print(res.body);
     if (res.statusCode == 200) {
       var data = json.decode(res.body);
       setState(() {
@@ -88,7 +88,7 @@ class _DashboardPageState extends State<DashboardPage> {
       });
     } else {
       setState(() {
-        Config.alert(0, 'Gagal memuat data');
+        jadwal = [];
         load = false;
       });
     }
@@ -188,7 +188,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
-                            new Text(
+                            Text(
                               "Halo, $nama".toUpperCase(),
                               style: new TextStyle(
                                 fontFamily: 'AirbnbBold',
@@ -196,7 +196,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                 color: Colors.white,
                               ),
                             ),
-                            new Text(
+                            Text(
                               'Selamat datang'.toUpperCase(),
                               style: new TextStyle(
                                 fontFamily: 'AirbnbBold',
@@ -218,51 +218,49 @@ class _DashboardPageState extends State<DashboardPage> {
                             margin: EdgeInsets.only(right: 16, left: 16),
                             height: 150,
                             child: Container(
-                              child: Flexible(
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: <Widget>[
-                                    Container(
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Container(
+                                    padding: EdgeInsets.all(8),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Container(
+                                            width: 90.0,
+                                            height: 90.0,
+                                            decoration: new BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              image: new DecorationImage(fit: BoxFit.fill, image: AssetImage('assets/icons/graduate.png')),
+                                            ))
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(top: 8, bottom: 8),
+                                    height: 50,
+                                  ),
+                                  Flexible(
+                                    child: Container(
                                       padding: EdgeInsets.all(8),
                                       child: Column(
                                         mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: <Widget>[
+                                          Flexible(
+                                            child: Container(
+                                              child: Text('$nama', maxLines: 2, style: TextStyle(fontFamily: 'AirbnbMedium', color: Config.textWhite, fontSize: 18, fontWeight: FontWeight.bold)),
+                                            ),
+                                          ),
                                           Container(
-                                              width: 90.0,
-                                              height: 90.0,
-                                              decoration: new BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                image: new DecorationImage(fit: BoxFit.fill, image: AssetImage('assets/icons/graduate.png')),
-                                              ))
+                                            child: Text('$username', style: TextStyle(fontFamily: 'AirbnbMedium', color: Config.textWhite, fontSize: 18, fontWeight: FontWeight.bold)),
+                                          ),
                                         ],
                                       ),
                                     ),
-                                    Container(
-                                      margin: EdgeInsets.only(top: 8, bottom: 8),
-                                      height: 50,
-                                    ),
-                                    Flexible(
-                                      child: Container(
-                                        padding: EdgeInsets.all(8),
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Flexible(
-                                              child: Container(
-                                                child: Text('$nama', maxLines: 2, style: TextStyle(fontFamily: 'AirbnbMedium', color: Config.textWhite, fontSize: 18, fontWeight: FontWeight.bold)),
-                                              ),
-                                            ),
-                                            Container(
-                                              child: Text('$username', style: TextStyle(fontFamily: 'AirbnbMedium', color: Config.textWhite, fontSize: 18, fontWeight: FontWeight.bold)),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             )),
                       ),

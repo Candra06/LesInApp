@@ -31,9 +31,29 @@ class _SideProfileTentorState extends State<SideProfileTentor> {
   }
 
   void logout() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    await pref.clear();
-    Navigator.pushNamed(context, Routes.LOGIN);
+    void logout() async {
+      showDialog(
+        context: context,
+        builder: (context) => new AlertDialog(
+          title: new Text('Apakah anda yakin?'),
+          content: new Text('Ingin keluar dari akun ini.'),
+          actions: <Widget>[
+            new FlatButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: new Text('Tidak'),
+            ),
+            new FlatButton(
+              onPressed: () async {
+                SharedPreferences pref = await SharedPreferences.getInstance();
+                await pref.clear();
+                Navigator.pushNamed(context, Routes.LOGIN);
+              },
+              child: new Text('Iya'),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   @override

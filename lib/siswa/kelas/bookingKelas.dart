@@ -22,7 +22,7 @@ class _BookingKelasPageState extends State<BookingKelasPage> {
   String getMapel = "";
   List listJenjang = ['Pilih Jenjang', 'SD', 'SMP', 'SMA'];
   List listKelas = ['Pilih Kelas'];
-  List listMapel = ['Pilih Mapel', 'Bahasa Indonesia', 'Bahasa Inggris', 'Matematika', 'IPA'];
+  List listMapel = ['Pilih Mapel', 'Tematik', 'Bahasa Indonesia', 'IPA', 'Bahasa Inggris', 'Matematika', 'Biologi', 'Kimia', 'Fisika', 'Ekonomi', 'Sejarah', 'Geografi'];
 
   void getParam() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
@@ -95,6 +95,7 @@ class _BookingKelasPageState extends State<BookingKelasPage> {
     http.Response res = await http.get(Config.ipServerAPI + 'mapelBy/$kls/$mpl', headers: {'Authorization': 'Bearer $token'});
     if (res.statusCode == 200) {
       var data = jsonDecode(res.body);
+      
       Navigator.pop(context);
       if (data['data'] == null || data['data'] == '') {
         showAlertDialog(context, '2');
